@@ -1,0 +1,1007 @@
+{
+  "run_id": "dq_20260701",
+  "as_of": "2026-07-01",
+  "lookback_days": 28,
+  "generated_at": "2026-11-05T17:29:01+00:00",
+  "duration_seconds": 22.7,
+  "gate_status": "PASS",
+  "summary": {
+    "rules": 40,
+    "passed": 34,
+    "warnings": 6,
+    "blocking": 0,
+    "rows_quarantined": 19970,
+    "blocking_rules": [],
+    "warning_rules": [
+      "PRD_CATEGORY_NOT_NULL",
+      "EVT_EVENT_ID_UNIQUE",
+      "CUS_EMAIL_UNIQUE",
+      "ORD_AFTER_SIGNUP",
+      "EVT_AFTER_SIGNUP",
+      "EVT_PURCHASE_HAS_ORDERS"
+    ],
+    "by_dimension": {
+      "completeness": {
+        "rules": 7,
+        "failed": 1
+      },
+      "uniqueness": {
+        "rules": 4,
+        "failed": 2
+      },
+      "validity": {
+        "rules": 10,
+        "failed": 0
+      },
+      "referential_integrity": {
+        "rules": 5,
+        "failed": 0
+      },
+      "consistency": {
+        "rules": 6,
+        "failed": 3
+      },
+      "timeliness": {
+        "rules": 4,
+        "failed": 0
+      },
+      "volume": {
+        "rules": 4,
+        "failed": 0
+      }
+    }
+  },
+  "rules": [
+    {
+      "rule_id": "ORD_ORDER_DATE_NOT_NULL",
+      "dimension": "completeness",
+      "table": "orders",
+      "severity": "block",
+      "description": "Orders must have an order_date; undated orders cannot be placed before or after a cutoff.",
+      "rows_checked": 500000,
+      "violations": 10016,
+      "failure_rate": 0.020032,
+      "max_failure_rate": 0.05,
+      "outcome": "pass",
+      "quarantined": 10016,
+      "seconds": 0.101,
+      "sample": [
+        {
+          "order_id": 29,
+          "customer_id": 13604,
+          "order_date": null,
+          "status": "returned",
+          "order_total": "311.02"
+        },
+        {
+          "order_id": 49,
+          "customer_id": 39933,
+          "order_date": null,
+          "status": "cancelled",
+          "order_total": "383.64"
+        },
+        {
+          "order_id": 58,
+          "customer_id": 39680,
+          "order_date": null,
+          "status": "cancelled",
+          "order_total": "57.66"
+        },
+        {
+          "order_id": 62,
+          "customer_id": 3366,
+          "order_date": null,
+          "status": "completed",
+          "order_total": "286.20"
+        },
+        {
+          "order_id": 65,
+          "customer_id": 43529,
+          "order_date": null,
+          "status": "pending",
+          "order_total": "192.10"
+        }
+      ]
+    },
+    {
+      "rule_id": "ORD_REQUIRED_NOT_NULL",
+      "dimension": "completeness",
+      "table": "orders",
+      "severity": "block",
+      "description": "Orders must have customer_id, status and order_total.",
+      "rows_checked": 500000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.022,
+      "sample": []
+    },
+    {
+      "rule_id": "ITM_REQUIRED_NOT_NULL",
+      "dimension": "completeness",
+      "table": "order_items",
+      "severity": "block",
+      "description": "Order items must have order_id, product_id, quantity and unit_price.",
+      "rows_checked": 1530225,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.084,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_REQUIRED_NOT_NULL",
+      "dimension": "completeness",
+      "table": "events",
+      "severity": "block",
+      "description": "Events must have customer_id, event_ts and event_type.",
+      "rows_checked": 10000000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.528,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_PRODUCT_ID_NOT_NULL",
+      "dimension": "completeness",
+      "table": "events",
+      "severity": "warn",
+      "description": "Events should name a product. Observed ~2% missing across all event types; tolerated up to 5%.",
+      "rows_checked": 10000000,
+      "violations": 199962,
+      "failure_rate": 0.019996,
+      "max_failure_rate": 0.05,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.386,
+      "sample": [
+        {
+          "event_id": 13898,
+          "customer_id": 13270,
+          "event_ts": "2024-07-02 14:52:41",
+          "event_type": "view",
+          "product_id": null,
+          "session_id": "13270-1-2"
+        },
+        {
+          "event_id": 13989,
+          "customer_id": 5470,
+          "event_ts": "2024-07-02 15:04:15",
+          "event_type": "view",
+          "product_id": null,
+          "session_id": "5470-1-2"
+        },
+        {
+          "event_id": 13990,
+          "customer_id": 2474,
+          "event_ts": "2024-07-02 15:04:22",
+          "event_type": "checkout_start",
+          "product_id": null,
+          "session_id": "2474-1-2"
+        },
+        {
+          "event_id": 14064,
+          "customer_id": 32555,
+          "event_ts": "2024-07-02 15:13:20",
+          "event_type": "checkout_start",
+          "product_id": null,
+          "session_id": "32555-1-2"
+        },
+        {
+          "event_id": 14070,
+          "customer_id": 48783,
+          "event_ts": "2024-07-02 15:13:55",
+          "event_type": "view",
+          "product_id": null,
+          "session_id": "48783-1-2"
+        }
+      ]
+    },
+    {
+      "rule_id": "CUS_MARKETING_OPT_IN_NOT_NULL",
+      "dimension": "completeness",
+      "table": "customers",
+      "severity": "warn",
+      "description": "marketing_opt_in should be known. Observed ~10% missing; tolerated up to 15%.",
+      "rows_checked": 50000,
+      "violations": 4993,
+      "failure_rate": 0.09986,
+      "max_failure_rate": 0.15,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.013,
+      "sample": [
+        {
+          "customer_id": 10,
+          "first_name": "Anthony",
+          "last_name": "Parsons",
+          "email": "anthony.parsons122@example.com",
+          "signup_date": "2025-10-02",
+          "country": "CA",
+          "marketing_opt_in": null
+        },
+        {
+          "customer_id": 12,
+          "first_name": "William",
+          "last_name": "Owens",
+          "email": "william.owens215@example.com",
+          "signup_date": "2023-12-10",
+          "country": "IN",
+          "marketing_opt_in": null
+        },
+        {
+          "customer_id": 42,
+          "first_name": "Brandon",
+          "last_name": "Evans",
+          "email": "brandon.evans511@example.com",
+          "signup_date": "2024-02-14",
+          "country": "BR",
+          "marketing_opt_in": null
+        },
+        {
+          "customer_id": 45,
+          "first_name": "Christopher",
+          "last_name": "White",
+          "email": "christopher.white700@example.com",
+          "signup_date": "2022-01-17",
+          "country": "GB",
+          "marketing_opt_in": null
+        },
+        {
+          "customer_id": 52,
+          "first_name": "Jason",
+          "last_name": "Barnett",
+          "email": "jason.barnett563@example.com",
+          "signup_date": "2023-08-31",
+          "country": "AU",
+          "marketing_opt_in": null
+        }
+      ]
+    },
+    {
+      "rule_id": "PRD_CATEGORY_NOT_NULL",
+      "dimension": "completeness",
+      "table": "products",
+      "severity": "warn",
+      "description": "Products should have a category; missing ones are reported as 'Unknown' downstream.",
+      "rows_checked": 2000,
+      "violations": 97,
+      "failure_rate": 0.0485,
+      "max_failure_rate": 0.0,
+      "outcome": "warn",
+      "quarantined": 0,
+      "seconds": 0.002,
+      "sample": [
+        {
+          "product_id": 12,
+          "product_name": "Blood Able",
+          "category": null,
+          "unit_price": "61.06",
+          "active": true
+        },
+        {
+          "product_id": 40,
+          "product_name": "Common Half",
+          "category": null,
+          "unit_price": "8.07",
+          "active": true
+        },
+        {
+          "product_id": 41,
+          "product_name": "Training Audience",
+          "category": null,
+          "unit_price": "59.51",
+          "active": true
+        },
+        {
+          "product_id": 55,
+          "product_name": "Look Exactly",
+          "category": null,
+          "unit_price": "50.18",
+          "active": true
+        },
+        {
+          "product_id": 65,
+          "product_name": "Film High",
+          "category": null,
+          "unit_price": "9.88",
+          "active": true
+        }
+      ]
+    },
+    {
+      "rule_id": "ORD_ORDER_ID_UNIQUE",
+      "dimension": "uniqueness",
+      "table": "orders",
+      "severity": "block",
+      "description": "order_id must be unique (also enforced by the primary key in this database).",
+      "rows_checked": 500000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.088,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_DUPLICATE_ROWS",
+      "dimension": "uniqueness",
+      "table": "events",
+      "severity": "warn",
+      "description": "Events should not be repeated as identical rows (events has no primary key).",
+      "rows_checked": 10000000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.001,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 7.621,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_EVENT_ID_UNIQUE",
+      "dimension": "uniqueness",
+      "table": "events",
+      "severity": "warn",
+      "description": "event_id should identify one event. Collisions are different events sharing an id; both are kept and event_id is never used as a key downstream.",
+      "rows_checked": 10000000,
+      "violations": 29883,
+      "failure_rate": 0.002988,
+      "max_failure_rate": 0.0,
+      "outcome": "warn",
+      "quarantined": 0,
+      "seconds": 6.412,
+      "sample": [
+        {
+          "event_id": 78,
+          "copies": 2
+        },
+        {
+          "event_id": 592,
+          "copies": 2
+        },
+        {
+          "event_id": 767,
+          "copies": 2
+        },
+        {
+          "event_id": 1048,
+          "copies": 2
+        },
+        {
+          "event_id": 1224,
+          "copies": 2
+        }
+      ]
+    },
+    {
+      "rule_id": "CUS_EMAIL_UNIQUE",
+      "dimension": "uniqueness",
+      "table": "customers",
+      "severity": "warn",
+      "description": "An email should belong to one customer. Shared emails are kept: email is not a key or feature.",
+      "rows_checked": 50000,
+      "violations": 516,
+      "failure_rate": 0.01032,
+      "max_failure_rate": 0.0,
+      "outcome": "warn",
+      "quarantined": 0,
+      "seconds": 0.08,
+      "sample": [
+        {
+          "email": "brandy.glenn637@example.com",
+          "customers": 2
+        },
+        {
+          "email": "donald.lopez256@example.com",
+          "customers": 2
+        },
+        {
+          "email": "william.spencer556@example.com",
+          "customers": 2
+        },
+        {
+          "email": "rachel.foster686@example.com",
+          "customers": 2
+        },
+        {
+          "email": "manuel.osborne119@example.com",
+          "customers": 2
+        }
+      ]
+    },
+    {
+      "rule_id": "ORD_STATUS_VALID",
+      "dimension": "validity",
+      "table": "orders",
+      "severity": "block",
+      "description": "status must be one of completed, cancelled, returned, pending (exact spelling).",
+      "rows_checked": 500000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.045,
+      "sample": []
+    },
+    {
+      "rule_id": "ORD_TOTAL_RANGE",
+      "dimension": "validity",
+      "table": "orders",
+      "severity": "block",
+      "description": "order_total must be > 0 and <= 100,000.",
+      "rows_checked": 500000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.038,
+      "sample": []
+    },
+    {
+      "rule_id": "ITM_QUANTITY_RANGE",
+      "dimension": "validity",
+      "table": "order_items",
+      "severity": "block",
+      "description": "quantity must be between 1 and 100.",
+      "rows_checked": 1530225,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.104,
+      "sample": []
+    },
+    {
+      "rule_id": "ITM_UNIT_PRICE_POSITIVE",
+      "dimension": "validity",
+      "table": "order_items",
+      "severity": "block",
+      "description": "order item unit_price must be > 0.",
+      "rows_checked": 1530225,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.059,
+      "sample": []
+    },
+    {
+      "rule_id": "PRD_UNIT_PRICE_POSITIVE",
+      "dimension": "validity",
+      "table": "products",
+      "severity": "block",
+      "description": "product unit_price must be > 0.",
+      "rows_checked": 2000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.001,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_TYPE_VALID",
+      "dimension": "validity",
+      "table": "events",
+      "severity": "block",
+      "description": "event_type must be one of view, add_to_cart, checkout_start, purchase.",
+      "rows_checked": 10000000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.492,
+      "sample": []
+    },
+    {
+      "rule_id": "CUS_SIGNUP_NOT_FUTURE",
+      "dimension": "validity",
+      "table": "customers",
+      "severity": "warn",
+      "description": "signup_date must be before the run date.",
+      "rows_checked": 50000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.006,
+      "sample": []
+    },
+    {
+      "rule_id": "CUS_EMAIL_FORMAT",
+      "dimension": "validity",
+      "table": "customers",
+      "severity": "warn",
+      "description": "email should look like local@domain.tld.",
+      "rows_checked": 50000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.025,
+      "sample": []
+    },
+    {
+      "rule_id": "CUS_COUNTRY_CODE",
+      "dimension": "validity",
+      "table": "customers",
+      "severity": "warn",
+      "description": "country should be a two-letter upper-case code.",
+      "rows_checked": 50000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.01,
+      "sample": []
+    },
+    {
+      "rule_id": "CUS_ORDER_VOLUME_PLAUSIBLE",
+      "dimension": "validity",
+      "table": "customers",
+      "severity": "warn",
+      "description": "A customer should not average more than 1 order per day over the 730 days before the run date. Such accounts (bots, test or replayed accounts) are excluded from all downstream use.",
+      "rows_checked": 945,
+      "violations": 23,
+      "failure_rate": 0.024339,
+      "max_failure_rate": 0.05,
+      "outcome": "pass",
+      "quarantined": 23,
+      "seconds": 0.304,
+      "sample": [
+        {
+          "customer_id": 89,
+          "orders_in_window": 13307
+        },
+        {
+          "customer_id": 3367,
+          "orders_in_window": 38554
+        },
+        {
+          "customer_id": 6202,
+          "orders_in_window": 1820
+        },
+        {
+          "customer_id": 6978,
+          "orders_in_window": 7567
+        },
+        {
+          "customer_id": 12154,
+          "orders_in_window": 5379
+        }
+      ]
+    },
+    {
+      "rule_id": "ORD_CUSTOMER_EXISTS",
+      "dimension": "referential_integrity",
+      "table": "orders",
+      "severity": "block",
+      "description": "orders.customer_id must exist in customers.",
+      "rows_checked": 500000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.036,
+      "sample": []
+    },
+    {
+      "rule_id": "ITM_ORDER_EXISTS",
+      "dimension": "referential_integrity",
+      "table": "order_items",
+      "severity": "block",
+      "description": "order_items.order_id must exist in orders.",
+      "rows_checked": 1530225,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.124,
+      "sample": []
+    },
+    {
+      "rule_id": "ITM_PRODUCT_EXISTS",
+      "dimension": "referential_integrity",
+      "table": "order_items",
+      "severity": "block",
+      "description": "order_items.product_id must exist in products.",
+      "rows_checked": 1530225,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.069,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_CUSTOMER_EXISTS",
+      "dimension": "referential_integrity",
+      "table": "events",
+      "severity": "block",
+      "description": "events.customer_id must exist in customers (not enforced by a foreign key).",
+      "rows_checked": 10000000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.78,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_PRODUCT_EXISTS",
+      "dimension": "referential_integrity",
+      "table": "events",
+      "severity": "warn",
+      "description": "events.product_id, when present, should exist in products (not enforced by a foreign key).",
+      "rows_checked": 9800038,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.557,
+      "sample": []
+    },
+    {
+      "rule_id": "ORD_TOTAL_MATCHES_ITEMS",
+      "dimension": "consistency",
+      "table": "orders",
+      "severity": "block",
+      "description": "order_total must equal SUM(quantity * unit_price) of its items, within 0.01.",
+      "rows_checked": 500000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.741,
+      "sample": []
+    },
+    {
+      "rule_id": "ORD_HAS_ITEMS",
+      "dimension": "consistency",
+      "table": "orders",
+      "severity": "block",
+      "description": "Every order must have at least one item.",
+      "rows_checked": 500000,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.163,
+      "sample": []
+    },
+    {
+      "rule_id": "ITM_PRICE_MATCHES_PRODUCT",
+      "dimension": "consistency",
+      "table": "order_items",
+      "severity": "warn",
+      "description": "Item unit_price should equal the product's list price (prices may legitimately change).",
+      "rows_checked": 1530225,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.05,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.117,
+      "sample": []
+    },
+    {
+      "rule_id": "ORD_AFTER_SIGNUP",
+      "dimension": "consistency",
+      "table": "orders",
+      "severity": "warn",
+      "description": "Orders should not be dated before the customer's signup_date. Orders are kept (an order proves the customer existed); signup_date is treated as unreliable.",
+      "rows_checked": 489984,
+      "violations": 14982,
+      "failure_rate": 0.030577,
+      "max_failure_rate": 0.0,
+      "outcome": "warn",
+      "quarantined": 0,
+      "seconds": 0.054,
+      "sample": [
+        {
+          "order_id": 9,
+          "customer_id": 19602,
+          "order_date": "2024-05-02 21:58:33",
+          "signup_date": "2024-08-04"
+        },
+        {
+          "order_id": 85,
+          "customer_id": 24924,
+          "order_date": "2025-09-18 09:47:24",
+          "signup_date": "2025-10-21"
+        },
+        {
+          "order_id": 88,
+          "customer_id": 12611,
+          "order_date": "2024-07-07 11:04:01",
+          "signup_date": "2025-02-03"
+        },
+        {
+          "order_id": 107,
+          "customer_id": 33510,
+          "order_date": "2025-07-11 19:48:18",
+          "signup_date": "2025-10-08"
+        },
+        {
+          "order_id": 127,
+          "customer_id": 24924,
+          "order_date": "2025-08-05 03:54:50",
+          "signup_date": "2025-10-21"
+        }
+      ]
+    },
+    {
+      "rule_id": "EVT_AFTER_SIGNUP",
+      "dimension": "consistency",
+      "table": "events",
+      "severity": "warn",
+      "description": "Events should not be dated before the customer's signup_date (could be pre-signup browsing linked to the account later). Events are kept.",
+      "rows_checked": 10000000,
+      "violations": 1042178,
+      "failure_rate": 0.104218,
+      "max_failure_rate": 0.0,
+      "outcome": "warn",
+      "quarantined": 0,
+      "seconds": 1.137,
+      "sample": [
+        {
+          "event_id": 209457,
+          "customer_id": 6,
+          "event_ts": "2024-07-21 18:02:50",
+          "signup_date": "2025-04-23"
+        },
+        {
+          "event_id": 222250,
+          "customer_id": 6,
+          "event_ts": "2024-07-22 23:37:39",
+          "signup_date": "2025-04-23"
+        },
+        {
+          "event_id": 407496,
+          "customer_id": 6,
+          "event_ts": "2024-08-12 05:23:59",
+          "signup_date": "2025-04-23"
+        },
+        {
+          "event_id": 658702,
+          "customer_id": 6,
+          "event_ts": "2024-09-09 20:43:37",
+          "signup_date": "2025-04-23"
+        },
+        {
+          "event_id": 774472,
+          "customer_id": 6,
+          "event_ts": "2024-09-22 18:14:36",
+          "signup_date": "2025-04-23"
+        }
+      ]
+    },
+    {
+      "rule_id": "EVT_PURCHASE_HAS_ORDERS",
+      "dimension": "consistency",
+      "table": "events",
+      "severity": "warn",
+      "description": "A customer with 'purchase' events should have at least one order. When this fails, events are usable as behaviour signals only; the churn label comes from orders.",
+      "rows_checked": 700840,
+      "violations": 683885,
+      "failure_rate": 0.975808,
+      "max_failure_rate": 0.0,
+      "outcome": "warn",
+      "quarantined": 0,
+      "seconds": 0.447,
+      "sample": [
+        {
+          "event_id": 13751,
+          "customer_id": 8430,
+          "event_ts": "2024-07-02 14:34:14"
+        },
+        {
+          "event_id": 13754,
+          "customer_id": 38047,
+          "event_ts": "2024-07-02 14:34:30"
+        },
+        {
+          "event_id": 13763,
+          "customer_id": 11865,
+          "event_ts": "2024-07-02 14:35:32"
+        },
+        {
+          "event_id": 13776,
+          "customer_id": 21603,
+          "event_ts": "2024-07-02 14:36:50"
+        },
+        {
+          "event_id": 13831,
+          "customer_id": 30514,
+          "event_ts": "2024-07-02 14:43:43"
+        }
+      ]
+    },
+    {
+      "rule_id": "ORD_FRESHNESS",
+      "dimension": "timeliness",
+      "table": "orders",
+      "severity": "block",
+      "description": "The newest order before the run date must be at most 2 days old.",
+      "rows_checked": 1,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.015,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_FRESHNESS",
+      "dimension": "timeliness",
+      "table": "events",
+      "severity": "block",
+      "description": "The newest event before the run date must be at most 2 days old.",
+      "rows_checked": 1,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.232,
+      "sample": []
+    },
+    {
+      "rule_id": "ORD_NOT_FUTURE",
+      "dimension": "timeliness",
+      "table": "orders",
+      "severity": "block",
+      "description": "Orders must not be dated on or after the run date.",
+      "rows_checked": 489984,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.03,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_NOT_FUTURE",
+      "dimension": "timeliness",
+      "table": "events",
+      "severity": "block",
+      "description": "Events must not be dated on or after the run date (future-dated rows would leak activity into features).",
+      "rows_checked": 10000000,
+      "violations": 9931,
+      "failure_rate": 0.000993,
+      "max_failure_rate": 0.01,
+      "outcome": "pass",
+      "quarantined": 9931,
+      "seconds": 1.498,
+      "sample": [
+        {
+          "event_id": 13946,
+          "customer_id": 19243,
+          "event_ts": "2027-06-24 04:55:57",
+          "event_type": "checkout_start",
+          "product_id": 503,
+          "session_id": "19243-1-2"
+        },
+        {
+          "event_id": 14307,
+          "customer_id": 41633,
+          "event_ts": "2027-06-23 22:18:20",
+          "event_type": "view",
+          "product_id": 1377,
+          "session_id": "41633-1-2"
+        },
+        {
+          "event_id": 16385,
+          "customer_id": 22772,
+          "event_ts": "2027-06-05 23:47:23",
+          "event_type": "purchase",
+          "product_id": 1852,
+          "session_id": "22772-1-3"
+        },
+        {
+          "event_id": 17168,
+          "customer_id": 3310,
+          "event_ts": "2027-05-31 05:12:34",
+          "event_type": "checkout_start",
+          "product_id": 1634,
+          "session_id": "3310-1-3"
+        },
+        {
+          "event_id": 17261,
+          "customer_id": 14314,
+          "event_ts": "2027-02-24 10:16:50",
+          "event_type": "view",
+          "product_id": 1506,
+          "session_id": "14314-1-3"
+        }
+      ]
+    },
+    {
+      "rule_id": "ORD_DAILY_VOLUME_DROP",
+      "dimension": "volume",
+      "table": "orders",
+      "severity": "block",
+      "description": "Daily orders must not fall below 50% of the trailing 28-day median (a drop usually means a broken or partial extract).",
+      "rows_checked": 28,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.018,
+      "sample": []
+    },
+    {
+      "rule_id": "ORD_DAILY_VOLUME_SPIKE",
+      "dimension": "volume",
+      "table": "orders",
+      "severity": "warn",
+      "description": "Daily orders above 3x the trailing 28-day median are reported.",
+      "rows_checked": 28,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.017,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_DAILY_VOLUME_DROP",
+      "dimension": "volume",
+      "table": "events",
+      "severity": "block",
+      "description": "Daily events must not fall below 50% of the trailing 28-day median.",
+      "rows_checked": 28,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.077,
+      "sample": []
+    },
+    {
+      "rule_id": "EVT_DAILY_VOLUME_SPIKE",
+      "dimension": "volume",
+      "table": "events",
+      "severity": "warn",
+      "description": "Daily events above 3x the trailing 28-day median are reported. 3x, not 2x: Black Friday week reaches 2.5x every year and is real traffic.",
+      "rows_checked": 28,
+      "violations": 0,
+      "failure_rate": 0.0,
+      "max_failure_rate": 0.0,
+      "outcome": "pass",
+      "quarantined": 0,
+      "seconds": 0.107,
+      "sample": []
+    }
+  ]
+}

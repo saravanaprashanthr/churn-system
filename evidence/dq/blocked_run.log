@@ -1,0 +1,44 @@
+2026-11-05 22:57:57,416 INFO data_quality.gate data quality gate dq_20260710: 40 rules, as_of=2026-07-10
+2026-11-05 22:57:57,544 INFO data_quality.gate ORD_ORDER_DATE_NOT_NULL pass: 10016/500000 violations (2.0032%, tolerance 5.00%), quarantined 10016, 0.12s
+2026-11-05 22:57:57,567 INFO data_quality.gate ORD_REQUIRED_NOT_NULL pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.02s
+2026-11-05 22:57:57,652 INFO data_quality.gate ITM_REQUIRED_NOT_NULL pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.08s
+2026-11-05 22:57:58,209 INFO data_quality.gate EVT_REQUIRED_NOT_NULL pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.56s
+2026-11-05 22:57:58,506 INFO data_quality.gate EVT_PRODUCT_ID_NOT_NULL pass: 199962/10000000 violations (1.9996%, tolerance 5.00%), quarantined 0, 0.30s
+2026-11-05 22:57:58,531 INFO data_quality.gate CUS_MARKETING_OPT_IN_NOT_NULL pass: 4993/50000 violations (9.9860%, tolerance 15.00%), quarantined 0, 0.02s
+2026-11-05 22:57:58,533 WARNING data_quality.gate PRD_CATEGORY_NOT_NULL warn: 97/2000 violations (4.8500%, tolerance 0.00%), quarantined 0, 0.00s
+2026-11-05 22:57:58,627 INFO data_quality.gate ORD_ORDER_ID_UNIQUE pass: 0/500000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.09s
+2026-11-05 22:58:06,482 INFO data_quality.gate EVT_DUPLICATE_ROWS pass: 0/10000000 violations (0.0000%, tolerance 0.10%), quarantined 0, 7.85s
+2026-11-05 22:58:11,758 WARNING data_quality.gate EVT_EVENT_ID_UNIQUE warn: 29883/10000000 violations (0.2988%, tolerance 0.00%), quarantined 0, 5.27s
+2026-11-05 22:58:11,851 WARNING data_quality.gate CUS_EMAIL_UNIQUE warn: 516/50000 violations (1.0320%, tolerance 0.00%), quarantined 0, 0.09s
+2026-11-05 22:58:11,888 INFO data_quality.gate ORD_STATUS_VALID pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.04s
+2026-11-05 22:58:11,917 INFO data_quality.gate ORD_TOTAL_RANGE pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+2026-11-05 22:58:11,999 INFO data_quality.gate ITM_QUANTITY_RANGE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.08s
+2026-11-05 22:58:12,055 INFO data_quality.gate ITM_UNIT_PRICE_POSITIVE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.06s
+2026-11-05 22:58:12,056 INFO data_quality.gate PRD_UNIT_PRICE_POSITIVE pass: 0/2000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.00s
+2026-11-05 22:58:12,517 INFO data_quality.gate EVT_TYPE_VALID pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.46s
+2026-11-05 22:58:12,524 INFO data_quality.gate CUS_SIGNUP_NOT_FUTURE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+2026-11-05 22:58:12,549 INFO data_quality.gate CUS_EMAIL_FORMAT pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.02s
+2026-11-05 22:58:12,559 INFO data_quality.gate CUS_COUNTRY_CODE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+2026-11-05 22:58:12,756 INFO data_quality.gate CUS_ORDER_VOLUME_PLAUSIBLE pass: 23/940 violations (2.4468%, tolerance 5.00%), quarantined 23, 0.20s
+2026-11-05 22:58:12,810 INFO data_quality.gate ORD_CUSTOMER_EXISTS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.05s
+2026-11-05 22:58:12,933 INFO data_quality.gate ITM_ORDER_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.12s
+2026-11-05 22:58:13,005 INFO data_quality.gate ITM_PRODUCT_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.07s
+2026-11-05 22:58:13,765 INFO data_quality.gate EVT_CUSTOMER_EXISTS pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.76s
+2026-11-05 22:58:14,287 INFO data_quality.gate EVT_PRODUCT_EXISTS pass: 0/9800038 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.52s
+2026-11-05 22:58:14,990 INFO data_quality.gate ORD_TOTAL_MATCHES_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.70s
+2026-11-05 22:58:15,171 INFO data_quality.gate ORD_HAS_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.18s
+2026-11-05 22:58:15,270 INFO data_quality.gate ITM_PRICE_MATCHES_PRODUCT pass: 0/1530225 violations (0.0000%, tolerance 5.00%), quarantined 0, 0.10s
+2026-11-05 22:58:15,323 WARNING data_quality.gate ORD_AFTER_SIGNUP warn: 14982/489984 violations (3.0577%, tolerance 0.00%), quarantined 0, 0.05s
+2026-11-05 22:58:16,470 WARNING data_quality.gate EVT_AFTER_SIGNUP warn: 1042178/10000000 violations (10.4218%, tolerance 0.00%), quarantined 0, 1.15s
+2026-11-05 22:58:16,942 WARNING data_quality.gate EVT_PURCHASE_HAS_ORDERS warn: 683885/700840 violations (97.5808%, tolerance 0.00%), quarantined 0, 0.47s
+2026-11-05 22:58:16,974 WARNING data_quality.gate ORD_FRESHNESS block: 1/1 violations (100.0000%, tolerance 0.00%), quarantined 0, 0.03s
+2026-11-05 22:58:17,444 WARNING data_quality.gate EVT_FRESHNESS block: 1/1 violations (100.0000%, tolerance 0.00%), quarantined 0, 0.47s
+2026-11-05 22:58:17,469 INFO data_quality.gate ORD_NOT_FUTURE pass: 0/489984 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.02s
+2026-11-05 22:58:18,898 INFO data_quality.gate EVT_NOT_FUTURE pass: 9931/10000000 violations (0.0993%, tolerance 1.00%), quarantined 9931, 1.43s
+2026-11-05 22:58:18,929 WARNING data_quality.gate ORD_DAILY_VOLUME_DROP block: 9/28 violations (32.1429%, tolerance 0.00%), quarantined 0, 0.03s
+2026-11-05 22:58:18,942 INFO data_quality.gate ORD_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+2026-11-05 22:58:19,061 WARNING data_quality.gate EVT_DAILY_VOLUME_DROP block: 9/28 violations (32.1429%, tolerance 0.00%), quarantined 0, 0.12s
+2026-11-05 22:58:19,131 INFO data_quality.gate EVT_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.07s
+2026-11-05 22:58:19,146 INFO data_quality.gate data quality gate dq_20260710: FAIL, 4 blocking, 6 warnings, 23 excluded customers, 21.7s
+2026-11-05 22:58:19,219 INFO data_quality report written to artifacts/dq/dq_20260710
+exit code: 1

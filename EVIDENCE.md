@@ -9,7 +9,7 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 | Part | Status (Done / Partial / Skipped) | Key paths | One-line result |
 |------|-----------------------------------|-----------|-----------------|
 | A. Time-series SQL        | Done | `sql/`, `sql/PERFORMANCE_REPORT.md`, `evidence/sql/` | Warm medians: A1 1,580 → 785 ms, A2 88 → 16 ms, A3a 91 → 33 ms, A3b 701 → 21 ms; all results identical (two-way `EXCEPT ALL`) |
-| B. Data quality           | Not started | | |
+| B. Data quality           | Done | `data_quality/`, `tests/data_quality/`, `sql/02_dq_tables.sql`, `evidence/dq/` | 40 SQL rules over 7 dimensions, block/warn + quarantine; full data: PASS (0 blocking, 6 warnings, 19,970 rows quarantined, 25 s); blocks correctly on stale data; 137 tests, 98% coverage |
 | C. Data prep pipeline     | Not started | | |
 | D. Model development      | Not started | | |
 | E. Code quality & tests   | Not started | | |
@@ -37,6 +37,25 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
   rows (~450 ms of 785 ms); `orders.status` is the current status, not the status on the "as of" date (no history table);
   23 high-volume accounts are excluded by rule (`sql/01_dq_excluded_customers.sql`), to be formalised in Part B.
 - **How to reproduce:** `sql/PERFORMANCE_REPORT.md` §6.
+
+## Part B: Data quality
+- **Claims → evidence**
+  - Gate run on the full official data (`as_of` 2026-07-01): PASS, 40 rules, 0 blocking, 6 warnings,
+    19,970 rows quarantined, exit code 0 → `evidence/dq/dq_report.json`, `evidence/dq/dq_report.md`, `evidence/dq/gate_run.log`
+  - Quarantine output (10 rows per quarantining rule) → `evidence/dq/quarantine_sample.csv`
+  - The gate blocks: run 10 days past the end of the data, freshness and volume-drop rules block, exit code 1 →
+    `evidence/dq/blocked_run.log`
+  - Every issue found, what was done and why (15 entries) → `evidence/dq/decision_log.md` (copy of `data_quality/decision_log.md`)
+  - 137 tests pass (unit + 15 integration tests against Postgres), 98% coverage of `data_quality/` → `evidence/dq/test_output.txt`
+- **Techniques used and why:** custom SQL rules run inside Postgres (no extraction of 10M events), each with a
+  dimension, severity, tolerance and optional quarantine; deterministic run id per `as_of` for idempotent
+  re-runs; one transaction per run. Why not Great Expectations / pandera: `data_quality/decision_log.md`.
+- **Costs / trade-offs:** ~25 s per run, mostly the full scans of events for the duplicate/id checks; tolerances
+  for known issues are judgment calls set just above observed rates; rules check whole tables, not just
+  the run window (fine at this size, not at 100×).
+- **Not done / limitations:** late-arriving rows cannot be detected (no ingestion timestamp); order status
+  history is not available; no alerting integration yet (Part H).
+- **How to reproduce:** `data_quality/README.md`.
 
 ## Biggest trade-offs I made and what I would do with more time
 <to fill at the end>
