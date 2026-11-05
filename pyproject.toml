@@ -8,13 +8,20 @@ version = "0.1.0"
 description = "Time-series churn system: SQL, data quality, pipeline, model, serving, monitoring"
 requires-python = ">=3.11,<3.12"
 # Exact pins live in requirements/*.txt (compiled with `uv pip compile` from requirements/*.in).
-dependencies = ["psycopg[binary]==3.3.8"]
+dependencies = [
+    "psycopg[binary]==3.3.8",
+    "kfp==2.18.0",
+    "pandas==3.1.1",
+    "pyarrow==26.0.1",
+    "pandera==0.35.0",
+]
 
 [tool.setuptools.packages.find]
-include = ["data_quality*"]
+include = ["data_quality*", "pipeline*"]
 
 [tool.setuptools.package-data]
 data_quality = ["*.sql"]
+pipeline = ["*.sql"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -25,7 +32,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["data_quality"]
+source = ["data_quality", "pipeline"]
 branch = true
 
 [tool.coverage.report]
