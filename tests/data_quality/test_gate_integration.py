@@ -12,7 +12,7 @@ import pytest
 from data_quality.gate import GateConfig, GateResult, Outcome, run_gate
 from data_quality.report import write_artifacts
 from data_quality.rules import RULES
-from tests.data_quality.seed import AS_OF, ORDERS_PER_DAY
+from tests.seed import AS_OF, ORDERS_PER_DAY
 
 pytestmark = pytest.mark.integration
 

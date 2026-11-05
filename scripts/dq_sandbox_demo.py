@@ -24,7 +24,7 @@ sys.path.insert(0, str(REPO_ROOT))
 from data_quality.gate import GateConfig, Outcome, run_gate  # noqa: E402
 from data_quality.report import write_artifacts  # noqa: E402
 from data_quality.rules import RULES  # noqa: E402
-from tests.data_quality.seed import AS_OF, SEED_DAYS, SEED_SQL  # noqa: E402
+from tests.seed import AS_OF, SEED_DAYS, SEED_SQL  # noqa: E402
 
 SCHEMA = "dq_sandbox"
 CONFIG = GateConfig(as_of=AS_OF, lookback_days=28)

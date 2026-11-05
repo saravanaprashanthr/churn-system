@@ -16,9 +16,9 @@ from pathlib import Path
 import psycopg
 import pytest
 
-from tests.data_quality.seed import AS_OF, SEED_DAYS, SEED_SQL
+from tests.seed import AS_OF, SEED_DAYS, SEED_SQL
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def _schema_ddl() -> str:
@@ -51,6 +51,7 @@ def db() -> Iterator[psycopg.Connection]:
 def seeded(db: psycopg.Connection) -> psycopg.Connection:
     """Clean, steady data for SEED_DAYS days before AS_OF: passes every rule."""
     db.execute("DROP TABLE IF EXISTS dq_quarantine, dq_rule_results, dq_excluded_customers")
+    db.execute("DROP TABLE IF EXISTS ml_customer_features, ml_dataset_versions")
     db.execute("TRUNCATE events, order_items, orders, products, customers")
     for statement in filter(str.strip, SEED_SQL.split(";")):
         db.execute(statement, {"as_of": AS_OF, "days": SEED_DAYS})
