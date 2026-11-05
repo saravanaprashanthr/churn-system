@@ -1,0 +1,9 @@
+query,cache,run1,run2,run3,run4,run5,median_ms
+10_a1_rolling_features_naive,cold,1939.726,1753.266,1638.530,1635.659,1687.951,1687.951
+10_a1_rolling_features_naive,warm,1450.085,1435.123,1444.825,1417.831,1394.044,1435.123
+11_a2_daily_revenue_naive,cold,125.532,70.182,142.733,68.722,74.688,74.688
+11_a2_daily_revenue_naive,warm,51.328,50.116,51.310,48.589,49.229,50.116
+12_a3a_latest_order_naive,cold,72.538,67.932,78.112,73.361,71.243,72.538
+12_a3a_latest_order_naive,warm,58.013,61.413,58.999,56.469,55.956,58.013
+13_a3b_events_before_last_order_naive,cold,920.714,336.724,309.710,304.007,290.343,309.710
+13_a3b_events_before_last_order_naive,warm,28.491,27.920,26.913,27.082,34.979,27.920

@@ -1,0 +1,25 @@
+== refresh timings
+          66
+Time: 72.164 ms
+          74
+Time: 93.555 ms
+          8301
+Time: 80.499 ms
+          9076
+Time: 800.575 ms
+          66
+Time: 53.831 ms
+          74
+Time: 31.109 ms
+          8301
+Time: 86.686 ms
+          9076
+Time: 535.521 ms
+          66
+Time: 45.099 ms
+          74
+Time: 40.121 ms
+          8301
+Time: 81.497 ms
+          9076
+Time: 502.565 ms

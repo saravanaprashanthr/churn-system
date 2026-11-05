@@ -1,0 +1,157 @@
+== Index sizes after optimization (\di+)
+                                                              List of relations
+ Schema |             Name             | Type  |    Owner     |         Table          | Persistence | Access method |  Size   | Description 
+--------+------------------------------+-------+--------------+------------------------+-------------+---------------+---------+-------------
+ public | brin_events_event_ts_multi   | index | ds_candidate | events                 | permanent   | brin          | 944 kB  | 
+ public | customer_daily_orders_pkey   | index | ds_candidate | customer_daily_orders  | permanent   | btree         | 592 kB  | 
+ public | customers_pkey               | index | ds_candidate | customers              | permanent   | btree         | 1112 kB | 
+ public | daily_category_revenue_pkey  | index | ds_candidate | daily_category_revenue | permanent   | btree         | 608 kB  | 
+ public | dq_excluded_customers_pkey   | index | ds_candidate | dq_excluded_customers  | permanent   | btree         | 16 kB   | 
+ public | idx_customers_country        | index | ds_candidate | customers              | permanent   | btree         | 336 kB  | 
+ public | idx_events_customer_ts       | index | ds_candidate | events                 | permanent   | btree         | 394 MB  | 
+ public | idx_order_items_order        | index | ds_candidate | order_items            | permanent   | btree         | 72 MB   | 
+ public | idx_orders_customer_date_cov | index | ds_candidate | orders                 | permanent   | btree         | 62 MB   | 
+ public | order_items_pkey             | index | ds_candidate | order_items            | permanent   | btree         | 33 MB   | 
+ public | orders_pkey                  | index | ds_candidate | orders                 | permanent   | btree         | 24 MB   | 
+ public | products_pkey                | index | ds_candidate | products               | permanent   | btree         | 64 kB   | 
+(12 rows)
+
+
+== Build times (20_indexes.sql, 21_summary_tables.sql)
+== 20_indexes.sql
+Timing is on.
+CREATE INDEX
+Time: 627.828 ms
+CREATE INDEX
+Time: 6203.999 ms (00:06.204)
+CREATE INDEX
+Time: 711.354 ms
+CREATE INDEX
+Time: 1206.045 ms (00:01.206)
+VACUUM
+Time: 213.437 ms
+VACUUM
+Time: 128.475 ms
+VACUUM
+Time: 807.790 ms
+== 21_summary_tables.sql
+Timing is on.
+CREATE TABLE
+Time: 8.332 ms
+CREATE FUNCTION
+Time: 4.048 ms
+CREATE TABLE
+Time: 2.488 ms
+CREATE FUNCTION
+Time: 0.505 ms
+ customer_daily_rows 
+---------------------
+                8301
+(1 row)
+
+Time: 96.848 ms
+ daily_category_rows 
+---------------------
+                9076
+(1 row)
+
+Time: 709.769 ms
+ANALYZE
+Time: 6.086 ms
+ANALYZE
+Time: 6.667 ms
+
+== Write overhead BEFORE indexes (91_measure_write_overhead.sql; per run: BEGIN, INSERT 200k events, ROLLBACK, BEGIN, INSERT 50k orders, ROLLBACK)
+== BEFORE indexes
+   relname   | table_size | index_size 
+-------------+------------+------------
+ events      | 830 MB     | 0 bytes
+ order_items | 100 MB     | 33 MB
+ orders      | 35 MB      | 11 MB
+(3 rows)
+
+Time: 0.192 ms
+Time: 189.233 ms
+Time: 1.607 ms
+Time: 0.040 ms
+Time: 327.720 ms
+Time: 1.443 ms
+Time: 0.120 ms
+Time: 320.274 ms
+Time: 0.180 ms
+Time: 0.081 ms
+Time: 323.630 ms
+Time: 0.221 ms
+Time: 0.088 ms
+Time: 278.951 ms
+Time: 0.154 ms
+Time: 0.066 ms
+Time: 273.853 ms
+Time: 0.098 ms
+
+== Write overhead AFTER indexes (same script)
+== AFTER indexes
+        relname         | table_size | index_size 
+------------------------+------------+------------
+ customer_daily_orders  | 1736 kB    | 592 kB
+ daily_category_revenue | 1960 kB    | 608 kB
+ events                 | 913 MB     | 342 MB
+ order_items            | 100 MB     | 105 MB
+ orders                 | 35 MB      | 86 MB
+(5 rows)
+
+            index             |  size  
+------------------------------+--------
+ idx_events_customer_ts       | 342 MB
+ idx_order_items_order        | 72 MB
+ idx_orders_customer_date_cov | 62 MB
+ brin_events_event_ts_multi   | 920 kB
+(4 rows)
+
+Time: 0.140 ms
+Time: 2937.165 ms (00:02.937)
+Time: 0.790 ms
+Time: 0.085 ms
+Time: 1027.193 ms (00:01.027)
+Time: 0.634 ms
+Time: 0.086 ms
+Time: 1790.426 ms (00:01.790)
+Time: 0.834 ms
+Time: 0.139 ms
+Time: 480.255 ms
+Time: 0.198 ms
+Time: 0.096 ms
+Time: 1955.529 ms (00:01.956)
+Time: 0.645 ms
+Time: 0.076 ms
+Time: 439.626 ms
+Time: 0.143 ms
+
+== Index bloat after the write-overhead tests: 600k rolled-back event inserts leave dead entries in the B-tree
+ idx_events_customer_ts_before_reindex 
+---------------------------------------
+ 394 MB
+(1 row)
+
+Timing is on.
+ERROR:  could not resize shared memory segment "/PostgreSQL.3400929226" to 67128704 bytes: No space left on device
+Time: 0.722 ms
+REINDEX
+ERROR:  could not resize shared memory segment "/PostgreSQL.1573534942" to 67128704 bytes: No space left on device
+Time: 5616.361 ms (00:05.616)
+Time: 1.124 ms
+ idx_events_customer_ts_after_reindex 
+--------------------------------------
+ 301 MB
+(1 row)
+
+
+== After raising shm_size to 1g in docker-compose.yml (see decision note there)
+Timing is on.
+VACUUM
+Time: 1261.836 ms (00:01.262)
+ idx_events_customer_ts_final 
+------------------------------
+ 301 MB
+(1 row)
+

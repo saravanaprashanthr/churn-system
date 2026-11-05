@@ -1,0 +1,13 @@
+query,cache,run1,run2,run3,run4,run5,median_ms
+30_a1_rolling_features_optimized,cold,829.367,796.568,785.795,805.949,788.172,796.568
+30_a1_rolling_features_optimized,warm,781.708,811.899,787.722,784.895,779.647,784.895
+31_a2_daily_revenue_optimized,cold,16.641,16.286,15.763,23.557,16.248,16.286
+31_a2_daily_revenue_optimized,warm,17.056,20.857,15.854,15.355,14.955,15.854
+32_a3a_latest_order_optimized,cold,39.534,36.907,57.352,36.402,39.469,39.469
+32_a3a_latest_order_optimized,warm,33.315,33.395,33.260,33.266,33.286,33.286
+33_a3b_events_before_last_order_optimized,cold,800.635,279.916,589.889,274.962,231.704,279.916
+33_a3b_events_before_last_order_optimized,warm,21.205,21.343,21.189,21.600,23.209,21.343
+14_events_time_window,cold,570.674,599.377,545.831,563.506,564.885,564.885
+14_events_time_window,warm,595.772,576.159,525.525,517.938,512.591,525.525
+92_events_time_window_no_brin,cold,1145.353,1058.937,1264.804,1159.823,1126.162,1145.353
+92_events_time_window_no_brin,warm,920.045,658.186,975.062,806.862,701.973,806.862
