@@ -1,0 +1,19 @@
+     tbl     |  count   
+-------------+----------
+ customers   |    50000
+ products    |     2000
+ orders      |   500000
+ order_items |  1530225
+ events      | 10000000
+(5 rows)
+
+                          List of relations
+ Schema |         Name          | Type  |    Owner     |    Table    
+--------+-----------------------+-------+--------------+-------------
+ public | customers_pkey        | index | ds_candidate | customers
+ public | idx_customers_country | index | ds_candidate | customers
+ public | order_items_pkey      | index | ds_candidate | order_items
+ public | orders_pkey           | index | ds_candidate | orders
+ public | products_pkey         | index | ds_candidate | products
+(5 rows)
+
