@@ -1,0 +1,14 @@
+10_a1_rolling_features_naive.sql vs 30_a1_rolling_features_optimized.sql: naive_rows=2533912 optimized_rows=2533912 naive_except_optimized=0 optimized_except_naive=0
+RESULT: IDENTICAL
+11_a2_daily_revenue_naive.sql vs 31_a2_daily_revenue_optimized.sql: naive_rows=8030 optimized_rows=8030 naive_except_optimized=0 optimized_except_naive=0
+RESULT: IDENTICAL
+12_a3a_latest_order_naive.sql vs 32_a3a_latest_order_optimized.sql: naive_rows=974 optimized_rows=974 naive_except_optimized=0 optimized_except_naive=0
+RESULT: IDENTICAL
+12_a3a_latest_order_naive.sql vs 32_a3a_latest_order_optimized.sql: naive_rows=638 optimized_rows=638 naive_except_optimized=0 optimized_except_naive=0
+RESULT: IDENTICAL
+13_a3b_events_before_last_order_naive.sql vs 33_a3b_events_before_last_order_optimized.sql: naive_rows=3825 optimized_rows=3825 naive_except_optimized=0 optimized_except_naive=0
+RESULT: IDENTICAL
+ERROR:  syntax error at or near "="
+LINE 3: SET enable_bitmapscan = off
+                              ^
+14_events_time_window.sql vs 92_events_time_window_no_brin.sql: outputs identical (diff empty)

@@ -1,0 +1,52 @@
+-- query: sql/33_a3b_events_before_last_order_optimized.sql
+-- captured: 2026-11-05T14:05:49Z
+                                                                             QUERY PLAN                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Incremental Sort  (cost=10957.16..54707.49 rows=10893 width=58) (actual time=31.809..54.454 rows=3825 loops=1)
+   Sort Key: o.customer_id, ev.event_ts, ev.event_id
+   Presorted Key: o.customer_id
+   Full-sort Groups: 93  Sort Method: quicksort  Average Memory: 28kB  Peak Memory: 28kB
+   Pre-sorted Groups: 31  Sort Method: quicksort  Average Memory: 25kB  Peak Memory: 25kB
+   Buffers: shared hit=5927 read=5512
+   ->  Nested Loop  (cost=10953.18..54217.30 rows=10893 width=58) (actual time=31.297..53.268 rows=3825 loops=1)
+         Buffers: shared hit=5924 read=5512
+         ->  Finalize GroupAggregate  (cost=10952.74..11014.56 rows=244 width=16) (actual time=31.178..31.971 rows=1026 loops=1)
+               Group Key: o.customer_id
+               Buffers: shared hit=25 read=4518
+               ->  Gather Merge  (cost=10952.74..11009.68 rows=488 width=16) (actual time=31.175..31.602 rows=1733 loops=1)
+                     Workers Planned: 2
+                     Workers Launched: 2
+                     Buffers: shared hit=25 read=4518
+                     ->  Sort  (cost=9952.72..9953.33 rows=244 width=16) (actual time=29.189..29.234 rows=578 loops=3)
+                           Sort Key: o.customer_id
+                           Sort Method: quicksort  Memory: 48kB
+                           Buffers: shared hit=25 read=4518
+                           Worker 0:  Sort Method: quicksort  Memory: 46kB
+                           Worker 1:  Sort Method: quicksort  Memory: 47kB
+                           ->  Partial HashAggregate  (cost=9940.60..9943.04 rows=244 width=16) (actual time=29.053..29.100 rows=578 loops=3)
+                                 Group Key: o.customer_id
+                                 Batches: 1  Memory Usage: 105kB
+                                 Buffers: shared hit=9 read=4518
+                                 Worker 0:  Batches: 1  Memory Usage: 105kB
+                                 Worker 1:  Batches: 1  Memory Usage: 105kB
+                                 ->  Hash Anti Join  (cost=1.52..9014.23 rows=185274 width=16) (actual time=0.156..28.299 rows=5256 loops=3)
+                                       Hash Cond: (o.customer_id = x.customer_id)
+                                       Buffers: shared hit=9 read=4518
+                                       ->  Parallel Seq Scan on orders o  (cost=0.00..6601.33 rows=204555 width=16) (actual time=0.123..17.153 rows=163328 loops=3)
+                                             Filter: (order_date IS NOT NULL)
+                                             Rows Removed by Filter: 3339
+                                             Buffers: shared read=4518
+                                       ->  Hash  (cost=1.23..1.23 rows=23 width=8) (actual time=0.012..0.013 rows=23 loops=3)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             Buffers: shared hit=3
+                                             ->  Seq Scan on dq_excluded_customers x  (cost=0.00..1.23 rows=23 width=8) (actual time=0.005..0.007 rows=23 loops=3)
+                                                   Buffers: shared hit=3
+         ->  Index Scan using idx_events_customer_ts on events ev  (cost=0.44..176.61 rows=45 width=50) (actual time=0.015..0.020 rows=4 loops=1026)
+               Index Cond: ((customer_id = o.customer_id) AND (event_ts >= ((max(o.order_date)) - '14 days'::interval)) AND (event_ts < (max(o.order_date))))
+               Buffers: shared hit=5899 read=994
+ Planning:
+   Buffers: shared hit=236
+ Planning Time: 1.085 ms
+ Execution Time: 54.694 ms
+(46 rows)
+

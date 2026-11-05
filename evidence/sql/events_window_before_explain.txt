@@ -1,0 +1,28 @@
+-- query: sql/92_events_time_window_no_brin.sql
+-- captured: 2026-11-05T14:05:48Z
+SET
+                                                                             QUERY PLAN                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=227320.10..380325.52 rows=4 width=23) (actual time=709.809..966.030 rows=4 loops=1)
+   Group Key: event_type
+   Buffers: shared hit=14910 read=91464, temp read=4569 written=4588
+   ->  Gather Merge  (cost=227320.10..371068.62 rows=1234248 width=15) (actual time=657.830..883.639 rows=1303201 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=14910 read=91464, temp read=4569 written=4588
+         ->  Sort  (cost=226320.08..227605.76 rows=514270 width=15) (actual time=646.533..721.477 rows=434400 loops=3)
+               Sort Key: event_type, customer_id
+               Sort Method: external merge  Disk: 11904kB
+               Buffers: shared hit=14910 read=91464, temp read=4569 written=4588
+               Worker 0:  Sort Method: external merge  Disk: 11880kB
+               Worker 1:  Sort Method: external merge  Disk: 12768kB
+               ->  Parallel Seq Scan on events  (cost=0.00..168744.00 rows=514270 width=15) (actual time=293.011..341.540 rows=434400 loops=3)
+                     Filter: ((event_ts >= '2026-04-01 00:00:00'::timestamp without time zone) AND (event_ts < '2026-07-01 00:00:00'::timestamp without time zone))
+                     Rows Removed by Filter: 2898933
+                     Buffers: shared hit=14780 read=91464
+ Planning:
+   Buffers: shared hit=134 read=1
+ Planning Time: 0.315 ms
+ Execution Time: 967.385 ms
+(21 rows)
+

@@ -1,0 +1,39 @@
+-- query: sql/31_a2_daily_revenue_optimized.sql
+-- captured: 2026-11-05T14:02:50Z
+                                                                                                                                      QUERY PLAN                                                                                                                                       
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ WindowAgg  (cost=1201.97..1751.97 rows=10000 width=132) (actual time=10.115..20.365 rows=8030 loops=1)
+   Buffers: shared hit=6 read=78
+   ->  WindowAgg  (cost=1201.97..1426.97 rows=10000 width=132) (actual time=10.095..15.788 rows=8030 loops=1)
+         Buffers: shared hit=6 read=78
+         ->  Sort  (cost=1201.97..1226.97 rows=10000 width=42) (actual time=10.080..10.442 rows=8030 loops=1)
+               Sort Key: (COALESCE(NULLIF(products.category, ''::text), 'Unknown'::text)), (((generate_series(('2024-07-01'::date)::timestamp with time zone, ('2026-06-30'::date)::timestamp with time zone, '1 day'::interval)))::date)
+               Sort Method: quicksort  Memory: 575kB
+               Buffers: shared hit=6 read=78
+               ->  Hash Left Join  (cost=334.90..537.58 rows=10000 width=42) (actual time=3.367..6.089 rows=8030 loops=1)
+                     Hash Cond: (((((generate_series(('2024-07-01'::date)::timestamp with time zone, ('2026-06-30'::date)::timestamp with time zone, '1 day'::interval)))::date) = r.revenue_day) AND ((COALESCE(NULLIF(products.category, ''::text), 'Unknown'::text)) = r.category))
+                     Buffers: shared read=78
+                     ->  Nested Loop  (cost=48.00..198.17 rows=10000 width=36) (actual time=0.582..1.834 rows=8030 loops=1)
+                           Buffers: shared read=18
+                           ->  Result  (cost=0.00..25.02 rows=1000 width=4) (actual time=0.004..0.194 rows=730 loops=1)
+                                 ->  ProjectSet  (cost=0.00..5.02 rows=1000 width=8) (actual time=0.004..0.094 rows=730 loops=1)
+                                       ->  Result  (cost=0.00..0.01 rows=1 width=0) (actual time=0.000..0.001 rows=1 loops=1)
+                           ->  Materialize  (cost=48.00..48.17 rows=10 width=32) (actual time=0.001..0.001 rows=11 loops=730)
+                                 Buffers: shared read=18
+                                 ->  HashAggregate  (cost=48.00..48.12 rows=10 width=32) (actual time=0.576..0.577 rows=11 loops=1)
+                                       Group Key: COALESCE(NULLIF(products.category, ''::text), 'Unknown'::text)
+                                       Batches: 1  Memory Usage: 24kB
+                                       Buffers: shared read=18
+                                       ->  Seq Scan on products  (cost=0.00..43.00 rows=2000 width=32) (actual time=0.017..0.322 rows=2000 loops=1)
+                                             Buffers: shared read=18
+                     ->  Hash  (cost=150.76..150.76 rows=9076 width=20) (actual time=2.691..2.691 rows=9076 loops=1)
+                           Buckets: 16384  Batches: 1  Memory Usage: 611kB
+                           Buffers: shared read=60
+                           ->  Seq Scan on daily_category_revenue r  (cost=0.00..150.76 rows=9076 width=20) (actual time=0.013..1.144 rows=9076 loops=1)
+                                 Buffers: shared read=60
+ Planning:
+   Buffers: shared hit=130 read=5
+ Planning Time: 0.582 ms
+ Execution Time: 20.860 ms
+(33 rows)
+

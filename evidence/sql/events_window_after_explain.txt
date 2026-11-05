@@ -1,0 +1,31 @@
+-- query: sql/14_events_time_window.sql
+-- captured: 2026-11-05T14:05:47Z
+                                                                                  QUERY PLAN                                                                                  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=211194.47..364199.89 rows=4 width=23) (actual time=526.528..783.229 rows=4 loops=1)
+   Group Key: event_type
+   Buffers: shared hit=1052 read=13064, temp read=4569 written=4588
+   ->  Gather Merge  (cost=211194.47..354942.99 rows=1234248 width=15) (actual time=477.004..700.872 rows=1303201 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=1052 read=13064, temp read=4569 written=4588
+         ->  Sort  (cost=210194.45..211480.12 rows=514270 width=15) (actual time=466.157..540.436 rows=434400 loops=3)
+               Sort Key: event_type, customer_id
+               Sort Method: external merge  Disk: 11864kB
+               Buffers: shared hit=1052 read=13064, temp read=4569 written=4588
+               Worker 0:  Sort Method: external merge  Disk: 12792kB
+               Worker 1:  Sort Method: external merge  Disk: 11896kB
+               ->  Parallel Bitmap Heap Scan on events  (cost=765.85..152618.37 rows=514270 width=15) (actual time=3.658..151.893 rows=434400 loops=3)
+                     Recheck Cond: ((event_ts >= '2026-04-01 00:00:00'::timestamp without time zone) AND (event_ts < '2026-07-01 00:00:00'::timestamp without time zone))
+                     Rows Removed by Index Recheck: 3370
+                     Heap Blocks: lossy=4540
+                     Buffers: shared hit=1020 read=13064
+                     ->  Bitmap Index Scan on brin_events_event_ts_multi  (cost=0.00..457.29 rows=1237215 width=0) (actual time=5.012..5.012 rows=139560 loops=1)
+                           Index Cond: ((event_ts >= '2026-04-01 00:00:00'::timestamp without time zone) AND (event_ts < '2026-07-01 00:00:00'::timestamp without time zone))
+                           Buffers: shared hit=13 read=115
+ Planning:
+   Buffers: shared hit=134 read=1
+ Planning Time: 0.428 ms
+ Execution Time: 784.646 ms
+(25 rows)
+

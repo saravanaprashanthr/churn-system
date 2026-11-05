@@ -1,0 +1,54 @@
+-- query: sql/30_a1_rolling_features_optimized.sql
+-- captured: 2026-11-05T14:02:48Z
+                                                                                           QUERY PLAN                                                                                            
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Incremental Sort  (cost=24.22..136718.55 rows=866268 width=152) (actual time=0.198..1674.535 rows=2533912 loops=1)
+   Sort Key: c.customer_id, k.cutoff_date
+   Presorted Key: c.customer_id
+   Full-sort Groups: 48931  Sort Method: quicksort  Average Memory: 30kB  Peak Memory: 30kB
+   Pre-sorted Groups: 2032  Sort Method: quicksort  Average Memory: 28kB  Peak Memory: 28kB
+   Buffers: shared hit=8086 read=788
+   CTE cutoffs
+     ->  Function Scan on generate_series i  (cost=0.00..0.78 rows=52 width=4) (actual time=0.014..0.018 rows=52 loops=1)
+   ->  Merge Left Join  (cost=20.94..107066.76 rows=866268 width=152) (actual time=0.139..1114.937 rows=2533912 loops=1)
+         Merge Cond: (c.customer_id = d.customer_id)
+         Join Filter: (k_1.cutoff_date = k.cutoff_date)
+         Rows Removed by Join Filter: 953916
+         Buffers: shared hit=8083 read=788
+         ->  Nested Loop  (cost=0.43..60476.67 rows=866268 width=12) (actual time=0.041..405.239 rows=2533912 loops=1)
+               Join Filter: (c.signup_date < k.cutoff_date)
+               Rows Removed by Join Filter: 64892
+               Buffers: shared hit=4 read=696
+               ->  Merge Anti Join  (cost=0.43..2003.06 rows=49977 width=12) (actual time=0.024..25.656 rows=49977 loops=1)
+                     Merge Cond: (c.customer_id = x.customer_id)
+                     Buffers: shared hit=4 read=696
+                     ->  Index Scan using customers_pkey on customers c  (cost=0.29..1869.29 rows=50000 width=12) (actual time=0.012..19.382 rows=50000 loops=1)
+                           Buffers: shared hit=2 read=696
+                     ->  Index Only Scan using dq_excluded_customers_pkey on dq_excluded_customers x  (cost=0.14..8.48 rows=23 width=8) (actual time=0.010..0.048 rows=23 loops=1)
+                           Heap Fetches: 0
+                           Buffers: shared hit=2
+               ->  CTE Scan on cutoffs k  (cost=0.00..1.04 rows=52 width=4) (actual time=0.000..0.003 rows=52 loops=49977)
+         ->  Materialize  (cost=20.51..28006.39 rows=40196 width=144) (actual time=0.096..247.057 rows=954689 loops=1)
+               Buffers: shared hit=8079 read=92
+               ->  GroupAggregate  (cost=20.51..27503.94 rows=40196 width=144) (actual time=0.093..199.972 rows=36304 loops=1)
+                     Group Key: d.customer_id, k_1.cutoff_date
+                     Buffers: shared hit=8079 read=92
+                     ->  Incremental Sort  (cost=20.51..17448.05 rows=143884 width=26) (actual time=0.080..131.553 rows=346141 loops=1)
+                           Sort Key: d.customer_id, k_1.cutoff_date
+                           Presorted Key: d.customer_id
+                           Full-sort Groups: 696  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+                           Pre-sorted Groups: 409  Sort Method: quicksort  Average Memory: 1152kB  Peak Memory: 1161kB
+                           Buffers: shared hit=8079 read=92
+                           ->  Nested Loop  (cost=0.29..10209.46 rows=143884 width=26) (actual time=0.034..66.577 rows=346141 loops=1)
+                                 Join Filter: (d.order_day < k_1.cutoff_date)
+                                 Rows Removed by Join Filter: 85511
+                                 Buffers: shared hit=8079 read=92
+                                 ->  Index Scan using customer_daily_orders_pkey on customer_daily_orders d  (cost=0.29..496.77 rows=8301 width=22) (actual time=0.030..6.198 rows=8301 loops=1)
+                                       Buffers: shared hit=8079 read=92
+                                 ->  CTE Scan on cutoffs k_1  (cost=0.00..1.04 rows=52 width=4) (actual time=0.000..0.003 rows=52 loops=8301)
+ Planning:
+   Buffers: shared hit=177 read=46
+ Planning Time: 1.793 ms
+ Execution Time: 1750.937 ms
+(48 rows)
+

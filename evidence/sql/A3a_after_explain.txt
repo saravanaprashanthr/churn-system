@@ -1,0 +1,27 @@
+-- query: sql/32_a3a_latest_order_optimized.sql
+-- captured: 2026-11-05T14:02:50Z
+                                                                              QUERY PLAN                                                                               
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.85..25710.43 rows=49977 width=39) (actual time=0.097..47.958 rows=974 loops=1)
+   Buffers: shared hit=149948 read=129
+   ->  Merge Anti Join  (cost=0.43..1440.06 rows=49977 width=8) (actual time=0.012..7.731 rows=49977 loops=1)
+         Merge Cond: (c.customer_id = x.customer_id)
+         Buffers: shared hit=141
+         ->  Index Only Scan using customers_pkey on customers c  (cost=0.29..1306.29 rows=50000 width=8) (actual time=0.007..3.468 rows=50000 loops=1)
+               Heap Fetches: 0
+               Buffers: shared hit=139
+         ->  Index Only Scan using dq_excluded_customers_pkey on dq_excluded_customers x  (cost=0.14..8.48 rows=23 width=8) (actual time=0.003..0.008 rows=23 loops=1)
+               Heap Fetches: 0
+               Buffers: shared hit=2
+   ->  Limit  (cost=0.42..0.48 rows=1 width=31) (actual time=0.001..0.001 rows=0 loops=49977)
+         Buffers: shared hit=149807 read=129
+         ->  Index Only Scan using idx_orders_customer_date_cov on orders o  (cost=0.42..96.64 rows=1811 width=31) (actual time=0.001..0.001 rows=0 loops=49977)
+               Index Cond: ((customer_id = c.customer_id) AND (order_date < '2026-04-01'::date))
+               Heap Fetches: 0
+               Buffers: shared hit=149807 read=129
+ Planning:
+   Buffers: shared hit=234 read=4
+ Planning Time: 0.521 ms
+ Execution Time: 48.042 ms
+(21 rows)
+
