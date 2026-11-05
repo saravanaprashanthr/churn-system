@@ -1,0 +1,51 @@
+-- query: sql/13_a3b_events_before_last_order_naive.sql
+-- captured: 2026-11-05T13:37:05Z
+                                                                    QUERY PLAN                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ Gather Merge  (cost=176903.76..177447.00 rows=4656 width=58) (actual time=899.446..905.012 rows=3825 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   Buffers: shared hit=16082 read=103749
+   ->  Sort  (cost=175903.74..175909.56 rows=2328 width=58) (actual time=887.209..887.283 rows=1275 loops=3)
+         Sort Key: e.customer_id, e.event_ts, e.event_id
+         Sort Method: quicksort  Memory: 161kB
+         Buffers: shared hit=16082 read=103749
+         Worker 0:  Sort Method: quicksort  Memory: 158kB
+         Worker 1:  Sort Method: quicksort  Memory: 163kB
+         ->  Hash Join  (cost=11979.41..175773.55 rows=2328 width=58) (actual time=109.479..886.439 rows=1275 loops=3)
+               Hash Cond: (e.customer_id = l.customer_id)
+               Join Filter: ((e.event_ts < l.last_order_date) AND (e.event_ts >= (l.last_order_date - '14 days'::interval)))
+               Rows Removed by Join Filter: 75005
+               Buffers: shared hit=16052 read=103749
+               ->  Parallel Seq Scan on events e  (cost=1.29..158326.70 rows=2083257 width=50) (actual time=10.804..523.358 rows=3331442 loops=3)
+                     Filter: (NOT (hashed SubPlan 1))
+                     Rows Removed by Filter: 1891
+                     Buffers: shared hit=2498 read=103749
+                     SubPlan 1
+                       ->  Seq Scan on dq_excluded_customers  (cost=0.00..1.23 rows=23 width=8) (actual time=0.147..0.150 rows=23 loops=3)
+                             Buffers: shared hit=3
+               ->  Hash  (cost=11975.00..11975.00 rows=250 width=16) (actual time=95.960..95.963 rows=1049 loops=3)
+                     Buckets: 2048 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 66kB
+                     Buffers: shared hit=13554
+                     ->  Subquery Scan on l  (cost=11970.00..11975.00 rows=250 width=16) (actual time=95.658..95.847 rows=1049 loops=3)
+                           Buffers: shared hit=13554
+                           ->  HashAggregate  (cost=11970.00..11972.50 rows=250 width=16) (actual time=95.656..95.757 rows=1049 loops=3)
+                                 Group Key: orders.customer_id
+                                 Batches: 1  Memory Usage: 193kB
+                                 Buffers: shared hit=13554
+                                 Worker 0:  Batches: 1  Memory Usage: 193kB
+                                 Worker 1:  Batches: 1  Memory Usage: 193kB
+                                 ->  Seq Scan on orders  (cost=0.00..9518.00 rows=490400 width=16) (actual time=0.018..41.201 rows=489984 loops=3)
+                                       Filter: (order_date IS NOT NULL)
+                                       Rows Removed by Filter: 10016
+                                       Buffers: shared hit=13554
+ Planning:
+   Buffers: shared hit=125
+ Planning Time: 0.302 ms
+ JIT:
+   Functions: 108
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 3.740 ms, Inlining 0.000 ms, Optimization 1.335 ms, Emission 30.317 ms, Total 35.392 ms
+ Execution Time: 918.672 ms
+(45 rows)
+

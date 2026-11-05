@@ -1,0 +1,78 @@
+-- query: sql/11_a2_daily_revenue_naive.sql
+-- captured: 2026-11-05T13:37:04Z
+                                                                                                                                        QUERY PLAN                                                                                                                                        
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ WindowAgg  (cost=32912.47..33462.47 rows=10000 width=132) (actual time=119.130..129.932 rows=8030 loops=1)
+   Buffers: shared hit=11943 read=5440
+   ->  WindowAgg  (cost=32912.47..33137.47 rows=10000 width=132) (actual time=119.126..125.275 rows=8030 loops=1)
+         Buffers: shared hit=11943 read=5440
+         ->  Sort  (cost=32912.47..32937.47 rows=10000 width=68) (actual time=119.117..119.903 rows=8030 loops=1)
+               Sort Key: (COALESCE(NULLIF(products.category, ''::text), 'Unknown'::text)), (((generate_series(('2024-07-01'::date)::timestamp with time zone, ('2026-06-30'::date)::timestamp with time zone, '1 day'::interval)))::date)
+               Sort Method: quicksort  Memory: 575kB
+               Buffers: shared hit=11943 read=5440
+               ->  Hash Left Join  (cost=32045.41..32248.09 rows=10000 width=68) (actual time=112.458..115.572 rows=8030 loops=1)
+                     Hash Cond: (((((generate_series(('2024-07-01'::date)::timestamp with time zone, ('2026-06-30'::date)::timestamp with time zone, '1 day'::interval)))::date) = dl.revenue_date) AND ((COALESCE(NULLIF(products.category, ''::text), 'Unknown'::text)) = dl.category))
+                     Buffers: shared hit=11943 read=5440
+                     ->  Nested Loop  (cost=48.00..198.17 rows=10000 width=36) (actual time=0.387..1.656 rows=8030 loops=1)
+                           Buffers: shared hit=18
+                           ->  Result  (cost=0.00..25.02 rows=1000 width=4) (actual time=0.004..0.185 rows=730 loops=1)
+                                 ->  ProjectSet  (cost=0.00..5.02 rows=1000 width=8) (actual time=0.003..0.098 rows=730 loops=1)
+                                       ->  Result  (cost=0.00..0.01 rows=1 width=0) (actual time=0.000..0.000 rows=1 loops=1)
+                           ->  Materialize  (cost=48.00..48.17 rows=10 width=32) (actual time=0.001..0.001 rows=11 loops=730)
+                                 Buffers: shared hit=18
+                                 ->  HashAggregate  (cost=48.00..48.12 rows=10 width=32) (actual time=0.376..0.378 rows=11 loops=1)
+                                       Group Key: COALESCE(NULLIF(products.category, ''::text), 'Unknown'::text)
+                                       Batches: 1  Memory Usage: 24kB
+                                       Buffers: shared hit=18
+                                       ->  Seq Scan on products  (cost=0.00..43.00 rows=2000 width=32) (actual time=0.006..0.169 rows=2000 loops=1)
+                                             Buffers: shared hit=18
+                     ->  Hash  (cost=31964.73..31964.73 rows=2179 width=68) (actual time=112.051..112.460 rows=7260 loops=1)
+                           Buckets: 8192 (originally 4096)  Batches: 1 (originally 1)  Memory Usage: 450kB
+                           Buffers: shared hit=11925 read=5440
+                           ->  Subquery Scan on dl  (cost=31647.53..31964.73 rows=2179 width=68) (actual time=100.619..111.217 rows=7260 loops=1)
+                                 Buffers: shared hit=11925 read=5440
+                                 ->  Finalize GroupAggregate  (cost=31647.53..31942.94 rows=2179 width=68) (actual time=100.618..110.613 rows=7260 loops=1)
+                                       Group Key: ((o.order_date)::date), (COALESCE(NULLIF(p.category, ''::text), 'Unknown'::text))
+                                       Buffers: shared hit=11925 read=5440
+                                       ->  Gather Merge  (cost=31647.53..31886.65 rows=1816 width=68) (actual time=100.609..106.527 rows=13192 loops=1)
+                                             Workers Planned: 2
+                                             Workers Launched: 2
+                                             Buffers: shared hit=11925 read=5440
+                                             ->  Partial GroupAggregate  (cost=30647.50..30677.01 rows=908 width=68) (actual time=97.959..101.081 rows=4397 loops=3)
+                                                   Group Key: ((o.order_date)::date), (COALESCE(NULLIF(p.category, ''::text), 'Unknown'::text))
+                                                   Buffers: shared hit=11925 read=5440
+                                                   ->  Sort  (cost=30647.50..30649.77 rows=908 width=46) (actual time=97.950..98.313 rows=7326 loops=3)
+                                                         Sort Key: ((o.order_date)::date), (COALESCE(NULLIF(p.category, ''::text), 'Unknown'::text))
+                                                         Sort Method: quicksort  Memory: 574kB
+                                                         Buffers: shared hit=11925 read=5440
+                                                         Worker 0:  Sort Method: quicksort  Memory: 556kB
+                                                         Worker 1:  Sort Method: quicksort  Memory: 574kB
+                                                         ->  Hash Join  (cost=9794.33..30602.89 rows=908 width=46) (actual time=21.060..95.021 rows=7326 loops=3)
+                                                               Hash Cond: (oi.product_id = p.product_id)
+                                                               Buffers: shared hit=11893 read=5440
+                                                               ->  Parallel Hash Join  (cost=9731.33..30532.97 rows=908 width=26) (actual time=20.637..92.844 rows=7326 loops=3)
+                                                                     Hash Cond: (oi.order_id = o.order_id)
+                                                                     Buffers: shared hit=11833 read=5440
+                                                                     ->  Parallel Seq Scan on order_items oi  (cost=0.00..19127.94 rows=637594 width=26) (actual time=0.032..33.926 rows=510075 loops=3)
+                                                                           Buffers: shared hit=7312 read=5440
+                                                                     ->  Parallel Hash  (cost=9727.62..9727.62 rows=297 width=16) (actual time=20.490..20.491 rows=2394 loops=3)
+                                                                           Buckets: 8192 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 504kB
+                                                                           Buffers: shared hit=4521
+                                                                           ->  Parallel Seq Scan on orders o  (cost=1.29..9727.62 rows=297 width=16) (actual time=0.052..16.707 rows=2394 loops=3)
+                                                                                 Filter: ((NOT (hashed SubPlan 1)) AND (status = 'completed'::text) AND ((order_date)::date >= '2024-07-01'::date) AND ((order_date)::date <= '2026-06-30'::date))
+                                                                                 Rows Removed by Filter: 164273
+                                                                                 Buffers: shared hit=4521
+                                                                                 SubPlan 1
+                                                                                   ->  Seq Scan on dq_excluded_customers  (cost=0.00..1.23 rows=23 width=8) (actual time=0.006..0.008 rows=23 loops=3)
+                                                                                         Buffers: shared hit=3
+                                                               ->  Hash  (cost=38.00..38.00 rows=2000 width=18) (actual time=0.403..0.404 rows=2000 loops=3)
+                                                                     Buckets: 2048  Batches: 1  Memory Usage: 118kB
+                                                                     Buffers: shared hit=54
+                                                                     ->  Seq Scan on products p  (cost=0.00..38.00 rows=2000 width=18) (actual time=0.011..0.161 rows=2000 loops=3)
+                                                                           Buffers: shared hit=54
+ Planning:
+   Buffers: shared hit=311
+ Planning Time: 0.806 ms
+ Execution Time: 130.454 ms
+(72 rows)
+

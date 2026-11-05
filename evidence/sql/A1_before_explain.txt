@@ -1,0 +1,53 @@
+-- query: sql/10_a1_rolling_features_naive.sql
+-- captured: 2026-11-05T13:37:02Z
+                                                                                             QUERY PLAN                                                                                              
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=43483.04..3796833.02 rows=5000000 width=152) (actual time=331.731..2341.765 rows=2533912 loops=1)
+   Group Key: c.customer_id, (((generate_series(('2025-07-07'::date)::timestamp with time zone, ('2026-06-29'::date)::timestamp with time zone, '7 days'::interval)))::date)
+   Buffers: shared hit=5220, temp read=1464 written=1469
+   ->  Incremental Sort  (cost=43483.04..2326471.97 rows=15827777 width=34) (actual time=331.720..1522.882 rows=2866895 loops=1)
+         Sort Key: c.customer_id, (((generate_series(('2025-07-07'::date)::timestamp with time zone, ('2026-06-29'::date)::timestamp with time zone, '7 days'::interval)))::date)
+         Presorted Key: c.customer_id
+         Full-sort Groups: 48943  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+         Pre-sorted Groups: 2343  Sort Method: quicksort  Average Memory: 1919kB  Peak Memory: 1940kB
+         Buffers: shared hit=5220, temp read=1464 written=1469
+         ->  Merge Left Join  (cost=43399.65..1391633.38 rows=15827777 width=34) (actual time=331.618..1129.767 rows=2866895 loops=1)
+               Merge Cond: (c.customer_id = o.customer_id)
+               Join Filter: ((o.order_date)::date < (((generate_series(('2025-07-07'::date)::timestamp with time zone, ('2026-06-29'::date)::timestamp with time zone, '7 days'::interval)))::date))
+               Rows Removed by Join Filter: 99767
+               Buffers: shared hit=5217, temp read=1464 written=1469
+               ->  Nested Loop  (cost=1.58..377023.10 rows=8333333 width=12) (actual time=225.530..612.728 rows=2533912 loops=1)
+                     Join Filter: (c.signup_date < (((generate_series(('2025-07-07'::date)::timestamp with time zone, ('2026-06-29'::date)::timestamp with time zone, '7 days'::interval)))::date))
+                     Rows Removed by Join Filter: 64892
+                     Buffers: shared hit=699
+                     ->  Index Scan using customers_pkey on customers c  (cost=1.58..1995.58 rows=25000 width=12) (actual time=225.502..241.779 rows=49977 loops=1)
+                           Filter: (NOT (hashed SubPlan 1))
+                           Rows Removed by Filter: 23
+                           Buffers: shared hit=699
+                           SubPlan 1
+                             ->  Seq Scan on dq_excluded_customers  (cost=0.00..1.23 rows=23 width=8) (actual time=7.118..7.121 rows=23 loops=1)
+                                   Buffers: shared hit=1
+                     ->  Materialize  (cost=0.00..30.02 rows=1000 width=4) (actual time=0.000..0.002 rows=52 loops=49977)
+                           ->  Result  (cost=0.00..25.02 rows=1000 width=4) (actual time=0.020..0.038 rows=52 loops=1)
+                                 ->  ProjectSet  (cost=0.00..5.02 rows=1000 width=8) (actual time=0.018..0.029 rows=52 loops=1)
+                                       ->  Result  (cost=0.00..0.01 rows=1 width=0) (actual time=0.001..0.001 rows=1 loops=1)
+               ->  Materialize  (cost=43398.08..44822.58 rows=284900 width=30) (actual time=106.059..175.876 rows=744651 loops=1)
+                     Buffers: shared hit=4518, temp read=1464 written=1469
+                     ->  Sort  (cost=43398.08..44110.33 rows=284900 width=30) (actual time=106.057..130.150 rows=285627 loops=1)
+                           Sort Key: o.customer_id
+                           Sort Method: external merge  Disk: 11712kB
+                           Buffers: shared hit=4518, temp read=1464 written=1469
+                           ->  Seq Scan on orders o  (cost=0.00..10768.00 rows=284900 width=30) (actual time=0.026..41.658 rows=285627 loops=1)
+                                 Filter: (status = 'completed'::text)
+                                 Rows Removed by Filter: 214373
+                                 Buffers: shared hit=4518
+ Planning:
+   Buffers: shared hit=211
+ Planning Time: 1.077 ms
+ JIT:
+   Functions: 42
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+   Timing: Generation 2.248 ms, Inlining 70.250 ms, Optimization 79.899 ms, Emission 75.229 ms, Total 227.626 ms
+ Execution Time: 2446.024 ms
+(47 rows)
+

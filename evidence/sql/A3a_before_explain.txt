@@ -1,0 +1,60 @@
+-- query: sql/12_a3a_latest_order_naive.sql
+-- captured: 2026-11-05T13:37:05Z
+                                                                            QUERY PLAN                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=21214.15..21214.16 rows=1 width=72) (actual time=125.509..125.620 rows=974 loops=1)
+   Sort Key: c.customer_id
+   Sort Method: quicksort  Memory: 91kB
+   Buffers: shared hit=9053
+   CTE candidates
+     ->  Hash Join  (cost=9069.79..21212.79 rows=1 width=39) (actual time=33.609..96.542 rows=997 loops=1)
+           Hash Cond: ((o.customer_id = orders.customer_id) AND (o.order_date = (max(orders.order_date))))
+           Buffers: shared hit=9052
+           ->  Seq Scan on orders o  (cost=0.00..9518.00 rows=500000 width=39) (actual time=0.008..27.134 rows=500000 loops=1)
+                 Buffers: shared hit=4518
+           ->  Hash  (cost=9066.04..9066.04 rows=250 width=16) (actual time=33.496..33.567 rows=997 loops=1)
+                 Buckets: 1024  Batches: 1  Memory Usage: 55kB
+                 Buffers: shared hit=4534
+                 ->  Finalize GroupAggregate  (cost=9002.71..9066.04 rows=250 width=16) (actual time=32.946..33.435 rows=997 loops=1)
+                       Group Key: orders.customer_id
+                       Buffers: shared hit=4534
+                       ->  Gather Merge  (cost=9002.71..9061.04 rows=500 width=16) (actual time=32.943..33.233 rows=1703 loops=1)
+                             Workers Planned: 2
+                             Workers Launched: 2
+                             Buffers: shared hit=4534
+                             ->  Sort  (cost=8002.68..8003.31 rows=250 width=16) (actual time=31.286..31.317 rows=568 loops=3)
+                                   Sort Key: orders.customer_id
+                                   Sort Method: quicksort  Memory: 47kB
+                                   Buffers: shared hit=4534
+                                   Worker 0:  Sort Method: quicksort  Memory: 47kB
+                                   Worker 1:  Sort Method: quicksort  Memory: 46kB
+                                   ->  Partial HashAggregate  (cost=7990.23..7992.73 rows=250 width=16) (actual time=31.165..31.207 rows=568 loops=3)
+                                         Group Key: orders.customer_id
+                                         Batches: 1  Memory Usage: 105kB
+                                         Buffers: shared hit=4518
+                                         Worker 0:  Batches: 1  Memory Usage: 105kB
+                                         Worker 1:  Batches: 1  Memory Usage: 105kB
+                                         ->  Parallel Seq Scan on orders  (cost=0.00..7643.00 rows=69445 width=16) (actual time=0.005..17.153 rows=147110 loops=3)
+                                               Filter: ((order_date)::date < '2026-04-01'::date)
+                                               Rows Removed by Filter: 19556
+                                               Buffers: shared hit=4518
+   ->  CTE Scan on candidates c  (cost=1.29..1.35 rows=1 width=72) (actual time=96.730..125.369 rows=974 loops=1)
+         Filter: ((NOT (hashed SubPlan 3)) AND (order_id = (SubPlan 2)))
+         Rows Removed by Filter: 23
+         Buffers: shared hit=6070
+         SubPlan 3
+           ->  Seq Scan on dq_excluded_customers  (cost=0.00..1.23 rows=23 width=8) (actual time=0.007..0.009 rows=23 loops=1)
+                 Buffers: shared hit=1
+         SubPlan 2
+           ->  Aggregate  (cost=0.02..0.03 rows=1 width=8) (actual time=0.094..0.094 rows=1 loops=974)
+                 Buffers: shared hit=4512
+                 ->  CTE Scan on candidates c2  (cost=0.00..0.02 rows=1 width=8) (actual time=0.014..0.094 rows=1 loops=974)
+                       Filter: (customer_id = c.customer_id)
+                       Rows Removed by Filter: 996
+                       Buffers: shared hit=4512
+ Planning:
+   Buffers: shared hit=229
+ Planning Time: 0.440 ms
+ Execution Time: 125.781 ms
+(54 rows)
+
