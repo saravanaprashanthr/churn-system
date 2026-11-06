@@ -1,0 +1,6 @@
+-r base.in
+pandas
+pyarrow
+scikit-learn
+mlflow
+optuna

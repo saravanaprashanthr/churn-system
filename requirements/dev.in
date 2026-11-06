@@ -1,4 +1,5 @@
--r pipeline.txt
+-r pipeline.in
+-r training.in
 pytest
 pytest-cov
 ruff
