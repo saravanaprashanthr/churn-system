@@ -1,0 +1,205 @@
+# Extract of artifacts/backfill_full.log (lines unchanged): one result line per cutoff
+# command: python -m pipeline.run_local --backfill-start 2025-01-06 --backfill-end 2026-03-30
+    [KFP Executor 2026-11-05 18:14:33,167 INFO]: dataset_version=20250106-8c621e0cfeed created=True
+2026-11-05 23:44:33,430 INFO run_local === cutoff=2025-01-06 -> dataset_version=20250106-8c621e0cfeed
+    [KFP Executor 2026-11-05 18:15:20,273 INFO]: dataset_version=20250113-b9cae1d3914a created=True
+2026-11-05 23:45:20,436 INFO run_local === cutoff=2025-01-13 -> dataset_version=20250113-b9cae1d3914a
+    [KFP Executor 2026-11-05 18:15:58,787 INFO]: dataset_version=20250120-a9428211f4f9 created=True
+2026-11-05 23:45:58,949 INFO run_local === cutoff=2025-01-20 -> dataset_version=20250120-a9428211f4f9
+    [KFP Executor 2026-11-05 18:16:37,094 INFO]: dataset_version=20250127-aa33031cc9af created=True
+2026-11-05 23:46:37,261 INFO run_local === cutoff=2025-01-27 -> dataset_version=20250127-aa33031cc9af
+    [KFP Executor 2026-11-05 18:17:14,322 INFO]: dataset_version=20250203-1bec3d8ee294 created=True
+2026-11-05 23:47:14,480 INFO run_local === cutoff=2025-02-03 -> dataset_version=20250203-1bec3d8ee294
+    [KFP Executor 2026-11-05 18:17:48,482 INFO]: dataset_version=20250210-e660895deecf created=True
+2026-11-05 23:47:48,624 INFO run_local === cutoff=2025-02-10 -> dataset_version=20250210-e660895deecf
+    [KFP Executor 2026-11-05 18:18:24,815 INFO]: dataset_version=20250217-c10854519641 created=True
+2026-11-05 23:48:24,982 INFO run_local === cutoff=2025-02-17 -> dataset_version=20250217-c10854519641
+    [KFP Executor 2026-11-05 18:34:55,459 INFO]: dataset_version=20250224-10c673857b81 created=True
+2026-11-06 00:05:45,418 INFO run_local === cutoff=2025-02-24 -> dataset_version=20250224-10c673857b81
+    [KFP Executor 2026-11-05 18:52:07,591 INFO]: dataset_version=20250303-c7c6fb9a3991 created=True
+2026-11-06 00:22:57,540 INFO run_local === cutoff=2025-03-03 -> dataset_version=20250303-c7c6fb9a3991
+    [KFP Executor 2026-11-06 06:13:54,254 INFO]: dataset_version=20250310-de843bc8853d created=True
+2026-11-06 11:43:54,429 INFO run_local === cutoff=2025-03-10 -> dataset_version=20250310-de843bc8853d
+    [KFP Executor 2026-11-06 06:14:36,367 INFO]: dataset_version=20250317-6017fad1d6e9 created=True
+2026-11-06 11:44:36,521 INFO run_local === cutoff=2025-03-17 -> dataset_version=20250317-6017fad1d6e9
+    [KFP Executor 2026-11-06 06:15:21,391 INFO]: dataset_version=20250324-e0bf02ea23f9 created=True
+2026-11-06 11:45:21,536 INFO run_local === cutoff=2025-03-24 -> dataset_version=20250324-e0bf02ea23f9
+    [KFP Executor 2026-11-06 06:16:01,248 INFO]: dataset_version=20250331-ad88f807260c created=True
+2026-11-06 11:46:01,400 INFO run_local === cutoff=2025-03-31 -> dataset_version=20250331-ad88f807260c
+    [KFP Executor 2026-11-06 06:16:37,938 INFO]: dataset_version=20250407-d0c099164219 created=True
+2026-11-06 11:46:38,074 INFO run_local === cutoff=2025-04-07 -> dataset_version=20250407-d0c099164219
+    [KFP Executor 2026-11-06 06:17:13,245 INFO]: dataset_version=20250414-1cb8033aa5c1 created=True
+2026-11-06 11:47:13,381 INFO run_local === cutoff=2025-04-14 -> dataset_version=20250414-1cb8033aa5c1
+    [KFP Executor 2026-11-06 06:17:47,381 INFO]: dataset_version=20250421-313c98d853ea created=True
+2026-11-06 11:47:47,537 INFO run_local === cutoff=2025-04-21 -> dataset_version=20250421-313c98d853ea
+    [KFP Executor 2026-11-06 06:19:30,066 INFO]: dataset_version=20250428-c8a63d501a7f created=True
+2026-11-06 11:50:20,077 INFO run_local === cutoff=2025-04-28 -> dataset_version=20250428-c8a63d501a7f
+    [KFP Executor 2026-11-06 06:30:49,134 INFO]: dataset_version=20250505-c2ec1993c7d3 created=True
+2026-11-06 12:00:49,322 INFO run_local === cutoff=2025-05-05 -> dataset_version=20250505-c2ec1993c7d3
+    [KFP Executor 2026-11-06 06:31:34,558 INFO]: dataset_version=20250512-69f5fbfcb200 created=True
+2026-11-06 12:01:34,723 INFO run_local === cutoff=2025-05-12 -> dataset_version=20250512-69f5fbfcb200
+    [KFP Executor 2026-11-06 06:32:18,140 INFO]: dataset_version=20250519-d833c8c6dc5e created=True
+2026-11-06 12:02:18,303 INFO run_local === cutoff=2025-05-19 -> dataset_version=20250519-d833c8c6dc5e
+    [KFP Executor 2026-11-06 06:33:03,447 INFO]: dataset_version=20250526-dbdabdf00a99 created=True
+2026-11-06 12:03:03,582 INFO run_local === cutoff=2025-05-26 -> dataset_version=20250526-dbdabdf00a99
+    [KFP Executor 2026-11-06 06:33:48,425 INFO]: dataset_version=20250602-b2546e1180a7 created=True
+2026-11-06 12:03:48,588 INFO run_local === cutoff=2025-06-02 -> dataset_version=20250602-b2546e1180a7
+    [KFP Executor 2026-11-06 06:34:30,199 INFO]: dataset_version=20250609-2895d71740dc created=True
+2026-11-06 12:04:30,492 INFO run_local === cutoff=2025-06-09 -> dataset_version=20250609-2895d71740dc
+    [KFP Executor 2026-11-06 06:35:20,212 INFO]: dataset_version=20250616-2bf1ca857f1f created=True
+2026-11-06 12:05:20,491 INFO run_local === cutoff=2025-06-16 -> dataset_version=20250616-2bf1ca857f1f
+    [KFP Executor 2026-11-06 06:36:21,707 INFO]: dataset_version=20250623-864cb11edb51 created=True
+2026-11-06 12:06:21,894 INFO run_local === cutoff=2025-06-23 -> dataset_version=20250623-864cb11edb51
+    [KFP Executor 2026-11-06 06:37:02,280 INFO]: dataset_version=20250630-6d5f965e2fc2 created=True
+2026-11-06 12:07:02,437 INFO run_local === cutoff=2025-06-30 -> dataset_version=20250630-6d5f965e2fc2
+    [KFP Executor 2026-11-06 06:37:36,728 INFO]: dataset_version=20250707-1bd7abc11998 created=True
+2026-11-06 12:07:36,905 INFO run_local === cutoff=2025-07-07 -> dataset_version=20250707-1bd7abc11998
+    [KFP Executor 2026-11-06 06:38:19,530 INFO]: dataset_version=20250714-e81e461e9aad created=True
+2026-11-06 12:08:19,680 INFO run_local === cutoff=2025-07-14 -> dataset_version=20250714-e81e461e9aad
+    [KFP Executor 2026-11-06 06:38:57,587 INFO]: dataset_version=20250721-2c8636046f88 created=True
+2026-11-06 12:08:57,735 INFO run_local === cutoff=2025-07-21 -> dataset_version=20250721-2c8636046f88
+    [KFP Executor 2026-11-06 06:39:32,613 INFO]: dataset_version=20250728-7c7a9f05d771 created=True
+2026-11-06 12:09:32,814 INFO run_local === cutoff=2025-07-28 -> dataset_version=20250728-7c7a9f05d771
+    [KFP Executor 2026-11-06 06:40:46,329 INFO]: dataset_version=20250804-7f5997470774 created=True
+2026-11-06 12:10:46,501 INFO run_local === cutoff=2025-08-04 -> dataset_version=20250804-7f5997470774
+    [KFP Executor 2026-11-06 06:41:36,885 INFO]: dataset_version=20250811-856bb2df1fb5 created=True
+2026-11-06 12:11:37,134 INFO run_local === cutoff=2025-08-11 -> dataset_version=20250811-856bb2df1fb5
+    [KFP Executor 2026-11-06 06:42:17,600 INFO]: dataset_version=20250818-1270272b446b created=True
+2026-11-06 12:12:17,803 INFO run_local === cutoff=2025-08-18 -> dataset_version=20250818-1270272b446b
+    [KFP Executor 2026-11-06 06:42:55,348 INFO]: dataset_version=20250825-4ab5340c156f created=True
+2026-11-06 12:12:55,527 INFO run_local === cutoff=2025-08-25 -> dataset_version=20250825-4ab5340c156f
+    [KFP Executor 2026-11-06 06:43:34,140 INFO]: dataset_version=20250901-a59fd8a9da40 created=True
+2026-11-06 12:13:34,412 INFO run_local === cutoff=2025-09-01 -> dataset_version=20250901-a59fd8a9da40
+    [KFP Executor 2026-11-06 06:44:10,586 INFO]: dataset_version=20250908-5dbf7d218a59 created=True
+2026-11-06 12:14:10,795 INFO run_local === cutoff=2025-09-08 -> dataset_version=20250908-5dbf7d218a59
+    [KFP Executor 2026-11-06 06:44:47,331 INFO]: dataset_version=20250915-f9faffb8e9bd created=True
+2026-11-06 12:14:47,548 INFO run_local === cutoff=2025-09-15 -> dataset_version=20250915-f9faffb8e9bd
+    [KFP Executor 2026-11-06 06:45:22,748 INFO]: dataset_version=20250922-a3672ddf22f5 created=True
+2026-11-06 12:15:22,964 INFO run_local === cutoff=2025-09-22 -> dataset_version=20250922-a3672ddf22f5
+    [KFP Executor 2026-11-06 06:46:06,991 INFO]: dataset_version=20250929-23bc9ec53a2d created=True
+2026-11-06 12:16:07,232 INFO run_local === cutoff=2025-09-29 -> dataset_version=20250929-23bc9ec53a2d
+    [KFP Executor 2026-11-06 06:46:44,708 INFO]: dataset_version=20251006-8c279272b98e created=True
+2026-11-06 12:16:44,889 INFO run_local === cutoff=2025-10-06 -> dataset_version=20251006-8c279272b98e
+    [KFP Executor 2026-11-06 06:47:21,228 INFO]: dataset_version=20251013-53578bdb6ac5 created=True
+2026-11-06 12:17:21,402 INFO run_local === cutoff=2025-10-13 -> dataset_version=20251013-53578bdb6ac5
+    [KFP Executor 2026-11-06 06:47:53,161 INFO]: dataset_version=20251020-c052b3e27ab0 created=True
+2026-11-06 12:17:53,322 INFO run_local === cutoff=2025-10-20 -> dataset_version=20251020-c052b3e27ab0
+    [KFP Executor 2026-11-06 06:48:31,192 INFO]: dataset_version=20251027-0979842d9ebf created=True
+2026-11-06 12:18:31,464 INFO run_local === cutoff=2025-10-27 -> dataset_version=20251027-0979842d9ebf
+    [KFP Executor 2026-11-06 06:49:10,471 INFO]: dataset_version=20251103-e021ac09b193 created=True
+2026-11-06 12:19:10,624 INFO run_local === cutoff=2025-11-03 -> dataset_version=20251103-e021ac09b193
+    [KFP Executor 2026-11-06 06:49:49,038 INFO]: dataset_version=20251110-8304199805e4 created=True
+2026-11-06 12:19:49,223 INFO run_local === cutoff=2025-11-10 -> dataset_version=20251110-8304199805e4
+    [KFP Executor 2026-11-06 06:50:30,317 INFO]: dataset_version=20251117-65aa040e4659 created=True
+2026-11-06 12:20:30,507 INFO run_local === cutoff=2025-11-17 -> dataset_version=20251117-65aa040e4659
+    [KFP Executor 2026-11-06 06:51:07,587 INFO]: dataset_version=20251124-dcc254de2c2f created=True
+2026-11-06 12:21:07,768 INFO run_local === cutoff=2025-11-24 -> dataset_version=20251124-dcc254de2c2f
+    [KFP Executor 2026-11-06 06:51:49,407 INFO]: dataset_version=20251201-4694ebf8463a created=True
+2026-11-06 12:21:49,560 INFO run_local === cutoff=2025-12-01 -> dataset_version=20251201-4694ebf8463a
+    [KFP Executor 2026-11-06 06:52:23,661 INFO]: dataset_version=20251208-cd8817cddcba created=True
+2026-11-06 12:22:23,826 INFO run_local === cutoff=2025-12-08 -> dataset_version=20251208-cd8817cddcba
+    [KFP Executor 2026-11-06 06:52:58,538 INFO]: dataset_version=20251215-a6a783ccd9a0 created=True
+2026-11-06 12:22:58,673 INFO run_local === cutoff=2025-12-15 -> dataset_version=20251215-a6a783ccd9a0
+    [KFP Executor 2026-11-06 06:53:32,055 INFO]: dataset_version=20251222-920118a9814f created=True
+2026-11-06 12:23:32,206 INFO run_local === cutoff=2025-12-22 -> dataset_version=20251222-920118a9814f
+    [KFP Executor 2026-11-06 06:54:05,808 INFO]: dataset_version=20251229-2e285f8903f2 created=True
+2026-11-06 12:24:05,948 INFO run_local === cutoff=2025-12-29 -> dataset_version=20251229-2e285f8903f2
+    [KFP Executor 2026-11-06 06:54:40,508 INFO]: dataset_version=20260105-a29a15dcd888 created=True
+2026-11-06 12:24:40,712 INFO run_local === cutoff=2026-01-05 -> dataset_version=20260105-a29a15dcd888
+    [KFP Executor 2026-11-06 06:55:14,480 INFO]: dataset_version=20260112-d29b68ae451c created=True
+2026-11-06 12:25:14,662 INFO run_local === cutoff=2026-01-12 -> dataset_version=20260112-d29b68ae451c
+    [KFP Executor 2026-11-06 06:55:47,554 INFO]: dataset_version=20260119-719419467b05 created=True
+2026-11-06 12:25:47,709 INFO run_local === cutoff=2026-01-19 -> dataset_version=20260119-719419467b05
+    [KFP Executor 2026-11-06 06:56:23,016 INFO]: dataset_version=20260126-99341d7750ee created=True
+2026-11-06 12:26:23,238 INFO run_local === cutoff=2026-01-26 -> dataset_version=20260126-99341d7750ee
+    [KFP Executor 2026-11-06 06:56:56,854 INFO]: dataset_version=20260202-4283997bc797 created=True
+2026-11-06 12:26:57,022 INFO run_local === cutoff=2026-02-02 -> dataset_version=20260202-4283997bc797
+    [KFP Executor 2026-11-06 06:57:30,651 INFO]: dataset_version=20260209-0b1655598c8e created=True
+2026-11-06 12:27:30,827 INFO run_local === cutoff=2026-02-09 -> dataset_version=20260209-0b1655598c8e
+    [KFP Executor 2026-11-06 06:58:03,653 INFO]: dataset_version=20260216-ea80ef7a1f26 created=True
+2026-11-06 12:28:03,846 INFO run_local === cutoff=2026-02-16 -> dataset_version=20260216-ea80ef7a1f26
+    [KFP Executor 2026-11-06 06:58:37,555 INFO]: dataset_version=20260223-8563a50d7b3a created=True
+2026-11-06 12:28:37,708 INFO run_local === cutoff=2026-02-23 -> dataset_version=20260223-8563a50d7b3a
+    [KFP Executor 2026-11-06 06:59:11,994 INFO]: dataset_version=20260302-ba96a23a9e87 created=True
+2026-11-06 12:29:12,210 INFO run_local === cutoff=2026-03-02 -> dataset_version=20260302-ba96a23a9e87
+    [KFP Executor 2026-11-06 06:59:45,450 INFO]: dataset_version=20260309-628300127660 created=True
+2026-11-06 12:29:45,615 INFO run_local === cutoff=2026-03-09 -> dataset_version=20260309-628300127660
+    [KFP Executor 2026-11-06 07:00:19,431 INFO]: dataset_version=20260316-662e953d2fcb created=False
+2026-11-06 12:30:19,582 INFO run_local === cutoff=2026-03-16 -> dataset_version=20260316-662e953d2fcb
+    [KFP Executor 2026-11-06 07:00:53,952 INFO]: dataset_version=20260323-8d9d58efa59a created=False
+2026-11-06 12:30:54,102 INFO run_local === cutoff=2026-03-23 -> dataset_version=20260323-8d9d58efa59a
+    [KFP Executor 2026-11-06 07:01:27,888 INFO]: dataset_version=20260330-3c4085f162f3 created=False
+2026-11-06 12:31:28,029 INFO run_local === cutoff=2026-03-30 -> dataset_version=20260330-3c4085f162f3
+
+# created=True: 62   created=False: 3
+
+# ml_dataset_versions after the backfill
+    dataset_version    | cutoff_date | n_rows | churn_rate |  dq_run_id  | code_version 
+-----------------------+-------------+--------+------------+-------------+--------------
+ 20250106-8c621e0cfeed | 2025-01-06  |    461 |      0.659 | dq_20260701 | 1fb0592
+ 20250113-b9cae1d3914a | 2025-01-13  |    462 |      0.652 | dq_20260701 | 1fb0592
+ 20250120-a9428211f4f9 | 2025-01-20  |    467 |      0.655 | dq_20260701 | 1fb0592
+ 20250127-aa33031cc9af | 2025-01-27  |    465 |      0.658 | dq_20260701 | 1fb0592
+ 20250203-1bec3d8ee294 | 2025-02-03  |    467 |      0.670 | dq_20260701 | 1fb0592
+ 20250210-e660895deecf | 2025-02-10  |    470 |      0.651 | dq_20260701 | 1fb0592
+ 20250217-c10854519641 | 2025-02-17  |    470 |      0.655 | dq_20260701 | 1fb0592
+ 20250224-10c673857b81 | 2025-02-24  |    469 |      0.648 | dq_20260701 | 1fb0592
+ 20250303-c7c6fb9a3991 | 2025-03-03  |    468 |      0.654 | dq_20260701 | 1fb0592
+ 20250310-de843bc8853d | 2025-03-10  |    469 |      0.663 | dq_20260701 | 1fb0592
+ 20250317-6017fad1d6e9 | 2025-03-17  |    471 |      0.669 | dq_20260701 | 1fb0592
+ 20250324-e0bf02ea23f9 | 2025-03-24  |    472 |      0.674 | dq_20260701 | 1fb0592
+ 20250331-ad88f807260c | 2025-03-31  |    471 |      0.675 | dq_20260701 | 1fb0592
+ 20250407-d0c099164219 | 2025-04-07  |    469 |      0.672 | dq_20260701 | 1fb0592
+ 20250414-1cb8033aa5c1 | 2025-04-14  |    468 |      0.675 | dq_20260701 | 1fb0592
+ 20250421-313c98d853ea | 2025-04-21  |    465 |      0.682 | dq_20260701 | 1fb0592
+ 20250428-c8a63d501a7f | 2025-04-28  |    471 |      0.686 | dq_20260701 | 1fb0592
+ 20250505-c2ec1993c7d3 | 2025-05-05  |    475 |      0.682 | dq_20260701 | 1fb0592
+ 20250512-69f5fbfcb200 | 2025-05-12  |    475 |      0.684 | dq_20260701 | 1fb0592
+ 20250519-d833c8c6dc5e | 2025-05-19  |    473 |      0.691 | dq_20260701 | 1fb0592
+ 20250526-dbdabdf00a99 | 2025-05-26  |    476 |      0.702 | dq_20260701 | 1fb0592
+ 20250602-b2546e1180a7 | 2025-06-02  |    478 |      0.697 | dq_20260701 | 1fb0592
+ 20250609-2895d71740dc | 2025-06-09  |    475 |      0.697 | dq_20260701 | 1fb0592
+ 20250616-2bf1ca857f1f | 2025-06-16  |    476 |      0.683 | dq_20260701 | 1fb0592
+ 20250623-864cb11edb51 | 2025-06-23  |    472 |      0.678 | dq_20260701 | 1fb0592
+ 20250630-6d5f965e2fc2 | 2025-06-30  |    475 |      0.676 | dq_20260701 | 1fb0592
+ 20250707-1bd7abc11998 | 2025-07-07  |    477 |      0.681 | dq_20260701 | 1fb0592
+ 20250714-e81e461e9aad | 2025-07-14  |    479 |      0.683 | dq_20260701 | 1fb0592
+ 20250721-2c8636046f88 | 2025-07-21  |    476 |      0.676 | dq_20260701 | 1fb0592
+ 20250728-7c7a9f05d771 | 2025-07-28  |    475 |      0.665 | dq_20260701 | 1fb0592
+ 20250804-7f5997470774 | 2025-08-04  |    472 |      0.669 | dq_20260701 | 1fb0592
+ 20250811-856bb2df1fb5 | 2025-08-11  |    474 |      0.671 | dq_20260701 | 1fb0592
+ 20250818-1270272b446b | 2025-08-18  |    477 |      0.667 | dq_20260701 | 1fb0592
+ 20250825-4ab5340c156f | 2025-08-25  |    478 |      0.665 | dq_20260701 | 1fb0592
+ 20250901-a59fd8a9da40 | 2025-09-01  |    481 |      0.674 | dq_20260701 | 1fb0592
+ 20250908-5dbf7d218a59 | 2025-09-08  |    481 |      0.680 | dq_20260701 | 1fb0592
+ 20250915-f9faffb8e9bd | 2025-09-15  |    486 |      0.677 | dq_20260701 | 1fb0592
+ 20250922-a3672ddf22f5 | 2025-09-22  |    479 |      0.668 | dq_20260701 | 1fb0592
+ 20250929-23bc9ec53a2d | 2025-09-29  |    482 |      0.672 | dq_20260701 | 1fb0592
+ 20251006-8c279272b98e | 2025-10-06  |    485 |      0.672 | dq_20260701 | 1fb0592
+ 20251013-53578bdb6ac5 | 2025-10-13  |    484 |      0.665 | dq_20260701 | 1fb0592
+ 20251020-c052b3e27ab0 | 2025-10-20  |    488 |      0.666 | dq_20260701 | 1fb0592
+ 20251027-0979842d9ebf | 2025-10-27  |    490 |      0.667 | dq_20260701 | 1fb0592
+ 20251103-e021ac09b193 | 2025-11-03  |    493 |      0.671 | dq_20260701 | 1fb0592
+ 20251110-8304199805e4 | 2025-11-10  |    492 |      0.659 | dq_20260701 | 1fb0592
+ 20251117-65aa040e4659 | 2025-11-17  |    492 |      0.657 | dq_20260701 | 1fb0592
+ 20251124-dcc254de2c2f | 2025-11-24  |    495 |      0.646 | dq_20260701 | 1fb0592
+ 20251201-4694ebf8463a | 2025-12-01  |    493 |      0.653 | dq_20260701 | 1fb0592
+ 20251208-cd8817cddcba | 2025-12-08  |    497 |      0.658 | dq_20260701 | 1fb0592
+ 20251215-a6a783ccd9a0 | 2025-12-15  |    499 |      0.663 | dq_20260701 | 1fb0592
+ 20251222-920118a9814f | 2025-12-22  |    505 |      0.669 | dq_20260701 | 1fb0592
+ 20251229-2e285f8903f2 | 2025-12-29  |    501 |      0.665 | dq_20260701 | 1fb0592
+ 20260105-a29a15dcd888 | 2026-01-05  |    507 |      0.665 | dq_20260701 | 1fb0592
+ 20260112-d29b68ae451c | 2026-01-12  |    509 |      0.662 | dq_20260701 | 1fb0592
+ 20260119-719419467b05 | 2026-01-19  |    501 |      0.667 | dq_20260701 | 1fb0592
+ 20260126-99341d7750ee | 2026-01-26  |    501 |      0.661 | dq_20260701 | 1fb0592
+ 20260202-4283997bc797 | 2026-02-02  |    502 |      0.653 | dq_20260701 | 1fb0592
+ 20260209-0b1655598c8e | 2026-02-09  |    501 |      0.669 | dq_20260701 | 1fb0592
+ 20260216-ea80ef7a1f26 | 2026-02-16  |    496 |      0.675 | dq_20260701 | 1fb0592
+ 20260223-8563a50d7b3a | 2026-02-23  |    494 |      0.672 | dq_20260701 | 1fb0592
+ 20260302-ba96a23a9e87 | 2026-03-02  |    493 |      0.675 | dq_20260701 | 1fb0592
+ 20260309-628300127660 | 2026-03-09  |    487 |      0.674 | dq_20260701 | 1fb0592
+ 20260316-662e953d2fcb | 2026-03-16  |    483 |      0.667 | dq_20260701 | 1fb0592
+ 20260323-8d9d58efa59a | 2026-03-23  |    480 |      0.671 | dq_20260701 | 1fb0592
+ 20260330-3c4085f162f3 | 2026-03-30  |    481 |      0.680 | dq_20260701 | 1fb0592
+(65 rows)
+

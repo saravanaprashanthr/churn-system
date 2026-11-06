@@ -41,3 +41,20 @@ Cutoffs 2026-03-16, 2026-03-23 and 2026-03-30, run after the single run above:
 
 The repeated cutoff produced the identical content hash. `ml_dataset_versions.created_at` for it still shows the
 first run (18:11:43 UTC), and `ml_customer_features` still holds exactly 481 rows for it.
+
+## Full training backfill (`backfill_full_summary.txt`)
+
+`python -m pipeline.run_local --backfill-start 2025-01-06 --backfill-end 2026-03-30`: 65 weekly cutoffs, every
+Monday from the first cutoff with a full 365-day order history and 90-day event history to the last cutoff whose
+label window closes before the snapshot (2026-03-30 + 90 days = 2026-06-28).
+
+| | |
+|---|---|
+| Pipeline runs | 65, all exit 0, ~37 s each while the laptop was awake (it slept overnight mid-run; `caffeinate` kept it awake for the rest) |
+| New dataset versions | 62 (`created=True`) |
+| Already published | 3 (`created=False`: 2026-03-16, 2026-03-23, 2026-03-30 from the demo above, same content hash) |
+| Rows | 31,296 in total, 461–505 per cutoff |
+| Churn rate | 0.646–0.702 per cutoff |
+| DQ run / code version | `dq_20260701` / `1fb0592` for every version |
+
+These 65 versions are the training data for Part D (`data_version` `3ab46a6bee7b` = hash of the sorted version ids).
