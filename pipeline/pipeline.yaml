@@ -1,0 +1,500 @@
+# PIPELINE DEFINITION
+# Name: churn-dataset-prep
+# Description: extract -> data quality gate -> point-in-time features -> validate -> publish versioned dataset
+# Inputs:
+#    cutoff_date: str
+#    dq_lookback_days: int [Default: 28.0]
+#    horizon_days: int [Default: 90.0]
+#    lookback_days: int [Default: 365.0]
+#    min_rows: int [Default: 50.0]
+#    snapshot_date: str [Default: '2026-07-01']
+#    source_db_url: str [Default: 'postgresql://ds_candidate@host.docker.internal:5432/ecommerce']
+# Outputs:
+#    Output: str
+components:
+  comp-dq-gate-op:
+    executorLabel: exec-dq-gate-op
+    inputDefinitions:
+      parameters:
+        dq_lookback_days:
+          parameterType: NUMBER_INTEGER
+        snapshot_date:
+          parameterType: STRING
+        source_db_url:
+          parameterType: STRING
+    outputDefinitions:
+      artifacts:
+        exclusions:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+        report:
+          artifactType:
+            schemaTitle: system.Artifact
+            schemaVersion: 0.0.1
+      parameters:
+        Output:
+          parameterType: STRING
+  comp-extract-op:
+    executorLabel: exec-extract-op
+    inputDefinitions:
+      parameters:
+        cutoff_date:
+          parameterType: STRING
+        horizon_days:
+          parameterType: NUMBER_INTEGER
+        lookback_days:
+          parameterType: NUMBER_INTEGER
+        snapshot_date:
+          parameterType: STRING
+        source_db_url:
+          parameterType: STRING
+    outputDefinitions:
+      artifacts:
+        raw:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+  comp-publish-op:
+    executorLabel: exec-publish-op
+    inputDefinitions:
+      artifacts:
+        features:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+        validation:
+          artifactType:
+            schemaTitle: system.Artifact
+            schemaVersion: 0.0.1
+      parameters:
+        cutoff_date:
+          parameterType: STRING
+        dq_run_id:
+          parameterType: STRING
+        horizon_days:
+          parameterType: NUMBER_INTEGER
+        lookback_days:
+          parameterType: NUMBER_INTEGER
+        snapshot_date:
+          parameterType: STRING
+        source_db_url:
+          parameterType: STRING
+    outputDefinitions:
+      artifacts:
+        dataset:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+      parameters:
+        Output:
+          parameterType: STRING
+  comp-transform-op:
+    executorLabel: exec-transform-op
+    inputDefinitions:
+      artifacts:
+        exclusions:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+        raw:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+      parameters:
+        cutoff_date:
+          parameterType: STRING
+        horizon_days:
+          parameterType: NUMBER_INTEGER
+        lookback_days:
+          parameterType: NUMBER_INTEGER
+        snapshot_date:
+          parameterType: STRING
+    outputDefinitions:
+      artifacts:
+        features:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+  comp-validate-op:
+    executorLabel: exec-validate-op
+    inputDefinitions:
+      artifacts:
+        features:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+      parameters:
+        cutoff_date:
+          parameterType: STRING
+        horizon_days:
+          parameterType: NUMBER_INTEGER
+        lookback_days:
+          parameterType: NUMBER_INTEGER
+        min_rows:
+          parameterType: NUMBER_INTEGER
+        snapshot_date:
+          parameterType: STRING
+    outputDefinitions:
+      artifacts:
+        validation:
+          artifactType:
+            schemaTitle: system.Artifact
+            schemaVersion: 0.0.1
+deploymentSpec:
+  executors:
+    exec-dq-gate-op:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - dq_gate_op
+        command:
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef dq_gate_op(\n    source_db_url: str,\n    snapshot_date: str,\n\
+          \    dq_lookback_days: int,\n    report: Output[Artifact],\n    exclusions:\
+          \ Output[Dataset],\n) -> str:\n    \"\"\"Run the data quality gate; fail\
+          \ the pipeline if a block-severity rule fails.\"\"\"\n    import logging\n\
+          \    from datetime import date\n    from pathlib import Path\n\n    import\
+          \ psycopg\n\n    from pipeline.dq_step import run_dq_gate\n\n    logging.basicConfig(level=logging.INFO,\
+          \ format=\"%(asctime)s %(levelname)s %(name)s %(message)s\")\n    with psycopg.connect(source_db_url)\
+          \ as conn:\n        gate = run_dq_gate(\n            conn,\n           \
+          \ date.fromisoformat(snapshot_date),\n            dq_lookback_days,\n  \
+          \          Path(report.path),\n            Path(exclusions.path),\n    \
+          \    )\n    report.metadata.update(\n        {\n            \"run_id\":\
+          \ gate.config.run_id,\n            \"status\": \"PASS\",\n            \"\
+          warnings\": [r.rule.rule_id for r in gate.warnings],\n            \"rows_quarantined\"\
+          : sum(r.quarantined for r in gate.results),\n        }\n    )\n    return\
+          \ gate.config.run_id\n\n"
+        image: churn-pipeline:1fb0592
+    exec-extract-op:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - extract_op
+        command:
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef extract_op(\n    source_db_url: str,\n    cutoff_date: str,\n\
+          \    snapshot_date: str,\n    lookback_days: int,\n    horizon_days: int,\n\
+          \    raw: Output[Dataset],\n):\n    \"\"\"Raw customers, orders and daily\
+          \ event counts for one cutoff, as Parquet.\"\"\"\n    import logging\n \
+          \   from datetime import date\n    from pathlib import Path\n\n    import\
+          \ psycopg\n\n    from pipeline.extract import ExtractWindow, extract, write_extract\n\
+          \n    logging.basicConfig(level=logging.INFO, format=\"%(asctime)s %(levelname)s\
+          \ %(name)s %(message)s\")\n    window = ExtractWindow(\n        date.fromisoformat(cutoff_date),\
+          \ date.fromisoformat(snapshot_date), lookback_days, horizon_days\n    )\n\
+          \    with psycopg.connect(source_db_url) as conn:\n        frames = extract(conn,\
+          \ window)\n    manifest = write_extract(frames, window, Path(raw.path))\n\
+          \    raw.metadata.update({\"rows\": manifest[\"rows\"], \"labeled\": manifest[\"\
+          labeled\"], **manifest[\"sql_params\"]})\n\n"
+        image: churn-pipeline:1fb0592
+    exec-publish-op:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - publish_op
+        command:
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef publish_op(\n    features: Input[Dataset],\n    validation: Input[Artifact],\n\
+          \    source_db_url: str,\n    dq_run_id: str,\n    cutoff_date: str,\n \
+          \   snapshot_date: str,\n    lookback_days: int,\n    horizon_days: int,\n\
+          \    dataset: Output[Dataset],\n) -> str:\n    \"\"\"Write the dataset to\
+          \ Postgres under its content-hash version; idempotent.\"\"\"\n    import\
+          \ logging\n    import os\n    import shutil\n    from datetime import date\n\
+          \    from pathlib import Path\n\n    import pandas as pd\n    import psycopg\n\
+          \n    from pipeline.extract import ExtractWindow\n    from pipeline.publish\
+          \ import DatasetParams, publish\n\n    logging.basicConfig(level=logging.INFO,\
+          \ format=\"%(asctime)s %(levelname)s %(name)s %(message)s\")\n    window\
+          \ = ExtractWindow(\n        date.fromisoformat(cutoff_date), date.fromisoformat(snapshot_date),\
+          \ lookback_days, horizon_days\n    )\n    table = pd.read_parquet(Path(features.path)\
+          \ / \"features.parquet\")\n    params = DatasetParams(\n        window.cutoff_date,\
+          \ window.snapshot_date, lookback_days, horizon_days, window.labeled\n  \
+          \  )\n    code_version = os.environ.get(\"CODE_VERSION\", \"unknown\")\n\
+          \    with psycopg.connect(source_db_url) as conn:\n        version, created\
+          \ = publish(conn, table, params, dq_run_id, code_version)\n    out = Path(dataset.path)\n\
+          \    out.mkdir(parents=True, exist_ok=True)\n    shutil.copy(Path(features.path)\
+          \ / \"features.parquet\", out / \"features.parquet\")\n    dataset.metadata.update(\n\
+          \        {\"dataset_version\": version, \"created\": created, \"rows\":\
+          \ len(table), \"code_version\": code_version}\n    )\n    logging.getLogger(\"\
+          publish\").info(\"dataset_version=%s created=%s\", version, created)\n \
+          \   return version\n\n"
+        image: churn-pipeline:1fb0592
+    exec-transform-op:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - transform_op
+        command:
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef transform_op(\n    raw: Input[Dataset],\n    exclusions: Input[Dataset],\n\
+          \    cutoff_date: str,\n    snapshot_date: str,\n    lookback_days: int,\n\
+          \    horizon_days: int,\n    features: Output[Dataset],\n):\n    \"\"\"\
+          Point-in-time features and the churn label, excluding what the DQ gate quarantined.\"\
+          \"\"\n    import logging\n    from datetime import date\n    from pathlib\
+          \ import Path\n\n    from pipeline.dq_step import read_exclusions\n    from\
+          \ pipeline.extract import ExtractWindow, read_extract\n    from pipeline.transform\
+          \ import TransformParams, build_features\n\n    logging.basicConfig(level=logging.INFO,\
+          \ format=\"%(asctime)s %(levelname)s %(name)s %(message)s\")\n    window\
+          \ = ExtractWindow(\n        date.fromisoformat(cutoff_date), date.fromisoformat(snapshot_date),\
+          \ lookback_days, horizon_days\n    )\n    frames = read_extract(Path(raw.path))\n\
+          \    excluded_customers, quarantined_orders, dq_run_id = read_exclusions(Path(exclusions.path))\n\
+          \    table = build_features(\n        **frames,\n        excluded_customers=excluded_customers,\n\
+          \        quarantined_orders=quarantined_orders,\n        params=TransformParams(window.cutoff_date,\
+          \ lookback_days, horizon_days, window.labeled),\n    )\n    out = Path(features.path)\n\
+          \    out.mkdir(parents=True, exist_ok=True)\n    table.to_parquet(out /\
+          \ \"features.parquet\", index=False)\n    features.metadata.update({\"rows\"\
+          : len(table), \"labeled\": window.labeled, \"dq_run_id\": dq_run_id})\n\
+          \    logging.getLogger(\"transform\").info(\"built %d feature rows for cutoff\
+          \ %s\", len(table), cutoff_date)\n\n"
+        image: churn-pipeline:1fb0592
+    exec-validate-op:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - validate_op
+        command:
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef validate_op(\n    features: Input[Dataset],\n    cutoff_date:\
+          \ str,\n    snapshot_date: str,\n    lookback_days: int,\n    horizon_days:\
+          \ int,\n    min_rows: int,\n    validation: Output[Artifact],\n):\n    \"\
+          \"\"Schema and sanity checks; fail the pipeline instead of publishing a\
+          \ bad table.\"\"\"\n    import json\n    import logging\n    from datetime\
+          \ import date\n    from pathlib import Path\n\n    import pandas as pd\n\
+          \n    from pipeline.extract import ExtractWindow\n    from pipeline.validate\
+          \ import ValidationParams, validate\n\n    logging.basicConfig(level=logging.INFO,\
+          \ format=\"%(asctime)s %(levelname)s %(name)s %(message)s\")\n    window\
+          \ = ExtractWindow(\n        date.fromisoformat(cutoff_date), date.fromisoformat(snapshot_date),\
+          \ lookback_days, horizon_days\n    )\n    table = pd.read_parquet(Path(features.path)\
+          \ / \"features.parquet\")\n    report = validate(table, ValidationParams(window.cutoff_date,\
+          \ lookback_days, window.labeled, min_rows))\n    Path(validation.path).write_text(json.dumps(report,\
+          \ indent=2))\n    validation.metadata.update(report)\n    logging.getLogger(\"\
+          validate\").info(\"validation passed: %s\", report)\n\n"
+        image: churn-pipeline:1fb0592
+pipelineInfo:
+  description: extract -> data quality gate -> point-in-time features -> validate
+    -> publish versioned dataset
+  name: churn-dataset-prep
+root:
+  dag:
+    outputs:
+      parameters:
+        Output:
+          valueFromParameter:
+            outputParameterKey: Output
+            producerSubtask: publish-op
+    tasks:
+      dq-gate-op:
+        cachingOptions: {}
+        componentRef:
+          name: comp-dq-gate-op
+        dependentTasks:
+        - extract-op
+        inputs:
+          parameters:
+            dq_lookback_days:
+              componentInputParameter: dq_lookback_days
+            snapshot_date:
+              componentInputParameter: snapshot_date
+            source_db_url:
+              componentInputParameter: source_db_url
+        taskInfo:
+          name: data-quality-gate
+      extract-op:
+        cachingOptions: {}
+        componentRef:
+          name: comp-extract-op
+        inputs:
+          parameters:
+            cutoff_date:
+              componentInputParameter: cutoff_date
+            horizon_days:
+              componentInputParameter: horizon_days
+            lookback_days:
+              componentInputParameter: lookback_days
+            snapshot_date:
+              componentInputParameter: snapshot_date
+            source_db_url:
+              componentInputParameter: source_db_url
+        taskInfo:
+          name: extract
+      publish-op:
+        cachingOptions: {}
+        componentRef:
+          name: comp-publish-op
+        dependentTasks:
+        - dq-gate-op
+        - transform-op
+        - validate-op
+        inputs:
+          artifacts:
+            features:
+              taskOutputArtifact:
+                outputArtifactKey: features
+                producerTask: transform-op
+            validation:
+              taskOutputArtifact:
+                outputArtifactKey: validation
+                producerTask: validate-op
+          parameters:
+            cutoff_date:
+              componentInputParameter: cutoff_date
+            dq_run_id:
+              taskOutputParameter:
+                outputParameterKey: Output
+                producerTask: dq-gate-op
+            horizon_days:
+              componentInputParameter: horizon_days
+            lookback_days:
+              componentInputParameter: lookback_days
+            snapshot_date:
+              componentInputParameter: snapshot_date
+            source_db_url:
+              componentInputParameter: source_db_url
+        taskInfo:
+          name: publish
+      transform-op:
+        cachingOptions: {}
+        componentRef:
+          name: comp-transform-op
+        dependentTasks:
+        - dq-gate-op
+        - extract-op
+        inputs:
+          artifacts:
+            exclusions:
+              taskOutputArtifact:
+                outputArtifactKey: exclusions
+                producerTask: dq-gate-op
+            raw:
+              taskOutputArtifact:
+                outputArtifactKey: raw
+                producerTask: extract-op
+          parameters:
+            cutoff_date:
+              componentInputParameter: cutoff_date
+            horizon_days:
+              componentInputParameter: horizon_days
+            lookback_days:
+              componentInputParameter: lookback_days
+            snapshot_date:
+              componentInputParameter: snapshot_date
+        taskInfo:
+          name: transform
+      validate-op:
+        cachingOptions: {}
+        componentRef:
+          name: comp-validate-op
+        dependentTasks:
+        - transform-op
+        inputs:
+          artifacts:
+            features:
+              taskOutputArtifact:
+                outputArtifactKey: features
+                producerTask: transform-op
+          parameters:
+            cutoff_date:
+              componentInputParameter: cutoff_date
+            horizon_days:
+              componentInputParameter: horizon_days
+            lookback_days:
+              componentInputParameter: lookback_days
+            min_rows:
+              componentInputParameter: min_rows
+            snapshot_date:
+              componentInputParameter: snapshot_date
+        taskInfo:
+          name: validate
+  inputDefinitions:
+    parameters:
+      cutoff_date:
+        parameterType: STRING
+      dq_lookback_days:
+        defaultValue: 28.0
+        isOptional: true
+        parameterType: NUMBER_INTEGER
+      horizon_days:
+        defaultValue: 90.0
+        isOptional: true
+        parameterType: NUMBER_INTEGER
+      lookback_days:
+        defaultValue: 365.0
+        isOptional: true
+        parameterType: NUMBER_INTEGER
+      min_rows:
+        defaultValue: 50.0
+        isOptional: true
+        parameterType: NUMBER_INTEGER
+      snapshot_date:
+        defaultValue: '2026-07-01'
+        isOptional: true
+        parameterType: STRING
+      source_db_url:
+        defaultValue: postgresql://ds_candidate@host.docker.internal:5432/ecommerce
+        isOptional: true
+        parameterType: STRING
+  outputDefinitions:
+    parameters:
+      Output:
+        parameterType: STRING
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.18.0
