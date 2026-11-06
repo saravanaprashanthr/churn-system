@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.ensemble import HistGradientBoostingClassifier, VotingClassifier
 from sklearn.frozen import FrozenEstimator
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
@@ -26,10 +26,13 @@ SKOPS_TRUSTED_TYPES = (
     "training.models._numeric",
     "training.models._categorical",
     "training.models.add_derived_features",
+    "training.models.log_skewed_features",
     # skops flags this because a crafted file could hold out-of-range node indices. Our model files are
     # only ever written by this training job into our own registry, so the type is trusted for them.
     "sklearn.ensemble._hist_gradient_boosting.predictor.TreePredictor",
-    "sklearn.calibration._CalibratedClassifier",  # internal holder of the fitted model + isotonic map
+    "sklearn.calibration._CalibratedClassifier",  # internal holder of the fitted model + calibrator
+    "sklearn.calibration._SigmoidCalibration",
+    "sklearn.utils._bunch.Bunch",  # VotingClassifier.named_estimators_: a dict of the member models
 )
 
 DEFAULT_HGB_PARAMS: dict[str, Any] = {
@@ -56,6 +59,24 @@ def add_derived_features(X: pd.DataFrame) -> pd.DataFrame:
     return X
 
 
+# Non-negative, heavy-tailed inputs (spend_365d: mean $1,852, median $374). log1p keeps their order but
+# stops a few extreme customers from dominating a linear model. Trend columns can be negative: left as is.
+LOG_COLUMNS = (
+    "orders_7d", "orders_30d", "orders_90d", "orders_365d", "orders_prev_30d",
+    "spend_7d", "spend_30d", "spend_90d", "spend_365d", "avg_order_value_365d",
+    "active_days_90d", "cancelled_90d", "returned_90d",
+    "views_30d", "carts_30d", "checkouts_30d", "events_30d", "events_prev_30d", "sessions_30d",
+    "days_since_last_order", "days_since_last_event", "tenure_days", "recency_vs_gap",
+)  # fmt: skip
+
+
+def log_skewed_features(X: pd.DataFrame) -> pd.DataFrame:
+    X = X.copy()
+    columns = [c for c in LOG_COLUMNS if c in X.columns]
+    X[columns] = np.log1p(X[columns].clip(lower=0).astype("float64"))
+    return X
+
+
 def _numeric(X: pd.DataFrame) -> list[str]:
     return [c for c in X.columns if c not in CATEGORICAL]
 
@@ -75,13 +96,18 @@ def _preprocessor(scale: bool) -> ColumnTransformer:
     )
 
 
-def _steps(derived: bool) -> list[tuple[str, Any]]:
-    return [("derive", FunctionTransformer(add_derived_features, validate=False))] if derived else []
+def _steps(derived: bool, log: bool = False) -> list[tuple[str, Any]]:
+    steps: list[tuple[str, Any]] = []
+    if derived:
+        steps.append(("derive", FunctionTransformer(add_derived_features, validate=False)))
+    if log:
+        steps.append(("log", FunctionTransformer(log_skewed_features, validate=False)))
+    return steps
 
 
-def logistic_regression(derived: bool = False) -> Pipeline:
+def logistic_regression(derived: bool = False, log: bool = False) -> Pipeline:
     model = LogisticRegression(max_iter=2000, random_state=SEED)
-    return Pipeline([*_steps(derived), ("prep", _preprocessor(scale=True)), ("model", model)])
+    return Pipeline([*_steps(derived, log), ("prep", _preprocessor(scale=True)), ("model", model)])
 
 
 def gradient_boosting(params: dict[str, Any] | None = None, derived: bool = False) -> Pipeline:
@@ -91,11 +117,16 @@ def gradient_boosting(params: dict[str, Any] | None = None, derived: bool = Fals
     return Pipeline([*_steps(derived), ("prep", _preprocessor(scale=False)), ("model", model)])
 
 
+def soft_vote(*members: tuple[str, Pipeline]) -> VotingClassifier:
+    """Average of the members' churn probabilities (members are refit on the training data)."""
+    return VotingClassifier(list(members), voting="soft")
+
+
 def calibrate(
-    fitted: Pipeline, X_calibration: pd.DataFrame, y_calibration: pd.Series
+    fitted: Pipeline, X_calibration: pd.DataFrame, y_calibration: pd.Series, method: str = "isotonic"
 ) -> CalibratedClassifierCV:
-    """Isotonic calibration of an already-fitted model on held-out (later) data; the model is not refit."""
-    calibrated = CalibratedClassifierCV(FrozenEstimator(fitted), method="isotonic")
+    """Calibrate an already-fitted model on held-out (later) data; the model itself is not refit."""
+    calibrated = CalibratedClassifierCV(FrozenEstimator(fitted), method=method)
     return calibrated.fit(X_calibration, y_calibration)
 
 

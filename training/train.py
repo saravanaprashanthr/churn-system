@@ -42,6 +42,9 @@ from training.metrics import (
 
 logger = logging.getLogger("training")
 TRAINING_DIR = Path(__file__).resolve().parent
+CALIBRATED_RUN = "6_calibrated"
+# Calibrate only if held-out Brier improves by at least this much; smaller gains are noise.
+MIN_BRIER_GAIN = 0.001
 REPO_ROOT = TRAINING_DIR.parent
 
 
@@ -188,6 +191,39 @@ class Trainer:
         study.optimize(objective, n_trials=self.config.optuna_trials)
         return study.best_params, study
 
+    def choose_calibration(self, ranker: IterationResult) -> str | None:
+        """Honest calibration check: fit on the first validation weeks, measure Brier on the later ones.
+
+        Returns the method to use ("sigmoid" / "isotonic"), or None if neither beats the raw scores.
+        The decision is logged as its own MLflow run.
+        """
+        cutoffs = sorted(self.parts["valid"]["cutoff_date"].unique())
+        fit_weeks = set(cutoffs[: len(cutoffs) // 2 + 1])
+        in_fit = self.parts["valid"]["cutoff_date"].isin(fit_weeks).to_numpy()
+        X_fit, y_fit = self.X["valid"][in_fit], self.y["valid"][in_fit]
+        X_eval, y_eval = self.X["valid"][~in_fit], self.y["valid"][~in_fit]
+        brier = {
+            "none": classification_metrics(y_eval, models.churn_probability(ranker.model, X_eval))["brier"]
+        }
+        for method in ("sigmoid", "isotonic"):
+            calibrated = models.calibrate(ranker.model, X_fit, y_fit, method)
+            brier[method] = classification_metrics(y_eval, models.churn_probability(calibrated, X_eval))[
+                "brier"
+            ]
+        best = min(brier, key=brier.get)
+        if brier["none"] - brier[best] < MIN_BRIER_GAIN:
+            best = "none"
+        with self._start_run(
+            "calibration_check",
+            f"Calibration of {ranker.name}: fit on {len(fit_weeks)} "
+            f"validation weeks, Brier on the {len(cutoffs) - len(fit_weeks)} later ones.",
+        ):
+            mlflow.log_metrics({f"heldout_brier_{k}": v for k, v in brier.items()})
+            mlflow.log_params({"ranker": ranker.name, "chosen": best})
+        logger.info("calibration check on %s: held-out Brier %s -> %s", ranker.name,
+                    {k: round(v, 4) for k, v in brier.items()}, best)  # fmt: skip
+        return None if best == "none" else best
+
     def run_iterations(self) -> tuple[list[IterationResult], dict[str, float]]:
         heuristic = self.heuristic()
         results = [
@@ -231,15 +267,45 @@ class Trainer:
             mlflow.log_text(study.trials_dataframe().to_csv(index=False), "optuna/trials.csv")
         results.append(tuned)
 
+        linear = self.log_iteration(
+            "4_logreg_log_derived",
+            "Feature work for the linear model: derived features plus log1p on the heavy-tailed counts and "
+            "spend (spend_365d mean $1,852 vs median $374), which raw standard scaling handles badly.",
+            self.fit(models.logistic_regression(derived=True, log=True)),
+            {"algorithm": "logistic_regression", "derived_features": True, "log_features": True},
+        )
+        results.append(linear)
+
+        best_linear = max((r for r in results if r.params["algorithm"] == "logistic_regression"),
+                          key=lambda r: r.valid["pr_auc"])  # fmt: skip
+        linear_member = models.logistic_regression(
+            derived=best_linear.params.get("derived_features", False),
+            log=best_linear.params.get("log_features", False),
+        )
+        tree_member = models.gradient_boosting(best_params, derived=use_derived)
+        ensemble = self.log_iteration(
+            "5_ensemble",
+            f"Soft vote (mean probability) of {best_linear.name} and {tuned.name}: close on PR-AUC but the "
+            "tree model ranks better overall (ROC-AUC), so their errors differ.",
+            self.fit(models.soft_vote(("logreg", linear_member), ("gb", tree_member))),
+            {"algorithm": "soft_vote", "members": f"{best_linear.name}+{tuned.name}",
+             "derived_features": use_derived},
+        )  # fmt: skip
+        results.append(ensemble)
+
         best_ranker = max(results, key=lambda r: r.valid["pr_auc"])
+        method = self.choose_calibration(best_ranker)
+        if method is None:
+            logger.info("final model: %s, uncalibrated (calibration did not improve held-out Brier)",
+                        best_ranker.name)  # fmt: skip
+            return results, heuristic
         calibrated = self.log_iteration(
-            "4_calibrated",
-            f"Isotonic calibration of {best_ranker.name} on the validation split (model not refit), "
-            "so scores "
-            "can be read as probabilities for the cost-based threshold. Validation metrics of this run are "
-            "in-sample for the calibrator; judge it on test.",
-            models.calibrate(best_ranker.model, self.X["valid"], self.y["valid"]),
-            {**best_ranker.params, "calibration": "isotonic", "calibrated_from": best_ranker.name},
+            CALIBRATED_RUN,
+            f"{method} calibration of {best_ranker.name}, fitted on the whole validation split (model not "
+            "refit). Kept because it improved Brier on held-out validation weeks; validation metrics of this "
+            "run are in-sample for the calibrator, so judge it on test.",
+            models.calibrate(best_ranker.model, self.X["valid"], self.y["valid"], method),
+            {**best_ranker.params, "calibration": method, "calibrated_from": best_ranker.name},
         )
         results.append(calibrated)
         return results, heuristic
@@ -331,6 +397,18 @@ class Trainer:
         return version
 
 
+def select_final(results: list[IterationResult]) -> tuple[IterationResult, list[IterationResult]]:
+    """Final model and the reference models also scored on test.
+
+    Final = the calibrated model if the calibration check kept one, otherwise the best validation PR-AUC.
+    References = the baseline and, for a calibrated final, the uncalibrated model it came from.
+    """
+    calibrated = [r for r in results if r.name == CALIBRATED_RUN]
+    final = calibrated[0] if calibrated else max(results, key=lambda r: r.valid["pr_auc"])
+    keep = {"0_baseline_logreg", final.params.get("calibrated_from")}
+    return final, [r for r in results if r is not final and r.name in keep]
+
+
 def write_reports(out_dir: Path, results: list[IterationResult], heuristic: dict, final: IterationResult,
                   evaluation: dict, trainer: Trainer, version) -> None:  # fmt: skip
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -376,13 +454,13 @@ def main(argv: list[str] | None = None) -> int:
         dataset = load_dataset(conn, config.snapshot_date, config.lookback_days, config.split.horizon_days)
     trainer = Trainer(config, dataset, args.out_dir)
     results, heuristic = trainer.run_iterations()
-    final = results[-1]
-    references = [r for r in results if r.name in ("0_baseline_logreg", final.params.get("calibrated_from"))]
+    final, references = select_final(results)
     evaluation = trainer.evaluate_final(final, references)
     version = trainer.register(final, evaluation["decision"])
     write_reports(args.out_dir, results, heuristic, final, evaluation, trainer, version)
+    baseline = results[0]
     logger.info("test pr_auc=%.4f (baseline %.4f); threshold=%.4f; registered version %s",
-                final.test["pr_auc"], references[0].test["pr_auc"], evaluation["decision"]["threshold"],
+                final.test["pr_auc"], baseline.test["pr_auc"], evaluation["decision"]["threshold"],
                 version.version)  # fmt: skip
     return 0
 

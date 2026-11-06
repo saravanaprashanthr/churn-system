@@ -10,7 +10,7 @@ from mlflow import MlflowClient
 
 from tests.training.synthetic import synthetic_dataset
 from training.config import TrainConfig
-from training.train import Trainer, write_reports
+from training.train import Trainer, select_final, write_reports
 
 
 @pytest.fixture
@@ -27,18 +27,18 @@ def test_training_run_tracks_iterations_and_registers_candidate(tracking, tmp_pa
     trainer = Trainer(config, synthetic_dataset(rows_per_cutoff=60), tmp_path)
     results, heuristic = trainer.run_iterations()
     names = [r.name for r in results]
-    assert names == ["0_baseline_logreg", "1_gradient_boosting", "2_gb_derived_features", "3_gb_tuned",
-                     "4_calibrated"]  # fmt: skip
+    assert names[:6] == ["0_baseline_logreg", "1_gradient_boosting", "2_gb_derived_features", "3_gb_tuned",
+                         "4_logreg_log_derived", "5_ensemble"]  # fmt: skip
+    assert names[6:] in ([], ["6_calibrated"])  # calibrated only if it helps on held-out validation weeks
 
-    final = results[-1]
-    references = [results[0]]
+    final, references = select_final(results)
     evaluation = trainer.evaluate_final(final, references)
     version = trainer.register(final, evaluation["decision"])
     write_reports(tmp_path / "out", results, heuristic, final, evaluation, trainer, version)
 
     client = MlflowClient()
     runs = mlflow.search_runs(experiment_names=["smoke"])
-    assert len(runs) == 6  # heuristic + 5 iterations
+    assert len(runs) == len(results) + 2  # + heuristic + calibration check
     final_run = client.get_run(final.run_id)
     assert {"git_sha", "data_version", "split_test"} <= set(final_run.data.tags)
     assert "test_pr_auc" in final_run.data.metrics and "valid_pr_auc" in final_run.data.metrics

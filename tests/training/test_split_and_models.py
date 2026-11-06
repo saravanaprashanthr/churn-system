@@ -99,3 +99,33 @@ def test_calibration_keeps_the_model_frozen_and_returns_probabilities(data):
     scores = models.churn_probability(calibrated, X_valid)
     assert ((scores >= 0) & (scores <= 1)).all()
     assert abs(scores.mean() - y_valid.mean()) < 0.02  # isotonic matches the calibration base rate
+
+
+def test_log_features_keep_order_and_leave_trends_untouched():
+    X = pd.DataFrame({"spend_365d": [0.0, 100.0, 10_000.0], "order_trend_30d": [-2, 0, 3]})
+    out = models.log_skewed_features(X)
+    assert out["spend_365d"].is_monotonic_increasing
+    assert out["spend_365d"].max() < 10
+    assert out["order_trend_30d"].tolist() == [-2, 0, 3]
+
+
+def test_every_saved_model_type_is_in_the_skops_trust_list(data):
+    """MLflow saves with skops; a type missing from SKOPS_TRUSTED_TYPES makes log_model fail at the end."""
+    import skops.io as sio
+
+    X_train, y_train = data["train"]
+    X_valid, y_valid = data["valid"]
+    lr = models.logistic_regression(derived=True, log=True).fit(X_train, y_train)
+    gb = models.gradient_boosting(derived=True).fit(X_train, y_train)
+    candidates = [
+        lr,
+        gb,
+        models.soft_vote(("logreg", models.logistic_regression()), ("gb", models.gradient_boosting())).fit(
+            X_train, y_train
+        ),
+        models.calibrate(gb, X_valid, y_valid, "isotonic"),
+        models.calibrate(lr, X_valid, y_valid, "sigmoid"),
+    ]
+    for model in candidates:
+        untrusted = set(sio.get_untrusted_types(data=sio.dumps(model)))
+        assert untrusted <= set(models.SKOPS_TRUSTED_TYPES), untrusted
