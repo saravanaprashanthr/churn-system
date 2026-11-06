@@ -32,5 +32,34 @@ services:
     depends_on:
       - postgres
 
+  # MLflow tracking server and model registry (Part D). Backend store: the "mlflow" database in the
+  # Postgres above (sql/04_mlflow_database.sql). Artifacts: stored on the mlartifacts volume and served
+  # over HTTP by this server, so training, serving pods and CI only need the tracking URL.
+  mlflow:
+    build:
+      context: .
+      dockerfile: mlflow_server/Dockerfile
+    image: churn-mlflow:3.18.0
+    container_name: churn_mlflow
+    restart: unless-stopped
+    environment:
+      # MLflow 3 starts a background job runner (~8 extra Python processes, ~2 GB) for GenAI features
+      # this project does not use. Off: the server then needs ~250 MB.
+      MLFLOW_SERVER_ENABLE_JOB_EXECUTION: "false"
+    command: >
+      mlflow server --host 0.0.0.0 --port 5000 --workers 1
+      --backend-store-uri postgresql+psycopg2://ds_candidate:ds_candidate_pw@postgres:5432/mlflow
+      --artifacts-destination /mlartifacts
+      --allowed-hosts "localhost:5001,127.0.0.1:5001,host.docker.internal:5001,mlflow:5000"
+    ports:
+      # Host port 5001: macOS AirPlay Receiver (ControlCenter) already listens on 5000.
+      - "5001:5000"
+    volumes:
+      - mlartifacts:/mlartifacts
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   pgdata:
+  mlartifacts:
