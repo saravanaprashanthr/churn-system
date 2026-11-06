@@ -10,8 +10,8 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 |------|-----------------------------------|-----------|-----------------|
 | A. Time-series SQL        | Done | `sql/`, `sql/PERFORMANCE_REPORT.md`, `evidence/sql/` | Warm medians: A1 1,580 → 785 ms, A2 88 → 16 ms, A3a 91 → 33 ms, A3b 701 → 21 ms; all results identical (two-way `EXCEPT ALL`) |
 | B. Data quality           | Done | `data_quality/`, `tests/data_quality/`, `sql/02_dq_tables.sql`, `evidence/dq/` | 40 SQL rules over 7 dimensions, block/warn + quarantine; full data: PASS (0 blocking, 6 warnings, 19,970 rows quarantined, 25 s); blocks correctly on stale data; 137 tests, 98% coverage |
-| C. Data prep pipeline     | Not started | | |
-| D. Model development      | Not started | | |
+| C. Data prep pipeline     | Done (☆ real KFP cluster: not done) | `pipeline/`, `pipeline/pipeline.yaml`, `evidence/pipeline/` | KFP v2, 5 containerized steps on `churn-pipeline:1fb0592`; DockerRunner runs; idempotent backfill of 65 cutoffs → 31,296 rows; repeat run returns same content-hash version |
+| D. Model development      | Done | `training/`, MLflow `churn-90d` v3, `evidence/training/` | Embargoed time split; baseline + 5 tracked iterations; final ensemble test PR-AUC 0.899 vs baseline 0.891; cost-based threshold 0.921; features recomputed from raw data: 0 mismatches |
 | E. Code quality & tests   | Not started | | |
 | F. Kubernetes deployment  | Not started | | |
 | G. CI/CD                  | Not started | | |
@@ -56,6 +56,47 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 - **Not done / limitations:** late-arriving rows cannot be detected (no ingestion timestamp); order status
   history is not available; no alerting integration yet (Part H).
 - **How to reproduce:** `data_quality/README.md`.
+
+## Part C: Data preparation pipeline
+- **Claims → evidence**
+  - Compiled IR YAML, every step on the SHA-tagged image → `evidence/pipeline/pipeline.yaml` (= `pipeline/pipeline.yaml`)
+  - One run via the KFP local DockerRunner (5 containers: extract → DQ gate → transform → validate → publish) →
+    `evidence/pipeline/run_log.txt`; parameters, artifacts and dataset version → `evidence/pipeline/run_summary.md`
+  - Re-run / multi-date demo: repeating cutoff 2026-03-30 returns the same version `20260330-3c4085f162f3`
+    with `created=False` → `evidence/pipeline/backfill_log.txt`
+  - Full backfill, 65 cutoffs, 62 new + 3 existing versions, 31,296 rows → `evidence/pipeline/backfill_full_summary.txt`
+  - Component tests: 42 passed, 94% coverage, including a leakage test and an integration test chaining the real
+    component functions on a seeded schema → `evidence/pipeline/component_tests.txt`
+- **Techniques used and why:** lightweight KFP components on one pinned image (`install_kfp_package=False`, so nothing
+  is installed at run time); content-hash dataset versions for idempotent publishing; the DB password reaches
+  containers via `PGPASSWORD`, never as a parameter; caching off so re-runs really run; pandera for the feature
+  table. Details: `pipeline/README.md`.
+- **Costs / trade-offs:** the DQ gate runs in every pipeline run (~25 s of ~37 s) although it is idempotent per
+  snapshot; one run per cutoff instead of a `ParallelFor`; population limited to recent buyers (~480–505 per cutoff).
+- **Not done / limitations:** ☆ real KFP deployment on kind (8 GB RAM); steps to do it are in `pipeline/README.md`.
+- **How to reproduce:** `pipeline/README.md` → Run.
+
+## Part D: Model development
+- **Claims → evidence**
+  - Every run with params, metrics, git SHA, data version, model and signature → `evidence/training/mlflow_runs.csv`
+    (30 runs, tagged by `training_round`); registry `churn-90d` v3 alias `candidate` (git `08ad93d`)
+  - Baseline + 5 iterations, what helped and what didn't, including a failed round → `evidence/training/experiment_log.md`
+  - Test (scored once): ensemble PR-AUC 0.899 / ROC-AUC 0.870 / Brier 0.122 vs baseline 0.891 / 0.863 / 0.124 →
+    `evidence/training/train_log.txt`
+  - Error analysis by segment and feature importance → `evidence/training/metrics_by_segment.md`
+  - Leakage: all 31,296 published feature rows and labels recomputed from raw data, 0 mismatches →
+    `evidence/training/leakage_checks.md`
+  - Model card with intended use, cost assumptions, threshold sensitivity, limitations → `evidence/training/model_card.md`
+  - 24 tests, 91% coverage of `training/` → `evidence/training/test_output.txt`
+- **Techniques used and why:** split by cutoff with a 90-day embargo (labels of one split close before the next
+  starts); selection on valid PR-AUC, test once; Optuna (seeded TPE); calibration only if it improves Brier on
+  later held-out validation weeks; profit-maximising threshold from stated costs; permutation importance;
+  MLflow server with a Postgres backend (☆ partly: artifacts proxied by the server instead of MinIO).
+- **Costs / trade-offs:** one validation window (9 weeks), so small differences are noisy; the threshold depends
+  heavily on the cost assumptions (sensitivity table in the model card); boosting did not beat the linear model alone.
+- **Not done / limitations:** MinIO artifact store; rolling-origin CV; uplift modelling.
+- **How to reproduce:** `docker compose up -d mlflow`, then
+  `DATABASE_URL=... MLFLOW_TRACKING_URI=http://localhost:5001 python -m training.train`.
 
 ## Biggest trade-offs I made and what I would do with more time
 <to fill at the end>

@@ -1,0 +1,43 @@
+2026/11/06 12:31:52 INFO mlflow.agent.hint: Load the `mlflow-trace-instrumentation` skill at /Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/mlflow/assistant/skills/mlflow-trace-instrumentation/SKILL.md before writing any tracing code; it ships with this MLflow install. Set MLFLOW_DISABLE_AGENT_HINT=1 to silence this.
+2026/11/06 12:31:54 INFO mlflow.tracking.fluent: Experiment with name 'churn-90d' does not exist. Creating a new experiment.
+2026-11-06 12:31:55,271 INFO training.data loaded 31296 rows from 65 dataset versions
+2026-11-06 12:31:55,326 INFO training.data train: 8905 rows, 19 cutoffs, churn rate 0.667
+2026-11-06 12:31:55,326 INFO training.data valid: 4323 rows, 9 cutoffs, churn rate 0.672
+2026-11-06 12:31:55,327 INFO training.data test: 6435 rows, 13 cutoffs, churn rate 0.668
+2026-11-06 12:31:55,855 INFO training heuristic_recency          valid pr_auc=0.8575 roc_auc=0.7845
+2026/11/06 12:31:58 WARNING mlflow.utils.environment: Failed to resolve installed pip version. ``pip`` will be added to conda.yaml environment spec without a version specifier.
+2026-11-06 12:31:58,961 INFO training 0_baseline_logreg          valid pr_auc=0.9079 roc_auc=0.8615 brier=0.1220
+2026/11/06 12:32:02 WARNING mlflow.utils.environment: Failed to resolve installed pip version. ``pip`` will be added to conda.yaml environment spec without a version specifier.
+2026-11-06 12:32:02,279 INFO training 1_gradient_boosting        valid pr_auc=0.8926 roc_auc=0.8448 brier=0.1423
+2026/11/06 12:32:05 WARNING mlflow.utils.environment: Failed to resolve installed pip version. ``pip`` will be added to conda.yaml environment spec without a version specifier.
+2026-11-06 12:32:05,256 INFO training 2_gb_derived_features      valid pr_auc=0.8966 roc_auc=0.8488 brier=0.1367
+2026-11-06 12:32:05,256 INFO training derived features kept
+2026/11/06 12:32:33 WARNING mlflow.utils.environment: Failed to resolve installed pip version. ``pip`` will be added to conda.yaml environment spec without a version specifier.
+2026-11-06 12:32:33,854 INFO training 3_gb_tuned                 valid pr_auc=0.9060 roc_auc=0.8717 brier=0.1200
+2026/11/06 12:32:35 WARNING mlflow.utils.environment: Failed to resolve installed pip version. ``pip`` will be added to conda.yaml environment spec without a version specifier.
+2026-11-06 12:32:36,007 INFO training 4_calibrated               valid pr_auc=0.9050 roc_auc=0.8646 brier=0.1197
+Successfully registered model 'churn-90d'.
+2026/11/06 12:32:38 INFO mlflow.store.model_registry.abstract_store: Waiting up to 300 seconds for model version to finish creation. Model name: churn-90d, version 1
+Created version '1' of model 'churn-90d'.
+2026-11-06 12:32:38,256 INFO training registered churn-90d version 1 with alias 'candidate'
+2026-11-06 12:32:38,260 INFO training test pr_auc=0.8891 (baseline 0.8908); threshold=1.0000; registered version 1
+🏃 View run heuristic_recency at: http://localhost:5001/#/experiments/1/runs/26e89d1bf6e04ab3b5990f35a1e5bfb5
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 0_baseline_logreg at: http://localhost:5001/#/experiments/1/runs/7eecc671986b448689306106c9a6acfd
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 1_gradient_boosting at: http://localhost:5001/#/experiments/1/runs/cca155aad033497aa41ec85a2ec1f5c0
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 2_gb_derived_features at: http://localhost:5001/#/experiments/1/runs/234b6a93b7e84247b9941e730fbbb7aa
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 3_gb_tuned at: http://localhost:5001/#/experiments/1/runs/dbe1ea0f89c24ad5bdb8bcbdf50ae6a5
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 3_gb_tuned at: http://localhost:5001/#/experiments/1/runs/dbe1ea0f89c24ad5bdb8bcbdf50ae6a5
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 4_calibrated at: http://localhost:5001/#/experiments/1/runs/f98d6633f7e84a3288a1197d53bcfb4c
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 4_calibrated at: http://localhost:5001/#/experiments/1/runs/f98d6633f7e84a3288a1197d53bcfb4c
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 0_baseline_logreg at: http://localhost:5001/#/experiments/1/runs/7eecc671986b448689306106c9a6acfd
+🧪 View experiment at: http://localhost:5001/#/experiments/1
+🏃 View run 4_calibrated at: http://localhost:5001/#/experiments/1/runs/f98d6633f7e84a3288a1197d53bcfb4c
+🧪 View experiment at: http://localhost:5001/#/experiments/1

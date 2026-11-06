@@ -1,0 +1,47 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.2.0, pluggy-1.7.0 -- /Users/saravanaprashanth/churn-system/.venv/bin/python
+rootdir: /Users/saravanaprashanth/churn-system
+configfile: pyproject.toml
+plugins: cov-7.1.0, typeguard-4.6.0, anyio-4.16.0
+collecting ... collected 24 items
+
+tests/training/test_data_integration.py::test_load_expands_features_and_uses_one_version_per_cutoff PASSED [  4%]
+tests/training/test_data_integration.py::test_unlabeled_and_other_parameter_versions_are_ignored PASSED [  8%]
+tests/training/test_metrics.py::test_top_k_metrics_on_a_known_ranking PASSED [ 12%]
+tests/training/test_metrics.py::test_perfect_ranking_has_pr_auc_one_and_random_lift_one PASSED [ 16%]
+tests/training/test_metrics.py::test_top_k_rejects_bad_fraction PASSED   [ 20%]
+tests/training/test_metrics.py::test_campaign_profit_counts_gains_only_on_contacted_churners PASSED [ 25%]
+tests/training/test_metrics.py::test_best_threshold_stops_where_extra_contacts_lose_money PASSED [ 29%]
+tests/training/test_metrics.py::test_best_threshold_contacts_nobody_when_offers_never_pay PASSED [ 33%]
+tests/training/test_metrics.py::test_breakeven_probability PASSED        [ 37%]
+tests/training/test_metrics.py::test_segment_metrics_per_group_and_single_class_segments PASSED [ 41%]
+tests/training/test_split_and_models.py::test_default_split_has_embargo_between_label_windows PASSED [ 45%]
+tests/training/test_split_and_models.py::test_overlapping_or_reversed_splits_are_rejected[kwargs0] PASSED [ 50%]
+tests/training/test_split_and_models.py::test_overlapping_or_reversed_splits_are_rejected[kwargs1] PASSED [ 54%]
+tests/training/test_split_and_models.py::test_overlapping_or_reversed_splits_are_rejected[kwargs2] PASSED [ 58%]
+tests/training/test_split_and_models.py::test_split_assigns_by_cutoff_and_drops_embargo_weeks PASSED [ 62%]
+tests/training/test_split_and_models.py::test_data_version_depends_only_on_the_set_of_versions PASSED [ 66%]
+tests/training/test_split_and_models.py::test_derived_features PASSED    [ 70%]
+tests/training/test_split_and_models.py::test_models_learn_the_synthetic_signal_and_handle_unseen_categories[logreg] PASSED [ 75%]
+tests/training/test_split_and_models.py::test_models_learn_the_synthetic_signal_and_handle_unseen_categories[hgb] PASSED [ 79%]
+tests/training/test_split_and_models.py::test_models_learn_the_synthetic_signal_and_handle_unseen_categories[hgb_derived] PASSED [ 83%]
+tests/training/test_split_and_models.py::test_calibration_keeps_the_model_frozen_and_returns_probabilities PASSED [ 87%]
+tests/training/test_split_and_models.py::test_log_features_keep_order_and_leave_trends_untouched PASSED [ 91%]
+tests/training/test_split_and_models.py::test_every_saved_model_type_is_in_the_skops_trust_list PASSED [ 95%]
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate PASSED [100%]
+
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.15-final-0 _______________
+
+Name                   Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------------------
+training/__init__.py       0      0      0      0   100%
+training/config.py        41      0     12      0   100%
+training/data.py          49      2      8      2    93%   64, 89
+training/metrics.py       54      1      8      1    97%   27
+training/models.py        59      0      4      0   100%
+training/train.py        225     32     20      4    84%   71-72, 214->216, 302-311, 377, 435-465, 469
+------------------------------------------------------------------
+TOTAL                    428     35     52      7    91%
+Required test coverage of 80.0% reached. Total coverage: 90.83%
+============================= 24 passed in 42.79s ==============================
