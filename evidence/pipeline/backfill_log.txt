@@ -1,0 +1,1233 @@
+2026-11-05 23:41:58,054 INFO kfp.local.pip_install_manager Docker PipInstallManager configured: max_concurrent=1
+2026-11-05 23:41:58,056 INFO run_local === pipeline run: cutoff=2026-03-16 snapshot=2026-07-01
+23:41:58.058 - INFO - Running pipeline: [95m'churn-dataset-prep'[0m
+/Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/kfp/local/orchestrator/task_executor.py:100: UserWarning: Task 'extract-op': settings ['display_name'] have no effect in the current local runner and will be ignored.
+  _warn_local_only_noops(task_name, task_spec, executor_spec.container)
+--------------------------------------------------------------------------------
+23:41:58.060 - INFO - Executing task [96m'extract-op'[0m
+23:41:58.060 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:11:58,745 INFO]: Looking for component `extract_op` in --component_module_path `/tmp/tmp.mcZhJr1oxm/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:11:58,745 INFO]: Loading KFP component "extract_op" from /tmp/tmp.mcZhJr1oxm/ephemeral_component.py (directory "/tmp/tmp.mcZhJr1oxm" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:11:58,745 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "parameterValues": {
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-16",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "raw": {
+                    "artifacts": [
+                        {
+                            "name": "raw",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/extract-op/raw",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/extract-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:12:03,457 INFO]: extracted customers: 50000 rows
+    [KFP Executor 2026-11-05 18:12:03,459 INFO]: extracted orders: 244378 rows
+    [KFP Executor 2026-11-05 18:12:03,459 INFO]: extracted events_daily: 1221217 rows
+    [KFP Executor 2026-11-05 18:12:04,434 WARNING]: Automatic preview unavailable for output 'raw'; its artifact is unchanged: Store exactly one supported data file directly inside each Dataset directory.
+    [KFP Executor 2026-11-05 18:12:04,435 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/extract-op/executor_output.json.
+23:42:04.725 - INFO - Task [96m'extract-op'[0m finished with status [92mSUCCESS[0m
+23:42:04.727 - INFO - Task [96m'extract-op'[0m outputs:
+    raw: Dataset( name='raw',
+                  uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/extract-op/raw',
+                  metadata={'events_end': '2026-03-16', 'events_start': '2025-12-16', 'rows': {'events_daily': 1221217.0, 'customers': 50000.0, 'orders': 244378.0}, 'orders_end': '2026-06-14', 'labeled': True, 'orders_start': '2025-03-16'} )
+/Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/kfp/local/orchestrator/task_executor.py:100: UserWarning: Task 'dq-gate-op': settings ['display_name'] have no effect in the current local runner and will be ignored.
+  _warn_local_only_noops(task_name, task_spec, executor_spec.container)
+--------------------------------------------------------------------------------
+23:42:04.730 - INFO - Executing task [96m'dq-gate-op'[0m
+23:42:04.730 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:12:05,344 INFO]: Looking for component `dq_gate_op` in --component_module_path `/tmp/tmp.cBgFyQrGBA/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:12:05,344 INFO]: Loading KFP component "dq_gate_op" from /tmp/tmp.cBgFyQrGBA/ephemeral_component.py (directory "/tmp/tmp.cBgFyQrGBA" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:12:05,345 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "parameterValues": {
+                "dq_lookback_days": 28,
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "snapshot_date": "2026-07-01"
+            }
+        },
+        "outputs": {
+            "parameters": {
+                "Output": {
+                    "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/Output"
+                }
+            },
+            "artifacts": {
+                "exclusions": {
+                    "artifacts": [
+                        {
+                            "name": "exclusions",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/exclusions",
+                            "metadata": {}
+                        }
+                    ]
+                },
+                "report": {
+                    "artifacts": [
+                        {
+                            "name": "report",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/report",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:12:05,840 INFO]: data quality gate dq_20260701: 40 rules, as_of=2026-07-01
+    [KFP Executor 2026-11-05 18:12:06,000 INFO]: ORD_ORDER_DATE_NOT_NULL pass: 10016/500000 violations (2.0032%, tolerance 5.00%), quarantined 10016, 0.10s
+    [KFP Executor 2026-11-05 18:12:06,025 INFO]: ORD_REQUIRED_NOT_NULL pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:12:06,104 INFO]: ITM_REQUIRED_NOT_NULL pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.08s
+    [KFP Executor 2026-11-05 18:12:06,797 INFO]: EVT_REQUIRED_NOT_NULL pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.69s
+    [KFP Executor 2026-11-05 18:12:07,093 INFO]: EVT_PRODUCT_ID_NOT_NULL pass: 199962/10000000 violations (1.9996%, tolerance 5.00%), quarantined 0, 0.29s
+    [KFP Executor 2026-11-05 18:12:07,109 INFO]: CUS_MARKETING_OPT_IN_NOT_NULL pass: 4993/50000 violations (9.9860%, tolerance 15.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:12:07,112 WARNING]: PRD_CATEGORY_NOT_NULL warn: 97/2000 violations (4.8500%, tolerance 0.00%), quarantined 0, 0.00s
+    [KFP Executor 2026-11-05 18:12:07,213 INFO]: ORD_ORDER_ID_UNIQUE pass: 0/500000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.10s
+    [KFP Executor 2026-11-05 18:12:14,897 INFO]: EVT_DUPLICATE_ROWS pass: 0/10000000 violations (0.0000%, tolerance 0.10%), quarantined 0, 7.68s
+    [KFP Executor 2026-11-05 18:12:22,190 WARNING]: EVT_EVENT_ID_UNIQUE warn: 29883/10000000 violations (0.2988%, tolerance 0.00%), quarantined 0, 7.30s
+    [KFP Executor 2026-11-05 18:12:22,279 WARNING]: CUS_EMAIL_UNIQUE warn: 516/50000 violations (1.0320%, tolerance 0.00%), quarantined 0, 0.09s
+    [KFP Executor 2026-11-05 18:12:22,316 INFO]: ORD_STATUS_VALID pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.04s
+    [KFP Executor 2026-11-05 18:12:22,346 INFO]: ORD_TOTAL_RANGE pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:12:22,441 INFO]: ITM_QUANTITY_RANGE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.09s
+    [KFP Executor 2026-11-05 18:12:22,502 INFO]: ITM_UNIT_PRICE_POSITIVE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.06s
+    [KFP Executor 2026-11-05 18:12:22,506 INFO]: PRD_UNIT_PRICE_POSITIVE pass: 0/2000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.00s
+    [KFP Executor 2026-11-05 18:12:22,948 INFO]: EVT_TYPE_VALID pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.44s
+    [KFP Executor 2026-11-05 18:12:22,955 INFO]: CUS_SIGNUP_NOT_FUTURE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:12:22,982 INFO]: CUS_EMAIL_FORMAT pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:12:22,993 INFO]: CUS_COUNTRY_CODE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:12:23,235 INFO]: CUS_ORDER_VOLUME_PLAUSIBLE pass: 23/945 violations (2.4339%, tolerance 5.00%), quarantined 23, 0.24s
+    [KFP Executor 2026-11-05 18:12:23,272 INFO]: ORD_CUSTOMER_EXISTS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.04s
+    [KFP Executor 2026-11-05 18:12:23,424 INFO]: ITM_ORDER_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.15s
+    [KFP Executor 2026-11-05 18:12:23,494 INFO]: ITM_PRODUCT_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.07s
+    [KFP Executor 2026-11-05 18:12:24,198 INFO]: EVT_CUSTOMER_EXISTS pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.70s
+    [KFP Executor 2026-11-05 18:12:24,713 INFO]: EVT_PRODUCT_EXISTS pass: 0/9800038 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.51s
+    [KFP Executor 2026-11-05 18:12:25,512 INFO]: ORD_TOTAL_MATCHES_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.78s
+    [KFP Executor 2026-11-05 18:12:25,704 INFO]: ORD_HAS_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.19s
+    [KFP Executor 2026-11-05 18:12:25,806 INFO]: ITM_PRICE_MATCHES_PRODUCT pass: 0/1530225 violations (0.0000%, tolerance 5.00%), quarantined 0, 0.10s
+    [KFP Executor 2026-11-05 18:12:25,870 WARNING]: ORD_AFTER_SIGNUP warn: 14982/489984 violations (3.0577%, tolerance 0.00%), quarantined 0, 0.06s
+    [KFP Executor 2026-11-05 18:12:27,071 WARNING]: EVT_AFTER_SIGNUP warn: 1042178/10000000 violations (10.4218%, tolerance 0.00%), quarantined 0, 1.20s
+    [KFP Executor 2026-11-05 18:12:27,571 WARNING]: EVT_PURCHASE_HAS_ORDERS warn: 683885/700840 violations (97.5808%, tolerance 0.00%), quarantined 0, 0.50s
+    [KFP Executor 2026-11-05 18:12:27,588 INFO]: ORD_FRESHNESS pass: 0/1 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:12:27,870 INFO]: EVT_FRESHNESS pass: 0/1 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.28s
+    [KFP Executor 2026-11-05 18:12:27,894 INFO]: ORD_NOT_FUTURE pass: 0/489984 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:12:29,398 INFO]: EVT_NOT_FUTURE pass: 9931/10000000 violations (0.0993%, tolerance 1.00%), quarantined 9931, 1.50s
+    [KFP Executor 2026-11-05 18:12:29,438 INFO]: ORD_DAILY_VOLUME_DROP pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.04s
+    [KFP Executor 2026-11-05 18:12:29,454 INFO]: ORD_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:12:29,525 INFO]: EVT_DAILY_VOLUME_DROP pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.07s
+    [KFP Executor 2026-11-05 18:12:29,593 INFO]: EVT_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.07s
+    [KFP Executor 2026-11-05 18:12:29,598 INFO]: data quality gate dq_20260701: PASS, 0 blocking, 6 warnings, 23 excluded customers, 23.8s
+    [KFP Executor 2026-11-05 18:12:29,796 WARNING]: Automatic preview unavailable for output 'exclusions'; its artifact is unchanged: Store exactly one supported data file directly inside each Dataset directory.
+    [KFP Executor 2026-11-05 18:12:29,797 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/executor_output.json.
+23:42:30.029 - INFO - Task [96m'dq-gate-op'[0m finished with status [92mSUCCESS[0m
+23:42:30.040 - INFO - Task [96m'dq-gate-op'[0m outputs:
+    Output: 'dq_20260701'
+    exclusions: Dataset( name='exclusions',
+                         uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/exclusions',
+                         metadata={} )
+    report: Artifact( name='report',
+                      uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/report',
+                      metadata={'status': 'PASS', 'rows_quarantined': 19970.0, 'run_id': 'dq_20260701', 'warnings': ['PRD_CATEGORY_NOT_NULL', 'EVT_EVENT_ID_UNIQUE', 'CUS_EMAIL_UNIQUE', 'ORD_AFTER_SIGNUP', 'EVT_AFTER_SIGNUP', 'EVT_PURCHASE_HAS_ORDERS']} )
+/Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/kfp/local/orchestrator/task_executor.py:100: UserWarning: Task 'transform-op': settings ['display_name'] have no effect in the current local runner and will be ignored.
+  _warn_local_only_noops(task_name, task_spec, executor_spec.container)
+--------------------------------------------------------------------------------
+23:42:30.047 - INFO - Executing task [96m'transform-op'[0m
+23:42:30.047 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:12:30,656 INFO]: Looking for component `transform_op` in --component_module_path `/tmp/tmp.cN5INiZ08x/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:12:30,656 INFO]: Loading KFP component "transform_op" from /tmp/tmp.cN5INiZ08x/ephemeral_component.py (directory "/tmp/tmp.cN5INiZ08x" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:12:30,657 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "exclusions": {
+                    "artifacts": [
+                        {
+                            "name": "exclusions",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/dq-gate-op/exclusions",
+                            "metadata": {}
+                        }
+                    ]
+                },
+                "raw": {
+                    "artifacts": [
+                        {
+                            "name": "raw",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/extract-op/raw",
+                            "metadata": {
+                                "events_end": "2026-03-16",
+                                "events_start": "2025-12-16",
+                                "rows": {
+                                    "events_daily": 1221217.0,
+                                    "customers": 50000.0,
+                                    "orders": 244378.0
+                                },
+                                "orders_end": "2026-06-14",
+                                "labeled": true,
+                                "orders_start": "2025-03-16"
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-16",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/transform-op/features",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/transform-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:12:31,763 INFO]: built 483 feature rows for cutoff 2026-03-16
+    [KFP Executor 2026-11-05 18:12:31,782 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/transform-op/executor_output.json.
+23:42:32.000 - INFO - Task [96m'transform-op'[0m finished with status [92mSUCCESS[0m
+23:42:32.004 - INFO - Task [96m'transform-op'[0m outputs:
+    features: Dataset( name='features',
+                       uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/transform-op/features',
+                       metadata={'rows': 483.0, 'dq_run_id': 'dq_20260701', 'labeled': True, '_kfp_preview': {'storage': 'sibling', 'version': 2.0}} )
+/Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/kfp/local/orchestrator/task_executor.py:100: UserWarning: Task 'validate-op': settings ['display_name'] have no effect in the current local runner and will be ignored.
+  _warn_local_only_noops(task_name, task_spec, executor_spec.container)
+--------------------------------------------------------------------------------
+23:42:32.010 - INFO - Executing task [96m'validate-op'[0m
+23:42:32.011 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:12:32,544 INFO]: Looking for component `validate_op` in --component_module_path `/tmp/tmp.1BSjQrlkbZ/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:12:32,544 INFO]: Loading KFP component "validate_op" from /tmp/tmp.1BSjQrlkbZ/ephemeral_component.py (directory "/tmp/tmp.1BSjQrlkbZ" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:12:32,545 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/transform-op/features",
+                            "metadata": {
+                                "rows": 483.0,
+                                "_kfp_preview": {
+                                    "storage": "sibling",
+                                    "version": 2.0
+                                },
+                                "labeled": true,
+                                "dq_run_id": "dq_20260701"
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "min_rows": 50,
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-16",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "validation": {
+                    "artifacts": [
+                        {
+                            "name": "validation",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/validate-op/validation",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/validate-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:12:33,239 INFO]: validation passed: {'passed': True, 'rows': 483, 'churn_rate': 0.6666666666666666, 'labeled': True, 'problems': []}
+    [KFP Executor 2026-11-05 18:12:33,239 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/validate-op/executor_output.json.
+23:42:33.427 - INFO - Task [96m'validate-op'[0m finished with status [92mSUCCESS[0m
+23:42:33.428 - INFO - Task [96m'validate-op'[0m outputs:
+    validation: Artifact( name='validation',
+                          uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/validate-op/validation',
+                          metadata={'labeled': True, 'rows': 483.0, 'problems': [], 'churn_rate': 0.6666666666666666, 'passed': True} )
+/Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/kfp/local/orchestrator/task_executor.py:100: UserWarning: Task 'publish-op': settings ['display_name'] have no effect in the current local runner and will be ignored.
+  _warn_local_only_noops(task_name, task_spec, executor_spec.container)
+--------------------------------------------------------------------------------
+23:42:33.429 - INFO - Executing task [96m'publish-op'[0m
+23:42:33.429 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:12:33,936 INFO]: Looking for component `publish_op` in --component_module_path `/tmp/tmp.pE3e1N4C7D/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:12:33,936 INFO]: Loading KFP component "publish_op" from /tmp/tmp.pE3e1N4C7D/ephemeral_component.py (directory "/tmp/tmp.pE3e1N4C7D" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:12:33,937 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/transform-op/features",
+                            "metadata": {
+                                "rows": 483.0,
+                                "_kfp_preview": {
+                                    "storage": "sibling",
+                                    "version": 2.0
+                                },
+                                "labeled": true,
+                                "dq_run_id": "dq_20260701"
+                            }
+                        }
+                    ]
+                },
+                "validation": {
+                    "artifacts": [
+                        {
+                            "name": "validation",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/validate-op/validation",
+                            "metadata": {
+                                "labeled": true,
+                                "problems": [],
+                                "rows": 483.0,
+                                "churn_rate": 0.6666666666666666,
+                                "passed": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-16",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365,
+                "dq_run_id": "dq_20260701"
+            }
+        },
+        "outputs": {
+            "parameters": {
+                "Output": {
+                    "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/publish-op/Output"
+                }
+            },
+            "artifacts": {
+                "dataset": {
+                    "artifacts": [
+                        {
+                            "name": "dataset",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/publish-op/dataset",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/publish-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:12:34,474 INFO]: published dataset 20260316-662e953d2fcb: 483 rows
+    [KFP Executor 2026-11-05 18:12:34,476 INFO]: dataset_version=20260316-662e953d2fcb created=True
+    [KFP Executor 2026-11-05 18:12:34,480 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/publish-op/executor_output.json.
+23:42:34.622 - INFO - Task [96m'publish-op'[0m finished with status [92mSUCCESS[0m
+23:42:34.623 - INFO - Task [96m'publish-op'[0m outputs:
+    Output: '20260316-662e953d2fcb'
+    dataset: Dataset( name='dataset',
+                      uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-41-58-058138/publish-op/dataset',
+                      metadata={'code_version': '1fb0592', 'created': True, 'rows': 483.0, '_kfp_preview': {'storage': 'sibling', 'version': 2.0}, 'dataset_version': '20260316-662e953d2fcb'} )
+--------------------------------------------------------------------------------
+23:42:34.624 - INFO - Pipeline [95m'churn-dataset-prep'[0m finished with status [92mSUCCESS[0m
+2026-11-05 23:42:34,625 INFO root Cleaned up workspace: /var/folders/wb/18283jys4q71093j2clldfp80000gn/T/kfp-workspace-zaws0_dp
+2026-11-05 23:42:34,626 INFO run_local === cutoff=2026-03-16 -> dataset_version=20260316-662e953d2fcb
+2026-11-05 23:42:34,626 INFO run_local === pipeline run: cutoff=2026-03-23 snapshot=2026-07-01
+23:42:34.627 - INFO - Running pipeline: [95m'churn-dataset-prep'[0m
+--------------------------------------------------------------------------------
+23:42:34.629 - INFO - Executing task [96m'extract-op'[0m
+23:42:34.629 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:12:35,110 INFO]: Looking for component `extract_op` in --component_module_path `/tmp/tmp.s4nL3tDTIf/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:12:35,110 INFO]: Loading KFP component "extract_op" from /tmp/tmp.s4nL3tDTIf/ephemeral_component.py (directory "/tmp/tmp.s4nL3tDTIf" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:12:35,111 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "parameterValues": {
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-23",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "raw": {
+                    "artifacts": [
+                        {
+                            "name": "raw",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/extract-op/raw",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/extract-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:12:38,471 INFO]: extracted customers: 50000 rows
+    [KFP Executor 2026-11-05 18:12:38,472 INFO]: extracted orders: 244306 rows
+    [KFP Executor 2026-11-05 18:12:38,472 INFO]: extracted events_daily: 1234024 rows
+    [KFP Executor 2026-11-05 18:12:38,987 WARNING]: Automatic preview unavailable for output 'raw'; its artifact is unchanged: Store exactly one supported data file directly inside each Dataset directory.
+    [KFP Executor 2026-11-05 18:12:38,988 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/extract-op/executor_output.json.
+23:42:39.277 - INFO - Task [96m'extract-op'[0m finished with status [92mSUCCESS[0m
+23:42:39.279 - INFO - Task [96m'extract-op'[0m outputs:
+    raw: Dataset( name='raw',
+                  uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/extract-op/raw',
+                  metadata={'events_end': '2026-03-23', 'events_start': '2025-12-23', 'rows': {'events_daily': 1234024.0, 'customers': 50000.0, 'orders': 244306.0}, 'orders_end': '2026-06-21', 'labeled': True, 'orders_start': '2025-03-23'} )
+--------------------------------------------------------------------------------
+23:42:39.281 - INFO - Executing task [96m'dq-gate-op'[0m
+23:42:39.281 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:12:39,778 INFO]: Looking for component `dq_gate_op` in --component_module_path `/tmp/tmp.wkEMyyvBXt/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:12:39,778 INFO]: Loading KFP component "dq_gate_op" from /tmp/tmp.wkEMyyvBXt/ephemeral_component.py (directory "/tmp/tmp.wkEMyyvBXt" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:12:39,778 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "parameterValues": {
+                "dq_lookback_days": 28,
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "snapshot_date": "2026-07-01"
+            }
+        },
+        "outputs": {
+            "parameters": {
+                "Output": {
+                    "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/Output"
+                }
+            },
+            "artifacts": {
+                "exclusions": {
+                    "artifacts": [
+                        {
+                            "name": "exclusions",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/exclusions",
+                            "metadata": {}
+                        }
+                    ]
+                },
+                "report": {
+                    "artifacts": [
+                        {
+                            "name": "report",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/report",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:12:40,214 INFO]: data quality gate dq_20260701: 40 rules, as_of=2026-07-01
+    [KFP Executor 2026-11-05 18:12:40,367 INFO]: ORD_ORDER_DATE_NOT_NULL pass: 10016/500000 violations (2.0032%, tolerance 5.00%), quarantined 10016, 0.09s
+    [KFP Executor 2026-11-05 18:12:40,390 INFO]: ORD_REQUIRED_NOT_NULL pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:12:40,478 INFO]: ITM_REQUIRED_NOT_NULL pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.09s
+    [KFP Executor 2026-11-05 18:12:41,164 INFO]: EVT_REQUIRED_NOT_NULL pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.68s
+    [KFP Executor 2026-11-05 18:12:41,518 INFO]: EVT_PRODUCT_ID_NOT_NULL pass: 199962/10000000 violations (1.9996%, tolerance 5.00%), quarantined 0, 0.35s
+    [KFP Executor 2026-11-05 18:12:41,529 INFO]: CUS_MARKETING_OPT_IN_NOT_NULL pass: 4993/50000 violations (9.9860%, tolerance 15.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:12:41,532 WARNING]: PRD_CATEGORY_NOT_NULL warn: 97/2000 violations (4.8500%, tolerance 0.00%), quarantined 0, 0.00s
+    [KFP Executor 2026-11-05 18:12:41,687 INFO]: ORD_ORDER_ID_UNIQUE pass: 0/500000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.15s
+    [KFP Executor 2026-11-05 18:12:49,529 INFO]: EVT_DUPLICATE_ROWS pass: 0/10000000 violations (0.0000%, tolerance 0.10%), quarantined 0, 7.83s
+    [KFP Executor 2026-11-05 18:12:56,074 WARNING]: EVT_EVENT_ID_UNIQUE warn: 29883/10000000 violations (0.2988%, tolerance 0.00%), quarantined 0, 6.53s
+    [KFP Executor 2026-11-05 18:12:56,224 WARNING]: CUS_EMAIL_UNIQUE warn: 516/50000 violations (1.0320%, tolerance 0.00%), quarantined 0, 0.14s
+    [KFP Executor 2026-11-05 18:12:56,262 INFO]: ORD_STATUS_VALID pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.04s
+    [KFP Executor 2026-11-05 18:12:56,297 INFO]: ORD_TOTAL_RANGE pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:12:56,427 INFO]: ITM_QUANTITY_RANGE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.13s
+    [KFP Executor 2026-11-05 18:12:56,482 INFO]: ITM_UNIT_PRICE_POSITIVE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.05s
+    [KFP Executor 2026-11-05 18:12:56,484 INFO]: PRD_UNIT_PRICE_POSITIVE pass: 0/2000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.00s
+    [KFP Executor 2026-11-05 18:12:57,252 INFO]: EVT_TYPE_VALID pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.77s
+    [KFP Executor 2026-11-05 18:12:57,259 INFO]: CUS_SIGNUP_NOT_FUTURE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:12:57,285 INFO]: CUS_EMAIL_FORMAT pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:12:57,297 INFO]: CUS_COUNTRY_CODE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:12:57,542 INFO]: CUS_ORDER_VOLUME_PLAUSIBLE pass: 23/945 violations (2.4339%, tolerance 5.00%), quarantined 23, 0.24s
+    [KFP Executor 2026-11-05 18:12:57,577 INFO]: ORD_CUSTOMER_EXISTS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:12:57,728 INFO]: ITM_ORDER_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.15s
+    [KFP Executor 2026-11-05 18:12:57,816 INFO]: ITM_PRODUCT_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.09s
+    [KFP Executor 2026-11-05 18:12:58,569 INFO]: EVT_CUSTOMER_EXISTS pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.75s
+    [KFP Executor 2026-11-05 18:12:59,155 INFO]: EVT_PRODUCT_EXISTS pass: 0/9800038 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.58s
+    [KFP Executor 2026-11-05 18:12:59,964 INFO]: ORD_TOTAL_MATCHES_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.80s
+    [KFP Executor 2026-11-05 18:13:00,142 INFO]: ORD_HAS_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.18s
+    [KFP Executor 2026-11-05 18:13:00,254 INFO]: ITM_PRICE_MATCHES_PRODUCT pass: 0/1530225 violations (0.0000%, tolerance 5.00%), quarantined 0, 0.11s
+    [KFP Executor 2026-11-05 18:13:00,303 WARNING]: ORD_AFTER_SIGNUP warn: 14982/489984 violations (3.0577%, tolerance 0.00%), quarantined 0, 0.05s
+    [KFP Executor 2026-11-05 18:13:01,331 WARNING]: EVT_AFTER_SIGNUP warn: 1042178/10000000 violations (10.4218%, tolerance 0.00%), quarantined 0, 1.03s
+    [KFP Executor 2026-11-05 18:13:01,784 WARNING]: EVT_PURCHASE_HAS_ORDERS warn: 683885/700840 violations (97.5808%, tolerance 0.00%), quarantined 0, 0.45s
+    [KFP Executor 2026-11-05 18:13:01,801 INFO]: ORD_FRESHNESS pass: 0/1 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:13:02,091 INFO]: EVT_FRESHNESS pass: 0/1 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.29s
+    [KFP Executor 2026-11-05 18:13:02,124 INFO]: ORD_NOT_FUTURE pass: 0/489984 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:13:03,849 INFO]: EVT_NOT_FUTURE pass: 9931/10000000 violations (0.0993%, tolerance 1.00%), quarantined 9931, 1.72s
+    [KFP Executor 2026-11-05 18:13:03,890 INFO]: ORD_DAILY_VOLUME_DROP pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.04s
+    [KFP Executor 2026-11-05 18:13:03,914 INFO]: ORD_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:13:03,983 INFO]: EVT_DAILY_VOLUME_DROP pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.07s
+    [KFP Executor 2026-11-05 18:13:04,043 INFO]: EVT_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.06s
+    [KFP Executor 2026-11-05 18:13:04,050 INFO]: data quality gate dq_20260701: PASS, 0 blocking, 6 warnings, 23 excluded customers, 23.8s
+    [KFP Executor 2026-11-05 18:13:04,247 WARNING]: Automatic preview unavailable for output 'exclusions'; its artifact is unchanged: Store exactly one supported data file directly inside each Dataset directory.
+    [KFP Executor 2026-11-05 18:13:04,248 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/executor_output.json.
+23:43:04.490 - INFO - Task [96m'dq-gate-op'[0m finished with status [92mSUCCESS[0m
+23:43:04.508 - INFO - Task [96m'dq-gate-op'[0m outputs:
+    Output: 'dq_20260701'
+    exclusions: Dataset( name='exclusions',
+                         uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/exclusions',
+                         metadata={} )
+    report: Artifact( name='report',
+                      uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/report',
+                      metadata={'status': 'PASS', 'rows_quarantined': 19970.0, 'run_id': 'dq_20260701', 'warnings': ['PRD_CATEGORY_NOT_NULL', 'EVT_EVENT_ID_UNIQUE', 'CUS_EMAIL_UNIQUE', 'ORD_AFTER_SIGNUP', 'EVT_AFTER_SIGNUP', 'EVT_PURCHASE_HAS_ORDERS']} )
+--------------------------------------------------------------------------------
+23:43:04.514 - INFO - Executing task [96m'transform-op'[0m
+23:43:04.514 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:05,063 INFO]: Looking for component `transform_op` in --component_module_path `/tmp/tmp.qLILjVXery/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:05,063 INFO]: Loading KFP component "transform_op" from /tmp/tmp.qLILjVXery/ephemeral_component.py (directory "/tmp/tmp.qLILjVXery" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:05,064 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "exclusions": {
+                    "artifacts": [
+                        {
+                            "name": "exclusions",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/dq-gate-op/exclusions",
+                            "metadata": {}
+                        }
+                    ]
+                },
+                "raw": {
+                    "artifacts": [
+                        {
+                            "name": "raw",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/extract-op/raw",
+                            "metadata": {
+                                "events_end": "2026-03-23",
+                                "events_start": "2025-12-23",
+                                "rows": {
+                                    "events_daily": 1234024.0,
+                                    "customers": 50000.0,
+                                    "orders": 244306.0
+                                },
+                                "orders_end": "2026-06-21",
+                                "labeled": true,
+                                "orders_start": "2025-03-23"
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-23",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/transform-op/features",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/transform-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:06,265 INFO]: built 480 feature rows for cutoff 2026-03-23
+    [KFP Executor 2026-11-05 18:13:06,277 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/transform-op/executor_output.json.
+23:43:06.478 - INFO - Task [96m'transform-op'[0m finished with status [92mSUCCESS[0m
+23:43:06.486 - INFO - Task [96m'transform-op'[0m outputs:
+    features: Dataset( name='features',
+                       uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/transform-op/features',
+                       metadata={'rows': 480.0, 'dq_run_id': 'dq_20260701', 'labeled': True, '_kfp_preview': {'storage': 'sibling', 'version': 2.0}} )
+--------------------------------------------------------------------------------
+23:43:06.488 - INFO - Executing task [96m'validate-op'[0m
+23:43:06.488 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:07,006 INFO]: Looking for component `validate_op` in --component_module_path `/tmp/tmp.XDYKB96hl3/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:07,006 INFO]: Loading KFP component "validate_op" from /tmp/tmp.XDYKB96hl3/ephemeral_component.py (directory "/tmp/tmp.XDYKB96hl3" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:07,007 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/transform-op/features",
+                            "metadata": {
+                                "rows": 480.0,
+                                "_kfp_preview": {
+                                    "storage": "sibling",
+                                    "version": 2.0
+                                },
+                                "labeled": true,
+                                "dq_run_id": "dq_20260701"
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "min_rows": 50,
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-23",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "validation": {
+                    "artifacts": [
+                        {
+                            "name": "validation",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/validate-op/validation",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/validate-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:07,593 INFO]: validation passed: {'passed': True, 'rows': 480, 'churn_rate': 0.6708333333333333, 'labeled': True, 'problems': []}
+    [KFP Executor 2026-11-05 18:13:07,594 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/validate-op/executor_output.json.
+23:43:07.822 - INFO - Task [96m'validate-op'[0m finished with status [92mSUCCESS[0m
+23:43:07.822 - INFO - Task [96m'validate-op'[0m outputs:
+    validation: Artifact( name='validation',
+                          uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/validate-op/validation',
+                          metadata={'labeled': True, 'rows': 480.0, 'problems': [], 'churn_rate': 0.6708333333333333, 'passed': True} )
+--------------------------------------------------------------------------------
+23:43:07.823 - INFO - Executing task [96m'publish-op'[0m
+23:43:07.823 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:08,282 INFO]: Looking for component `publish_op` in --component_module_path `/tmp/tmp.MAbaVx28fI/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:08,283 INFO]: Loading KFP component "publish_op" from /tmp/tmp.MAbaVx28fI/ephemeral_component.py (directory "/tmp/tmp.MAbaVx28fI" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:08,283 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/transform-op/features",
+                            "metadata": {
+                                "rows": 480.0,
+                                "_kfp_preview": {
+                                    "storage": "sibling",
+                                    "version": 2.0
+                                },
+                                "labeled": true,
+                                "dq_run_id": "dq_20260701"
+                            }
+                        }
+                    ]
+                },
+                "validation": {
+                    "artifacts": [
+                        {
+                            "name": "validation",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/validate-op/validation",
+                            "metadata": {
+                                "labeled": true,
+                                "problems": [],
+                                "rows": 480.0,
+                                "churn_rate": 0.6708333333333333,
+                                "passed": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-23",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365,
+                "dq_run_id": "dq_20260701"
+            }
+        },
+        "outputs": {
+            "parameters": {
+                "Output": {
+                    "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/publish-op/Output"
+                }
+            },
+            "artifacts": {
+                "dataset": {
+                    "artifacts": [
+                        {
+                            "name": "dataset",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/publish-op/dataset",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/publish-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:08,765 INFO]: published dataset 20260323-8d9d58efa59a: 480 rows
+    [KFP Executor 2026-11-05 18:13:08,767 INFO]: dataset_version=20260323-8d9d58efa59a created=True
+    [KFP Executor 2026-11-05 18:13:08,771 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/publish-op/executor_output.json.
+23:43:08.937 - INFO - Task [96m'publish-op'[0m finished with status [92mSUCCESS[0m
+23:43:08.938 - INFO - Task [96m'publish-op'[0m outputs:
+    Output: '20260323-8d9d58efa59a'
+    dataset: Dataset( name='dataset',
+                      uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-42-34-626903/publish-op/dataset',
+                      metadata={'code_version': '1fb0592', 'created': True, 'rows': 480.0, '_kfp_preview': {'storage': 'sibling', 'version': 2.0}, 'dataset_version': '20260323-8d9d58efa59a'} )
+--------------------------------------------------------------------------------
+23:43:08.939 - INFO - Pipeline [95m'churn-dataset-prep'[0m finished with status [92mSUCCESS[0m
+2026-11-05 23:43:08,939 INFO run_local === cutoff=2026-03-23 -> dataset_version=20260323-8d9d58efa59a
+2026-11-05 23:43:08,939 INFO run_local === pipeline run: cutoff=2026-03-30 snapshot=2026-07-01
+23:43:08.940 - INFO - Running pipeline: [95m'churn-dataset-prep'[0m
+--------------------------------------------------------------------------------
+23:43:08.941 - INFO - Executing task [96m'extract-op'[0m
+23:43:08.941 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:09,402 INFO]: Looking for component `extract_op` in --component_module_path `/tmp/tmp.X0ZIvT9sRy/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:09,402 INFO]: Loading KFP component "extract_op" from /tmp/tmp.X0ZIvT9sRy/ephemeral_component.py (directory "/tmp/tmp.X0ZIvT9sRy" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:09,402 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "parameterValues": {
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-30",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "raw": {
+                    "artifacts": [
+                        {
+                            "name": "raw",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/extract-op/raw",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/extract-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:12,939 INFO]: extracted customers: 50000 rows
+    [KFP Executor 2026-11-05 18:13:12,940 INFO]: extracted orders: 244132 rows
+    [KFP Executor 2026-11-05 18:13:12,940 INFO]: extracted events_daily: 1243748 rows
+    [KFP Executor 2026-11-05 18:13:13,529 WARNING]: Automatic preview unavailable for output 'raw'; its artifact is unchanged: Store exactly one supported data file directly inside each Dataset directory.
+    [KFP Executor 2026-11-05 18:13:13,531 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/extract-op/executor_output.json.
+23:43:13.793 - INFO - Task [96m'extract-op'[0m finished with status [92mSUCCESS[0m
+23:43:13.796 - INFO - Task [96m'extract-op'[0m outputs:
+    raw: Dataset( name='raw',
+                  uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/extract-op/raw',
+                  metadata={'events_end': '2026-03-30', 'events_start': '2025-12-30', 'rows': {'events_daily': 1243748.0, 'customers': 50000.0, 'orders': 244132.0}, 'orders_end': '2026-06-28', 'labeled': True, 'orders_start': '2025-03-30'} )
+--------------------------------------------------------------------------------
+23:43:13.799 - INFO - Executing task [96m'dq-gate-op'[0m
+23:43:13.799 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:14,334 INFO]: Looking for component `dq_gate_op` in --component_module_path `/tmp/tmp.cLeMGWT7Is/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:14,334 INFO]: Loading KFP component "dq_gate_op" from /tmp/tmp.cLeMGWT7Is/ephemeral_component.py (directory "/tmp/tmp.cLeMGWT7Is" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:14,334 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "parameterValues": {
+                "dq_lookback_days": 28,
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "snapshot_date": "2026-07-01"
+            }
+        },
+        "outputs": {
+            "parameters": {
+                "Output": {
+                    "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/Output"
+                }
+            },
+            "artifacts": {
+                "exclusions": {
+                    "artifacts": [
+                        {
+                            "name": "exclusions",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/exclusions",
+                            "metadata": {}
+                        }
+                    ]
+                },
+                "report": {
+                    "artifacts": [
+                        {
+                            "name": "report",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/report",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:14,766 INFO]: data quality gate dq_20260701: 40 rules, as_of=2026-07-01
+    [KFP Executor 2026-11-05 18:13:14,971 INFO]: ORD_ORDER_DATE_NOT_NULL pass: 10016/500000 violations (2.0032%, tolerance 5.00%), quarantined 10016, 0.11s
+    [KFP Executor 2026-11-05 18:13:14,995 INFO]: ORD_REQUIRED_NOT_NULL pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:13:15,078 INFO]: ITM_REQUIRED_NOT_NULL pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.08s
+    [KFP Executor 2026-11-05 18:13:15,766 INFO]: EVT_REQUIRED_NOT_NULL pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.69s
+    [KFP Executor 2026-11-05 18:13:16,081 INFO]: EVT_PRODUCT_ID_NOT_NULL pass: 199962/10000000 violations (1.9996%, tolerance 5.00%), quarantined 0, 0.31s
+    [KFP Executor 2026-11-05 18:13:16,097 INFO]: CUS_MARKETING_OPT_IN_NOT_NULL pass: 4993/50000 violations (9.9860%, tolerance 15.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:13:16,100 WARNING]: PRD_CATEGORY_NOT_NULL warn: 97/2000 violations (4.8500%, tolerance 0.00%), quarantined 0, 0.00s
+    [KFP Executor 2026-11-05 18:13:16,184 INFO]: ORD_ORDER_ID_UNIQUE pass: 0/500000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.08s
+    [KFP Executor 2026-11-05 18:13:23,907 INFO]: EVT_DUPLICATE_ROWS pass: 0/10000000 violations (0.0000%, tolerance 0.10%), quarantined 0, 7.72s
+    [KFP Executor 2026-11-05 18:13:30,076 WARNING]: EVT_EVENT_ID_UNIQUE warn: 29883/10000000 violations (0.2988%, tolerance 0.00%), quarantined 0, 6.16s
+    [KFP Executor 2026-11-05 18:13:30,154 WARNING]: CUS_EMAIL_UNIQUE warn: 516/50000 violations (1.0320%, tolerance 0.00%), quarantined 0, 0.07s
+    [KFP Executor 2026-11-05 18:13:30,203 INFO]: ORD_STATUS_VALID pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.05s
+    [KFP Executor 2026-11-05 18:13:30,232 INFO]: ORD_TOTAL_RANGE pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:13:30,325 INFO]: ITM_QUANTITY_RANGE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.09s
+    [KFP Executor 2026-11-05 18:13:30,379 INFO]: ITM_UNIT_PRICE_POSITIVE pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.05s
+    [KFP Executor 2026-11-05 18:13:30,381 INFO]: PRD_UNIT_PRICE_POSITIVE pass: 0/2000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.00s
+    [KFP Executor 2026-11-05 18:13:30,913 INFO]: EVT_TYPE_VALID pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.53s
+    [KFP Executor 2026-11-05 18:13:30,919 INFO]: CUS_SIGNUP_NOT_FUTURE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:13:30,944 INFO]: CUS_EMAIL_FORMAT pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:13:30,955 INFO]: CUS_COUNTRY_CODE pass: 0/50000 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:13:31,176 INFO]: CUS_ORDER_VOLUME_PLAUSIBLE pass: 23/945 violations (2.4339%, tolerance 5.00%), quarantined 23, 0.22s
+    [KFP Executor 2026-11-05 18:13:31,210 INFO]: ORD_CUSTOMER_EXISTS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:13:31,347 INFO]: ITM_ORDER_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.14s
+    [KFP Executor 2026-11-05 18:13:31,418 INFO]: ITM_PRODUCT_EXISTS pass: 0/1530225 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.07s
+    [KFP Executor 2026-11-05 18:13:32,189 INFO]: EVT_CUSTOMER_EXISTS pass: 0/10000000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.77s
+    [KFP Executor 2026-11-05 18:13:32,808 INFO]: EVT_PRODUCT_EXISTS pass: 0/9800038 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.62s
+    [KFP Executor 2026-11-05 18:13:33,586 INFO]: ORD_TOTAL_MATCHES_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.77s
+    [KFP Executor 2026-11-05 18:13:33,836 INFO]: ORD_HAS_ITEMS pass: 0/500000 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.25s
+    [KFP Executor 2026-11-05 18:13:33,952 INFO]: ITM_PRICE_MATCHES_PRODUCT pass: 0/1530225 violations (0.0000%, tolerance 5.00%), quarantined 0, 0.12s
+    [KFP Executor 2026-11-05 18:13:34,012 WARNING]: ORD_AFTER_SIGNUP warn: 14982/489984 violations (3.0577%, tolerance 0.00%), quarantined 0, 0.06s
+    [KFP Executor 2026-11-05 18:13:35,295 WARNING]: EVT_AFTER_SIGNUP warn: 1042178/10000000 violations (10.4218%, tolerance 0.00%), quarantined 0, 1.28s
+    [KFP Executor 2026-11-05 18:13:36,074 WARNING]: EVT_PURCHASE_HAS_ORDERS warn: 683885/700840 violations (97.5808%, tolerance 0.00%), quarantined 0, 0.78s
+    [KFP Executor 2026-11-05 18:13:36,095 INFO]: ORD_FRESHNESS pass: 0/1 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.02s
+    [KFP Executor 2026-11-05 18:13:36,330 INFO]: EVT_FRESHNESS pass: 0/1 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.23s
+    [KFP Executor 2026-11-05 18:13:36,364 INFO]: ORD_NOT_FUTURE pass: 0/489984 violations (0.0000%, tolerance 1.00%), quarantined 0, 0.03s
+    [KFP Executor 2026-11-05 18:13:38,843 INFO]: EVT_NOT_FUTURE pass: 9931/10000000 violations (0.0993%, tolerance 1.00%), quarantined 9931, 2.48s
+    [KFP Executor 2026-11-05 18:13:38,893 INFO]: ORD_DAILY_VOLUME_DROP pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.05s
+    [KFP Executor 2026-11-05 18:13:38,909 INFO]: ORD_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.01s
+    [KFP Executor 2026-11-05 18:13:38,988 INFO]: EVT_DAILY_VOLUME_DROP pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.08s
+    [KFP Executor 2026-11-05 18:13:39,049 INFO]: EVT_DAILY_VOLUME_SPIKE pass: 0/28 violations (0.0000%, tolerance 0.00%), quarantined 0, 0.06s
+    [KFP Executor 2026-11-05 18:13:39,055 INFO]: data quality gate dq_20260701: PASS, 0 blocking, 6 warnings, 23 excluded customers, 24.3s
+    [KFP Executor 2026-11-05 18:13:39,284 WARNING]: Automatic preview unavailable for output 'exclusions'; its artifact is unchanged: Store exactly one supported data file directly inside each Dataset directory.
+    [KFP Executor 2026-11-05 18:13:39,285 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/executor_output.json.
+23:43:39.522 - INFO - Task [96m'dq-gate-op'[0m finished with status [92mSUCCESS[0m
+23:43:39.525 - INFO - Task [96m'dq-gate-op'[0m outputs:
+    Output: 'dq_20260701'
+    exclusions: Dataset( name='exclusions',
+                         uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/exclusions',
+                         metadata={} )
+    report: Artifact( name='report',
+                      uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/report',
+                      metadata={'status': 'PASS', 'rows_quarantined': 19970.0, 'run_id': 'dq_20260701', 'warnings': ['PRD_CATEGORY_NOT_NULL', 'EVT_EVENT_ID_UNIQUE', 'CUS_EMAIL_UNIQUE', 'ORD_AFTER_SIGNUP', 'EVT_AFTER_SIGNUP', 'EVT_PURCHASE_HAS_ORDERS']} )
+--------------------------------------------------------------------------------
+23:43:39.532 - INFO - Executing task [96m'transform-op'[0m
+23:43:39.532 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:40,071 INFO]: Looking for component `transform_op` in --component_module_path `/tmp/tmp.5G4xO8REq7/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:40,071 INFO]: Loading KFP component "transform_op" from /tmp/tmp.5G4xO8REq7/ephemeral_component.py (directory "/tmp/tmp.5G4xO8REq7" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:40,071 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "exclusions": {
+                    "artifacts": [
+                        {
+                            "name": "exclusions",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/dq-gate-op/exclusions",
+                            "metadata": {}
+                        }
+                    ]
+                },
+                "raw": {
+                    "artifacts": [
+                        {
+                            "name": "raw",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/extract-op/raw",
+                            "metadata": {
+                                "events_end": "2026-03-30",
+                                "events_start": "2025-12-30",
+                                "rows": {
+                                    "events_daily": 1243748.0,
+                                    "customers": 50000.0,
+                                    "orders": 244132.0
+                                },
+                                "orders_end": "2026-06-28",
+                                "labeled": true,
+                                "orders_start": "2025-03-30"
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-30",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/transform-op/features",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/transform-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:41,263 INFO]: built 481 feature rows for cutoff 2026-03-30
+    [KFP Executor 2026-11-05 18:13:41,275 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/transform-op/executor_output.json.
+23:43:41.501 - INFO - Task [96m'transform-op'[0m finished with status [92mSUCCESS[0m
+23:43:41.503 - INFO - Task [96m'transform-op'[0m outputs:
+    features: Dataset( name='features',
+                       uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/transform-op/features',
+                       metadata={'rows': 481.0, 'dq_run_id': 'dq_20260701', 'labeled': True, '_kfp_preview': {'storage': 'sibling', 'version': 2.0}} )
+--------------------------------------------------------------------------------
+23:43:41.506 - INFO - Executing task [96m'validate-op'[0m
+23:43:41.506 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:41,989 INFO]: Looking for component `validate_op` in --component_module_path `/tmp/tmp.UQFLx6zhvG/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:41,989 INFO]: Loading KFP component "validate_op" from /tmp/tmp.UQFLx6zhvG/ephemeral_component.py (directory "/tmp/tmp.UQFLx6zhvG" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:41,990 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/transform-op/features",
+                            "metadata": {
+                                "rows": 481.0,
+                                "_kfp_preview": {
+                                    "storage": "sibling",
+                                    "version": 2.0
+                                },
+                                "labeled": true,
+                                "dq_run_id": "dq_20260701"
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "min_rows": 50,
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-30",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365
+            }
+        },
+        "outputs": {
+            "artifacts": {
+                "validation": {
+                    "artifacts": [
+                        {
+                            "name": "validation",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/validate-op/validation",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/validate-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:42,581 INFO]: validation passed: {'passed': True, 'rows': 481, 'churn_rate': 0.6798336798336798, 'labeled': True, 'problems': []}
+    [KFP Executor 2026-11-05 18:13:42,582 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/validate-op/executor_output.json.
+23:43:42.762 - INFO - Task [96m'validate-op'[0m finished with status [92mSUCCESS[0m
+23:43:42.763 - INFO - Task [96m'validate-op'[0m outputs:
+    validation: Artifact( name='validation',
+                          uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/validate-op/validation',
+                          metadata={'labeled': True, 'rows': 481.0, 'problems': [], 'churn_rate': 0.6798336798336798, 'passed': True} )
+--------------------------------------------------------------------------------
+23:43:42.764 - INFO - Executing task [96m'publish-op'[0m
+23:43:42.764 - INFO - Streamed logs:
+
+    Found image 'churn-pipeline:1fb0592'
+
+    [KFP Executor 2026-11-05 18:13:43,215 INFO]: Looking for component `publish_op` in --component_module_path `/tmp/tmp.BS8gmxAFW4/ephemeral_component.py`
+    [KFP Executor 2026-11-05 18:13:43,215 INFO]: Loading KFP component "publish_op" from /tmp/tmp.BS8gmxAFW4/ephemeral_component.py (directory "/tmp/tmp.BS8gmxAFW4" and module name "ephemeral_component")
+    [KFP Executor 2026-11-05 18:13:43,215 INFO]: Got executor_input:
+    {
+        "inputs": {
+            "artifacts": {
+                "features": {
+                    "artifacts": [
+                        {
+                            "name": "features",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/transform-op/features",
+                            "metadata": {
+                                "rows": 481.0,
+                                "_kfp_preview": {
+                                    "storage": "sibling",
+                                    "version": 2.0
+                                },
+                                "labeled": true,
+                                "dq_run_id": "dq_20260701"
+                            }
+                        }
+                    ]
+                },
+                "validation": {
+                    "artifacts": [
+                        {
+                            "name": "validation",
+                            "type": {
+                                "schemaTitle": "system.Artifact",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/validate-op/validation",
+                            "metadata": {
+                                "labeled": true,
+                                "problems": [],
+                                "rows": 481.0,
+                                "churn_rate": 0.6798336798336798,
+                                "passed": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "parameterValues": {
+                "source_db_url": "postgresql://ds_candidate@host.docker.internal:5432/ecommerce",
+                "horizon_days": 90,
+                "cutoff_date": "2026-03-30",
+                "snapshot_date": "2026-07-01",
+                "lookback_days": 365,
+                "dq_run_id": "dq_20260701"
+            }
+        },
+        "outputs": {
+            "parameters": {
+                "Output": {
+                    "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/publish-op/Output"
+                }
+            },
+            "artifacts": {
+                "dataset": {
+                    "artifacts": [
+                        {
+                            "name": "dataset",
+                            "type": {
+                                "schemaTitle": "system.Dataset",
+                                "schemaVersion": "0.0.1"
+                            },
+                            "uri": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/publish-op/dataset",
+                            "metadata": {}
+                        }
+                    ]
+                }
+            },
+            "outputFile": "/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/publish-op/executor_output.json"
+        }
+    }
+    [KFP Executor 2026-11-05 18:13:43,751 INFO]: dataset 20260330-3c4085f162f3 already published; nothing written
+    [KFP Executor 2026-11-05 18:13:43,753 INFO]: dataset_version=20260330-3c4085f162f3 created=False
+    [KFP Executor 2026-11-05 18:13:43,757 INFO]: Wrote executor output file to /Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/publish-op/executor_output.json.
+23:43:43.889 - INFO - Task [96m'publish-op'[0m finished with status [92mSUCCESS[0m
+23:43:43.889 - INFO - Task [96m'publish-op'[0m outputs:
+    Output: '20260330-3c4085f162f3'
+    dataset: Dataset( name='dataset',
+                      uri='/Users/saravanaprashanth/churn-system/artifacts/kfp_local/churn-dataset-prep-2026-11-05-23-43-08-940038/publish-op/dataset',
+                      metadata={'code_version': '1fb0592', 'created': False, 'rows': 481.0, '_kfp_preview': {'storage': 'sibling', 'version': 2.0}, 'dataset_version': '20260330-3c4085f162f3'} )
+--------------------------------------------------------------------------------
+23:43:43.890 - INFO - Pipeline [95m'churn-dataset-prep'[0m finished with status [92mSUCCESS[0m
+2026-11-05 23:43:43,890 INFO run_local === cutoff=2026-03-30 -> dataset_version=20260330-3c4085f162f3
+2026-03-16	20260316-662e953d2fcb
+2026-03-23	20260323-8d9d58efa59a
+2026-03-30	20260330-3c4085f162f3

@@ -1,0 +1,68 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.2.0, pluggy-1.7.0 -- /Users/saravanaprashanth/churn-system/.venv/bin/python
+rootdir: /Users/saravanaprashanth/churn-system
+configfile: pyproject.toml
+plugins: cov-7.1.0, typeguard-4.6.0
+collecting ... collected 42 items
+
+tests/pipeline/test_components_integration.py::test_extract_respects_the_windows PASSED [  2%]
+tests/pipeline/test_components_integration.py::test_full_chain_publishes_a_versioned_dataset PASSED [  4%]
+tests/pipeline/test_components_integration.py::test_rerun_is_idempotent PASSED [  7%]
+tests/pipeline/test_components_integration.py::test_blocked_gate_stops_the_chain PASSED [  9%]
+tests/pipeline/test_pipeline_definition.py::test_pipeline_has_the_five_required_steps_in_order PASSED [ 11%]
+tests/pipeline/test_pipeline_definition.py::test_pipeline_is_parameterised_by_cutoff_lookback_and_source_db PASSED [ 14%]
+tests/pipeline/test_pipeline_definition.py::test_every_step_runs_in_the_project_image_without_runtime_installs PASSED [ 16%]
+tests/pipeline/test_pipeline_definition.py::test_caching_is_disabled_so_reruns_really_run PASSED [ 19%]
+tests/pipeline/test_pipeline_definition.py::test_pipeline_returns_the_dataset_version PASSED [ 21%]
+tests/pipeline/test_pipeline_definition.py::test_committed_yaml_matches_the_code PASSED [ 23%]
+tests/pipeline/test_pipeline_definition.py::test_packaged_ddl_matches_sql_script PASSED [ 26%]
+tests/pipeline/test_run_local.py::test_weekly_backfill_includes_both_ends PASSED [ 28%]
+tests/pipeline/test_run_local.py::test_weekly_backfill_of_the_training_range_is_65_mondays PASSED [ 30%]
+tests/pipeline/test_run_local.py::test_weekly_rejects_reversed_range PASSED [ 33%]
+tests/pipeline/test_run_local.py::test_cutoffs_and_backfill_are_combined PASSED [ 35%]
+tests/pipeline/test_run_local.py::test_missing_dates_are_a_usage_error[argv0] PASSED [ 38%]
+tests/pipeline/test_run_local.py::test_missing_dates_are_a_usage_error[argv1] PASSED [ 40%]
+tests/pipeline/test_run_local.py::test_main_refuses_to_run_without_a_password PASSED [ 42%]
+tests/pipeline/test_transform.py::test_population_is_recent_buyers_minus_excluded_customers PASSED [ 45%]
+tests/pipeline/test_transform.py::test_order_features_use_the_right_windows PASSED [ 47%]
+tests/pipeline/test_transform.py::test_event_features_and_cutoff_day_is_ignored PASSED [ 50%]
+tests/pipeline/test_transform.py::test_customer_without_events_gets_zeros_and_the_no_event_marker PASSED [ 52%]
+tests/pipeline/test_transform.py::test_order_at_the_cutoff_is_label_not_feature PASSED [ 54%]
+tests/pipeline/test_transform.py::test_label_window_is_half_open PASSED  [ 57%]
+tests/pipeline/test_transform.py::test_quarantined_order_is_ignored PASSED [ 59%]
+tests/pipeline/test_transform.py::test_tenure_starts_at_the_earlier_of_signup_and_first_order PASSED [ 61%]
+tests/pipeline/test_transform.py::test_categoricals_are_explicit_including_unknown_opt_in PASSED [ 64%]
+tests/pipeline/test_transform.py::test_features_do_not_change_when_anything_on_or_after_the_cutoff_changes PASSED [ 66%]
+tests/pipeline/test_transform.py::test_unlabeled_cutoff_has_missing_labels PASSED [ 69%]
+tests/pipeline/test_transform.py::test_output_is_sorted_and_independent_of_input_order PASSED [ 71%]
+tests/pipeline/test_validate_publish.py::test_valid_features_pass_with_report PASSED [ 73%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[negative-count] PASSED [ 76%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[duplicate-customer] PASSED [ 78%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[bad-label] PASSED [ 80%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[windows-not-nested] PASSED [ 83%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[bad-category] PASSED [ 85%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[unexpected-column] PASSED [ 88%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[wrong-cutoff] PASSED [ 90%]
+tests/pipeline/test_validate_publish.py::test_too_few_rows_is_rejected PASSED [ 92%]
+tests/pipeline/test_validate_publish.py::test_degenerate_label_is_rejected PASSED [ 95%]
+tests/pipeline/test_validate_publish.py::test_dataset_version_is_deterministic_and_row_order_independent PASSED [ 97%]
+tests/pipeline/test_validate_publish.py::test_dataset_version_changes_with_values_and_parameters PASSED [100%]
+
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.15-final-0 _______________
+
+Name                     Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------
+pipeline/__init__.py         0      0      0      0   100%
+pipeline/components.py      89      0      0      0   100%
+pipeline/dq_step.py         28      0      2      0   100%
+pipeline/extract.py         61      2      8      2    94%   60, 62
+pipeline/pipeline.py        28      5      4      1    81%   68-73, 77
+pipeline/publish.py         48      0      2      0   100%
+pipeline/run_local.py       50     13     16      2    71%   58-80, 84
+pipeline/transform.py       96      0      6      0   100%
+pipeline/validate.py        52      1     20      2    96%   55, 95->101
+--------------------------------------------------------------------
+TOTAL                      452     21     58      7    94%
+Required test coverage of 80.0% reached. Total coverage: 93.73%
+============================== 42 passed in 5.48s ==============================
