@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["data_quality*", "pipeline*"]
+include = ["data_quality*", "pipeline*", "training*"]
 
 [tool.setuptools.package-data]
 data_quality = ["*.sql"]
@@ -32,7 +32,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["data_quality", "pipeline"]
+source = ["data_quality", "pipeline", "training"]
 branch = true
 
 [tool.coverage.report]
@@ -47,4 +47,8 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "N"]
 # SIM108 would turn the two-level if/else in gate.evaluate into a nested ternary, which reads worse.
-ignore = ["SIM108"]
+ignore = [
+    "SIM108",  # nested ternaries read worse than the if/else in gate.evaluate
+    "N803",    # X / X_train: the scikit-learn naming convention for feature matrices
+    "N806",
+]
