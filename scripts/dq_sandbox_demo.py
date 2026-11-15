@@ -38,6 +38,8 @@ def step(number: int, title: str, pause: bool) -> None:
 
 def show(conn: psycopg.Connection, query: str, params: tuple = ()) -> None:
     cursor = conn.execute(query, params)
+    if cursor.description is None:
+        raise RuntimeError(f"query returned no result set: {query}")
     columns = [c.name for c in cursor.description]
     rows = [[("" if v is None else str(v)) for v in row] for row in cursor.fetchall()]
     widths = [max(len(c), *(len(r[i]) for r in rows)) if rows else len(c) for i, c in enumerate(columns)]
@@ -131,7 +133,7 @@ def main() -> int:
         )
         print("  " + "\n  ".join(line.strip() for line in rule.violations_sql.strip().splitlines()))
         print("\n  Running that query by hand:")
-        show(conn, f"SELECT order_id, order_total, items_total FROM ({rule.violations_sql}) v")
+        show(conn, f"SELECT order_id, order_total, items_total FROM ({rule.violations_sql}) v")  # noqa: S608
 
         step(5, "Run the gate again: it catches all three and quarantines the rows", pause)
         gate_summary(conn)

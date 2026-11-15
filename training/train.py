@@ -61,9 +61,11 @@ class IterationResult:
 
 def git_sha() -> str:
     def run(*args: str) -> str:
-        return subprocess.run(
-            ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=True
-        ).stdout
+        # Fixed git subcommands to read the commit SHA; no user input reaches the command.
+        return subprocess.run(  # noqa: S603
+            ["git", *args],  # noqa: S607
+            cwd=REPO_ROOT, capture_output=True, text=True, check=True,
+        ).stdout  # fmt: skip
 
     try:
         sha = run("rev-parse", "--short", "HEAD").strip()
@@ -210,7 +212,7 @@ class Trainer:
             brier[method] = classification_metrics(y_eval, models.churn_probability(calibrated, X_eval))[
                 "brier"
             ]
-        best = min(brier, key=brier.get)
+        best = min(brier, key=lambda method: brier[method])
         if brier["none"] - brier[best] < MIN_BRIER_GAIN:
             best = "none"
         with self._start_run(
@@ -322,7 +324,7 @@ class Trainer:
         test_scores = models.churn_probability(final.model, self.X["test"])
         chosen = best_threshold(self.y["valid"], valid_scores, valid_value, self.config.cost)
         threshold = chosen["threshold"]
-        decision = {
+        decision: dict[str, Any] = {
             "threshold": threshold,
             "chosen_on": "valid",
             "cost_assumptions": asdict(self.config.cost),

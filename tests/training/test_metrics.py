@@ -72,4 +72,4 @@ def test_segment_metrics_per_group_and_single_class_segments():
     table = segment_metrics(frame, "y", "s", "g").set_index("segment")
     assert table.loc["g=a", "rows"] == 5
     assert table.loc["g=a", "churn_rate"] == pytest.approx(0.6)
-    assert np.isnan(table.loc["g=c", "pr_auc"])  # one row, one class: AUC undefined, not an error
+    assert table["pr_auc"].isna()["g=c"]  # one row, one class: AUC undefined, not an error

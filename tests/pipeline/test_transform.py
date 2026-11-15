@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
+from typing import Any
 
 import pandas as pd
 import pytest
@@ -61,7 +62,7 @@ def events() -> pd.DataFrame:
 
 
 def build(params: TransformParams = PARAMS, **overrides) -> pd.DataFrame:
-    inputs = {
+    inputs: dict[str, Any] = {
         "customers": customers(),
         "orders": orders(),
         "events_daily": events(),

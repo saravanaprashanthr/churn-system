@@ -47,7 +47,9 @@ def pipeline_db(seeded: psycopg.Connection) -> str:
         seeded.execute("INSERT INTO order_items VALUES (%s, %s, 1, 2, 10.00)", (order_id, order_id))
     seeded.execute("INSERT INTO events VALUES (70001, 4, '2025-11-28 10:00', 'view', 1, 'four')")
     seeded.commit()
-    (schema,) = seeded.execute("SELECT current_schema()").fetchone()
+    row = seeded.execute("SELECT current_schema()").fetchone()
+    assert row is not None
+    schema = row[0]
     info = seeded.info
     return (
         f"postgresql://{info.user}:{quote(info.password)}@{info.host}:{info.port}/{info.dbname}"

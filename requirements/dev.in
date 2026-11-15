@@ -3,3 +3,6 @@
 pytest
 pytest-cov
 ruff
+mypy
+pandas-stubs
+pre-commit

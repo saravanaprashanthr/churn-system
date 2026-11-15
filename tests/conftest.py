@@ -35,7 +35,8 @@ def db() -> Iterator[psycopg.Connection]:
     conn = psycopg.connect(url)
     conn.execute(f'CREATE SCHEMA "{schema}"')
     conn.execute(f'SET search_path TO "{schema}"')
-    assert conn.execute("SELECT current_schemas(false)").fetchone()[0] == [schema]
+    row = conn.execute("SELECT current_schemas(false)").fetchone()
+    assert row is not None and row[0] == [schema]
     conn.execute(_schema_ddl())
     conn.commit()
     try:

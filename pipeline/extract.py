@@ -94,6 +94,8 @@ class ExtractWindow:
 def _read(conn: psycopg.Connection, query: str, params: dict[str, date]) -> pd.DataFrame:
     with conn.cursor() as cursor:
         cursor.execute(query, params)
+        if cursor.description is None:
+            raise RuntimeError("extract query returned no result set")
         columns = [c.name for c in cursor.description]
         return pd.DataFrame(cursor.fetchall(), columns=columns)
 

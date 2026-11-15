@@ -26,7 +26,7 @@ SAMPLE_SIZE = 5
 
 
 class Outcome(StrEnum):
-    PASS = "pass"
+    PASS = "pass"  # noqa: S105 - an outcome name, not a password
     WARN = "warn"
     BLOCK = "block"
 
@@ -128,14 +128,15 @@ def run_rule(conn: psycopg.Connection, rule: Rule, config: GateConfig) -> RuleRe
     started = time.perf_counter()
     params = config.sql_params
     rows_checked = _scalar(conn, rule.checked_sql, params)
-    violations = _scalar(conn, f"SELECT COUNT(*) FROM ({rule.violations_sql}) AS v", params)
+    # Rule SQL comes from our own catalog (rules.py), never from input; values are bound parameters.
+    violations = _scalar(conn, f"SELECT COUNT(*) FROM ({rule.violations_sql}) AS v", params)  # noqa: S608
     rate, outcome = evaluate(rule, rows_checked, violations)
 
     sample: list[dict[str, Any]] = []
     quarantined = 0
     if violations:
         with conn.cursor(row_factory=dict_row) as cursor:
-            cursor.execute(f"SELECT * FROM ({rule.violations_sql}) AS v LIMIT {SAMPLE_SIZE}", params)
+            cursor.execute(f"SELECT * FROM ({rule.violations_sql}) AS v LIMIT {SAMPLE_SIZE}", params)  # noqa: S608
             sample = cursor.fetchall()
         if rule.quarantine:
             quarantined = _quarantine(conn, rule, config.run_id, params)
