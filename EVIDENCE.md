@@ -12,7 +12,7 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 | B. Data quality           | Done | `data_quality/`, `tests/data_quality/`, `sql/02_dq_tables.sql`, `evidence/dq/` | 40 SQL rules over 7 dimensions, block/warn + quarantine; full data: PASS (0 blocking, 6 warnings, 19,970 rows quarantined, 25 s); blocks correctly on stale data; 137 tests, 98% coverage |
 | C. Data prep pipeline     | Done (☆ real KFP cluster: not done) | `pipeline/`, `pipeline/pipeline.yaml`, `evidence/pipeline/` | KFP v2, 5 containerized steps on `churn-pipeline:1fb0592`; DockerRunner runs; idempotent backfill of 65 cutoffs → 31,296 rows; repeat run returns same content-hash version |
 | D. Model development      | Done | `training/`, MLflow `churn-90d` v3, `evidence/training/` | Embargoed time split; baseline + 5 tracked iterations; final ensemble test PR-AUC 0.899 vs baseline 0.891; cost-based threshold 0.921; features recomputed from raw data: 0 mismatches |
-| E. Code quality & tests   | Not started | | |
+| E. Code quality & tests   | Done (coverage gate in CI: Part G) | `Makefile`, `.pre-commit-config.yaml`, `pyproject.toml`, `evidence/tests/`, `evidence/lint/` | 203 tests, 93% coverage (gate 80%); ruff incl. no-print and bandit rules, ruff format, mypy (☆) all clean; 10 pre-commit hooks + unit tests on push |
 | F. Kubernetes deployment  | Not started | | |
 | G. CI/CD                  | Not started | | |
 | H. MLOps & monitoring     | Not started | | |
@@ -97,6 +97,27 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 - **Not done / limitations:** MinIO artifact store; rolling-origin CV; uplift modelling.
 - **How to reproduce:** `docker compose up -d mlflow`, then
   `DATABASE_URL=... MLFLOW_TRACKING_URI=http://localhost:5001 python -m training.train`.
+
+## Part E: Code quality
+- **Claims → evidence**
+  - `pytest -v --cov`: 203 passed, 93.4% coverage of `data_quality/`, `pipeline/`, `training/`; `fail_under = 80`
+    in `pyproject.toml` → `evidence/tests/pytest_output.txt`
+  - ruff lint (incl. `T20` no-print and `S` bandit security rules) and format check clean → `evidence/lint/ruff.txt`,
+    `evidence/lint/ruff_format.txt`
+  - mypy (☆) over all packages, tests and scripts: no issues in 41 files → `evidence/lint/mypy.txt`
+  - pre-commit, all hooks pass → `evidence/lint/pre_commit.txt`
+- **What is in place:** packages `data_quality/`, `pipeline/`, `training/`, no logic only in notebooks; type hints
+  throughout; logging instead of print (print allowed only in the demo script and two CLI result lines, each
+  listed with a reason in `pyproject.toml`); configuration from environment / `.env` (`.env.example` documents
+  every variable, `.env` is git-ignored, the compose password is overridable); every dependency pinned in
+  `requirements/*.txt`, resolved together; `Makefile` with `make test`, `make lint`, `make run` and every other
+  task; pre-commit hooks (whitespace, YAML/TOML, merge markers, large files, private keys, ruff, ruff format, mypy)
+  plus the unit tests on `pre-push`, all from the project venv so versions match the lock. `evidence/` is
+  excluded from hooks so outputs stay unedited.
+- **Git history:** small commits with conventional messages; tests committed with or before the code they test
+  (e.g. `feat(dq): declarative rule catalog with static tests`). Security-rule exemptions are per line, each with a reason.
+- **Not done / limitations:** the coverage gate is enforced locally and by `make test`; enforcing it in CI is Part G.
+- **How to reproduce:** `make install && make lint && make test` (with `DQ_TEST_DATABASE_URL` set, see `.env.example`).
 
 ## Biggest trade-offs I made and what I would do with more time
 <to fill at the end>

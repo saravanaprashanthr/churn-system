@@ -1,0 +1,266 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.2.0, pluggy-1.7.0 -- /Users/saravanaprashanth/churn-system/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/saravanaprashanth/churn-system
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.14.5, cov-7.1.0, typeguard-4.6.0, anyio-4.16.0
+collecting ... collected 203 items
+
+tests/data_quality/test_evaluate.py::test_no_violations_passes PASSED    [  0%]
+tests/data_quality/test_evaluate.py::test_any_violation_fails_a_zero_tolerance_rule PASSED [  0%]
+tests/data_quality/test_evaluate.py::test_warn_severity_warns_instead_of_blocking PASSED [  1%]
+tests/data_quality/test_evaluate.py::test_violations_within_tolerance_pass PASSED [  1%]
+tests/data_quality/test_evaluate.py::test_rate_exactly_at_tolerance_passes_and_just_above_fails PASSED [  2%]
+tests/data_quality/test_evaluate.py::test_nothing_checked_with_violations_counts_as_full_failure PASSED [  2%]
+tests/data_quality/test_evaluate.py::test_nothing_checked_and_no_violations_passes PASSED [  3%]
+tests/data_quality/test_evaluate.py::test_negative_counts_are_rejected PASSED [  3%]
+tests/data_quality/test_evaluate.py::test_run_id_is_deterministic_per_date PASSED [  4%]
+tests/data_quality/test_evaluate.py::test_lookback_must_be_positive PASSED [  4%]
+tests/data_quality/test_gate_integration.py::test_clean_data_passes_every_rule PASSED [  5%]
+tests/data_quality/test_gate_integration.py::test_few_undated_orders_are_quarantined_without_blocking PASSED [  5%]
+tests/data_quality/test_gate_integration.py::test_many_undated_orders_block_the_gate PASSED [  6%]
+tests/data_quality/test_gate_integration.py::test_future_dated_events_are_quarantined PASSED [  6%]
+tests/data_quality/test_gate_integration.py::test_order_total_mismatch_is_caught PASSED [  7%]
+tests/data_quality/test_gate_integration.py::test_invalid_status_spelling_is_caught PASSED [  7%]
+tests/data_quality/test_gate_integration.py::test_orphan_event_customer_is_caught PASSED [  8%]
+tests/data_quality/test_gate_integration.py::test_order_without_items_is_caught PASSED [  8%]
+tests/data_quality/test_gate_integration.py::test_exact_duplicate_event_and_id_collision PASSED [  9%]
+tests/data_quality/test_gate_integration.py::test_high_volume_customer_is_excluded PASSED [  9%]
+tests/data_quality/test_gate_integration.py::test_missing_day_of_orders_is_a_blocking_volume_drop PASSED [ 10%]
+tests/data_quality/test_gate_integration.py::test_volume_spike_only_warns PASSED [ 10%]
+tests/data_quality/test_gate_integration.py::test_stale_orders_block_on_freshness PASSED [ 11%]
+tests/data_quality/test_gate_integration.py::test_rerun_is_idempotent PASSED [ 11%]
+tests/data_quality/test_gate_integration.py::test_artifacts_contain_report_and_quarantine_sample PASSED [ 12%]
+tests/data_quality/test_report.py::test_report_summarises_outcomes_and_dimensions PASSED [ 12%]
+tests/data_quality/test_report.py::test_report_without_blocking_rules_passes PASSED [ 13%]
+tests/data_quality/test_report.py::test_markdown_lists_every_rule_and_the_status PASSED [ 13%]
+tests/data_quality/test_report.py::test_artifacts_are_written_per_run_and_json_handles_dates PASSED [ 14%]
+tests/data_quality/test_report.py::test_cli_requires_as_of PASSED        [ 14%]
+tests/data_quality/test_report.py::test_cli_without_database_url_is_a_config_error PASSED [ 15%]
+tests/data_quality/test_report.py::test_cli_rejects_invalid_lookback PASSED [ 15%]
+tests/data_quality/test_report.py::test_cli_exit_code_follows_gate_status[False-0] PASSED [ 16%]
+tests/data_quality/test_report.py::test_cli_exit_code_follows_gate_status[True-1] PASSED [ 16%]
+tests/data_quality/test_rules.py::test_rule_ids_are_unique_and_well_formed PASSED [ 17%]
+tests/data_quality/test_rules.py::test_every_dimension_required_by_the_assignment_is_covered PASSED [ 17%]
+tests/data_quality/test_rules.py::test_both_severities_are_used PASSED   [ 18%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_ORDER_DATE_NOT_NULL] PASSED [ 18%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_REQUIRED_NOT_NULL] PASSED [ 19%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ITM_REQUIRED_NOT_NULL] PASSED [ 19%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_REQUIRED_NOT_NULL] PASSED [ 20%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_PRODUCT_ID_NOT_NULL] PASSED [ 20%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[CUS_MARKETING_OPT_IN_NOT_NULL] PASSED [ 21%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[PRD_CATEGORY_NOT_NULL] PASSED [ 21%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_ORDER_ID_UNIQUE] PASSED [ 22%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_DUPLICATE_ROWS] PASSED [ 22%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_EVENT_ID_UNIQUE] PASSED [ 23%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[CUS_EMAIL_UNIQUE] PASSED [ 23%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_STATUS_VALID] PASSED [ 24%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_TOTAL_RANGE] PASSED [ 24%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ITM_QUANTITY_RANGE] PASSED [ 25%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ITM_UNIT_PRICE_POSITIVE] PASSED [ 25%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[PRD_UNIT_PRICE_POSITIVE] PASSED [ 26%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_TYPE_VALID] PASSED [ 26%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[CUS_SIGNUP_NOT_FUTURE] PASSED [ 27%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[CUS_EMAIL_FORMAT] PASSED [ 27%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[CUS_COUNTRY_CODE] PASSED [ 28%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[CUS_ORDER_VOLUME_PLAUSIBLE] PASSED [ 28%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_CUSTOMER_EXISTS] PASSED [ 29%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ITM_ORDER_EXISTS] PASSED [ 29%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ITM_PRODUCT_EXISTS] PASSED [ 30%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_CUSTOMER_EXISTS] PASSED [ 30%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_PRODUCT_EXISTS] PASSED [ 31%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_TOTAL_MATCHES_ITEMS] PASSED [ 31%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_HAS_ITEMS] PASSED [ 32%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ITM_PRICE_MATCHES_PRODUCT] PASSED [ 32%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_AFTER_SIGNUP] PASSED [ 33%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_AFTER_SIGNUP] PASSED [ 33%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_PURCHASE_HAS_ORDERS] PASSED [ 33%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_FRESHNESS] PASSED [ 34%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_FRESHNESS] PASSED [ 34%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_NOT_FUTURE] PASSED [ 35%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_NOT_FUTURE] PASSED [ 35%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_DAILY_VOLUME_DROP] PASSED [ 36%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[ORD_DAILY_VOLUME_SPIKE] PASSED [ 36%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_DAILY_VOLUME_DROP] PASSED [ 37%]
+tests/data_quality/test_rules.py::test_rule_fields_are_consistent[EVT_DAILY_VOLUME_SPIKE] PASSED [ 37%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_ORDER_DATE_NOT_NULL] PASSED [ 38%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_REQUIRED_NOT_NULL] PASSED [ 38%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ITM_REQUIRED_NOT_NULL] PASSED [ 39%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_REQUIRED_NOT_NULL] PASSED [ 39%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_PRODUCT_ID_NOT_NULL] PASSED [ 40%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[CUS_MARKETING_OPT_IN_NOT_NULL] PASSED [ 40%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[PRD_CATEGORY_NOT_NULL] PASSED [ 41%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_ORDER_ID_UNIQUE] PASSED [ 41%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_DUPLICATE_ROWS] PASSED [ 42%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_EVENT_ID_UNIQUE] PASSED [ 42%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[CUS_EMAIL_UNIQUE] PASSED [ 43%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_STATUS_VALID] PASSED [ 43%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_TOTAL_RANGE] PASSED [ 44%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ITM_QUANTITY_RANGE] PASSED [ 44%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ITM_UNIT_PRICE_POSITIVE] PASSED [ 45%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[PRD_UNIT_PRICE_POSITIVE] PASSED [ 45%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_TYPE_VALID] PASSED [ 46%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[CUS_SIGNUP_NOT_FUTURE] PASSED [ 46%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[CUS_EMAIL_FORMAT] PASSED [ 47%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[CUS_COUNTRY_CODE] PASSED [ 47%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[CUS_ORDER_VOLUME_PLAUSIBLE] PASSED [ 48%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_CUSTOMER_EXISTS] PASSED [ 48%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ITM_ORDER_EXISTS] PASSED [ 49%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ITM_PRODUCT_EXISTS] PASSED [ 49%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_CUSTOMER_EXISTS] PASSED [ 50%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_PRODUCT_EXISTS] PASSED [ 50%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_TOTAL_MATCHES_ITEMS] PASSED [ 51%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_HAS_ITEMS] PASSED [ 51%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ITM_PRICE_MATCHES_PRODUCT] PASSED [ 52%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_AFTER_SIGNUP] PASSED [ 52%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_AFTER_SIGNUP] PASSED [ 53%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_PURCHASE_HAS_ORDERS] PASSED [ 53%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_FRESHNESS] PASSED [ 54%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_FRESHNESS] PASSED [ 54%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_NOT_FUTURE] PASSED [ 55%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_NOT_FUTURE] PASSED [ 55%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_DAILY_VOLUME_DROP] PASSED [ 56%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[ORD_DAILY_VOLUME_SPIKE] PASSED [ 56%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_DAILY_VOLUME_DROP] PASSED [ 57%]
+tests/data_quality/test_rules.py::test_sql_uses_only_known_parameters[EVT_DAILY_VOLUME_SPIKE] PASSED [ 57%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_ORDER_DATE_NOT_NULL] PASSED [ 58%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_REQUIRED_NOT_NULL] PASSED [ 58%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ITM_REQUIRED_NOT_NULL] PASSED [ 59%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[EVT_REQUIRED_NOT_NULL] PASSED [ 59%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_STATUS_VALID] PASSED [ 60%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_TOTAL_RANGE] PASSED [ 60%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ITM_QUANTITY_RANGE] PASSED [ 61%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ITM_UNIT_PRICE_POSITIVE] PASSED [ 61%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[PRD_UNIT_PRICE_POSITIVE] PASSED [ 62%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[EVT_TYPE_VALID] PASSED [ 62%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[CUS_ORDER_VOLUME_PLAUSIBLE] PASSED [ 63%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_CUSTOMER_EXISTS] PASSED [ 63%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ITM_ORDER_EXISTS] PASSED [ 64%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ITM_PRODUCT_EXISTS] PASSED [ 64%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[EVT_CUSTOMER_EXISTS] PASSED [ 65%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_TOTAL_MATCHES_ITEMS] PASSED [ 65%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_HAS_ITEMS] PASSED [ 66%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[ORD_NOT_FUTURE] PASSED [ 66%]
+tests/data_quality/test_rules.py::test_quarantine_rules_return_their_key_columns[EVT_NOT_FUTURE] PASSED [ 66%]
+tests/data_quality/test_rules.py::test_packaged_ddl_matches_sql_script PASSED [ 67%]
+tests/pipeline/test_components_integration.py::test_extract_respects_the_windows PASSED [ 67%]
+tests/pipeline/test_components_integration.py::test_full_chain_publishes_a_versioned_dataset PASSED [ 68%]
+tests/pipeline/test_components_integration.py::test_rerun_is_idempotent PASSED [ 68%]
+tests/pipeline/test_components_integration.py::test_blocked_gate_stops_the_chain PASSED [ 69%]
+tests/pipeline/test_pipeline_definition.py::test_pipeline_has_the_five_required_steps_in_order PASSED [ 69%]
+tests/pipeline/test_pipeline_definition.py::test_pipeline_is_parameterised_by_cutoff_lookback_and_source_db PASSED [ 70%]
+tests/pipeline/test_pipeline_definition.py::test_every_step_runs_in_the_project_image_without_runtime_installs PASSED [ 70%]
+tests/pipeline/test_pipeline_definition.py::test_caching_is_disabled_so_reruns_really_run PASSED [ 71%]
+tests/pipeline/test_pipeline_definition.py::test_pipeline_returns_the_dataset_version PASSED [ 71%]
+tests/pipeline/test_pipeline_definition.py::test_committed_yaml_matches_the_code PASSED [ 72%]
+tests/pipeline/test_pipeline_definition.py::test_packaged_ddl_matches_sql_script PASSED [ 72%]
+tests/pipeline/test_run_local.py::test_weekly_backfill_includes_both_ends PASSED [ 73%]
+tests/pipeline/test_run_local.py::test_weekly_backfill_of_the_training_range_is_65_mondays PASSED [ 73%]
+tests/pipeline/test_run_local.py::test_weekly_rejects_reversed_range PASSED [ 74%]
+tests/pipeline/test_run_local.py::test_cutoffs_and_backfill_are_combined PASSED [ 74%]
+tests/pipeline/test_run_local.py::test_missing_dates_are_a_usage_error[argv0] PASSED [ 75%]
+tests/pipeline/test_run_local.py::test_missing_dates_are_a_usage_error[argv1] PASSED [ 75%]
+tests/pipeline/test_run_local.py::test_main_refuses_to_run_without_a_password PASSED [ 76%]
+tests/pipeline/test_transform.py::test_population_is_recent_buyers_minus_excluded_customers PASSED [ 76%]
+tests/pipeline/test_transform.py::test_order_features_use_the_right_windows PASSED [ 77%]
+tests/pipeline/test_transform.py::test_event_features_and_cutoff_day_is_ignored PASSED [ 77%]
+tests/pipeline/test_transform.py::test_customer_without_events_gets_zeros_and_the_no_event_marker PASSED [ 78%]
+tests/pipeline/test_transform.py::test_order_at_the_cutoff_is_label_not_feature PASSED [ 78%]
+tests/pipeline/test_transform.py::test_label_window_is_half_open PASSED  [ 79%]
+tests/pipeline/test_transform.py::test_quarantined_order_is_ignored PASSED [ 79%]
+tests/pipeline/test_transform.py::test_tenure_starts_at_the_earlier_of_signup_and_first_order PASSED [ 80%]
+tests/pipeline/test_transform.py::test_categoricals_are_explicit_including_unknown_opt_in PASSED [ 80%]
+tests/pipeline/test_transform.py::test_features_do_not_change_when_anything_on_or_after_the_cutoff_changes PASSED [ 81%]
+tests/pipeline/test_transform.py::test_unlabeled_cutoff_has_missing_labels PASSED [ 81%]
+tests/pipeline/test_transform.py::test_output_is_sorted_and_independent_of_input_order PASSED [ 82%]
+tests/pipeline/test_validate_publish.py::test_valid_features_pass_with_report PASSED [ 82%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[negative-count] PASSED [ 83%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[duplicate-customer] PASSED [ 83%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[bad-label] PASSED [ 84%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[windows-not-nested] PASSED [ 84%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[bad-category] PASSED [ 85%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[unexpected-column] PASSED [ 85%]
+tests/pipeline/test_validate_publish.py::test_invalid_features_are_rejected[wrong-cutoff] PASSED [ 86%]
+tests/pipeline/test_validate_publish.py::test_too_few_rows_is_rejected PASSED [ 86%]
+tests/pipeline/test_validate_publish.py::test_degenerate_label_is_rejected PASSED [ 87%]
+tests/pipeline/test_validate_publish.py::test_dataset_version_is_deterministic_and_row_order_independent PASSED [ 87%]
+tests/pipeline/test_validate_publish.py::test_dataset_version_changes_with_values_and_parameters PASSED [ 88%]
+tests/training/test_data_integration.py::test_load_expands_features_and_uses_one_version_per_cutoff PASSED [ 88%]
+tests/training/test_data_integration.py::test_unlabeled_and_other_parameter_versions_are_ignored PASSED [ 89%]
+tests/training/test_metrics.py::test_top_k_metrics_on_a_known_ranking PASSED [ 89%]
+tests/training/test_metrics.py::test_perfect_ranking_has_pr_auc_one_and_random_lift_one PASSED [ 90%]
+tests/training/test_metrics.py::test_top_k_rejects_bad_fraction PASSED   [ 90%]
+tests/training/test_metrics.py::test_campaign_profit_counts_gains_only_on_contacted_churners PASSED [ 91%]
+tests/training/test_metrics.py::test_best_threshold_stops_where_extra_contacts_lose_money PASSED [ 91%]
+tests/training/test_metrics.py::test_best_threshold_contacts_nobody_when_offers_never_pay PASSED [ 92%]
+tests/training/test_metrics.py::test_breakeven_probability PASSED        [ 92%]
+tests/training/test_metrics.py::test_segment_metrics_per_group_and_single_class_segments PASSED [ 93%]
+tests/training/test_split_and_models.py::test_default_split_has_embargo_between_label_windows PASSED [ 93%]
+tests/training/test_split_and_models.py::test_overlapping_or_reversed_splits_are_rejected[kwargs0] PASSED [ 94%]
+tests/training/test_split_and_models.py::test_overlapping_or_reversed_splits_are_rejected[kwargs1] PASSED [ 94%]
+tests/training/test_split_and_models.py::test_overlapping_or_reversed_splits_are_rejected[kwargs2] PASSED [ 95%]
+tests/training/test_split_and_models.py::test_split_assigns_by_cutoff_and_drops_embargo_weeks PASSED [ 95%]
+tests/training/test_split_and_models.py::test_data_version_depends_only_on_the_set_of_versions PASSED [ 96%]
+tests/training/test_split_and_models.py::test_derived_features PASSED    [ 96%]
+tests/training/test_split_and_models.py::test_models_learn_the_synthetic_signal_and_handle_unseen_categories[logreg] PASSED [ 97%]
+tests/training/test_split_and_models.py::test_models_learn_the_synthetic_signal_and_handle_unseen_categories[hgb] PASSED [ 97%]
+tests/training/test_split_and_models.py::test_models_learn_the_synthetic_signal_and_handle_unseen_categories[hgb_derived] PASSED [ 98%]
+tests/training/test_split_and_models.py::test_calibration_keeps_the_model_frozen_and_returns_probabilities PASSED [ 98%]
+tests/training/test_split_and_models.py::test_log_features_keep_order_and_leave_trends_untouched PASSED [ 99%]
+tests/training/test_split_and_models.py::test_every_saved_model_type_is_in_the_skops_trust_list PASSED [ 99%]
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+  /Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/mlflow/store/tracking/sqlalchemy_store.py:356: SADeprecationWarning: The ``noload`` loader strategy is deprecated and will be removed in a future release.  This option produces incorrect results by returning ``None`` for related items. (deprecated since: 2.1)
+    sqlalchemy.orm.configure_mappers()
+
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+  /Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/mlflow/types/utils.py:440: UserWarning: Hint: Inferred schema contains integer column(s). Integer columns in Python cannot represent missing values. If your input data contains missing values at inference time, it will be encoded as floats and will cause a schema enforcement error. The best way to avoid this problem is to infer the model schema based on a realistic data sample (training dataset) that includes missing values. Alternatively, you can declare integer columns as doubles (float64) whenever these columns may have missing values. See `Handling Integers With Missing Values <https://www.mlflow.org/docs/latest/models.html#handling-integers-with-missing-values>`_ for more details.
+    warnings.warn(
+
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+  /Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/mlflow/models/utils.py:211: Pandas4Warning: Operation with range is deprecated. In a future version these will be treated as scalar-like. To retain the old behavior, explicitly wrap in a Series instead.
+    if all(df.columns == range(len(df.columns))):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.15-final-0 _______________
+
+Name                       Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------------
+data_quality/__init__.py       0      0      0      0   100%
+data_quality/__main__.py      39      1      4      1    95%   67
+data_quality/gate.py         121      2     18      2    97%   108, 189
+data_quality/report.py        46      0      8      0   100%
+data_quality/rules.py         35      0      0      0   100%
+pipeline/__init__.py           0      0      0      0   100%
+pipeline/components.py        89      0      0      0   100%
+pipeline/dq_step.py           28      0      2      0   100%
+pipeline/extract.py           63      3     10      3    92%   60, 62, 98
+pipeline/pipeline.py          28      5      4      1    81%   68-73, 77
+pipeline/publish.py           48      0      2      0   100%
+pipeline/run_local.py         50     13     16      2    71%   58-80, 84
+pipeline/transform.py         96      0      6      0   100%
+pipeline/validate.py          52      1     20      2    96%   55, 95->101
+training/__init__.py           0      0      0      0   100%
+training/config.py            41      0     12      0   100%
+training/data.py              49      2      8      2    93%   64, 89
+training/metrics.py           54      1      8      1    97%   27
+training/models.py            59      0      4      0   100%
+training/train.py            225     32     20      4    84%   73-74, 216->218, 304-313, 379, 437-467, 471
+----------------------------------------------------------------------
+TOTAL                       1123     60    142     18    93%
+Required test coverage of 80.0% reached. Total coverage: 93.36%
+====================== 203 passed, 13 warnings in 35.69s =======================
