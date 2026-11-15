@@ -9,7 +9,7 @@ services:
     shm_size: 1g
     environment:
       POSTGRES_USER: ds_candidate
-      POSTGRES_PASSWORD: ds_candidate_pw
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ds_candidate_pw}
       POSTGRES_DB: ecommerce
     ports:
       - "5432:5432"
@@ -48,7 +48,7 @@ services:
       MLFLOW_SERVER_ENABLE_JOB_EXECUTION: "false"
     command: >
       mlflow server --host 0.0.0.0 --port 5000 --workers 1
-      --backend-store-uri postgresql+psycopg2://ds_candidate:ds_candidate_pw@postgres:5432/mlflow
+      --backend-store-uri postgresql+psycopg2://ds_candidate:${POSTGRES_PASSWORD:-ds_candidate_pw}@postgres:5432/mlflow
       --artifacts-destination /mlartifacts
       --allowed-hosts "localhost:5001,127.0.0.1:5001,host.docker.internal:5001,mlflow:5000"
     ports:
