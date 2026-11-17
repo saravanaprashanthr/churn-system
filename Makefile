@@ -14,6 +14,8 @@ COMPOSE    := docker compose
 PSQL       := docker exec -i ds_interview_postgres psql -U ds_candidate -d ecommerce -v ON_ERROR_STOP=1
 SHA        := $(shell git rev-parse --short HEAD)
 PIPELINE_IMAGE ?= churn-pipeline:$(SHA)
+API_IMAGE      ?= churn-api:$(SHA)
+MODEL_URI      ?= models:/churn-90d@production
 
 AS_OF          ?= 2026-07-01
 CUTOFF         ?= 2026-03-30
@@ -21,7 +23,8 @@ BACKFILL_START ?= 2025-01-06
 BACKFILL_END   ?= 2026-03-30
 
 .PHONY: help install lint format test test-unit pre-commit up down db-load sql-optimize dq \
-        pipeline-image pipeline-compile pipeline-run backfill train run evidence-e
+        pipeline-image pipeline-compile pipeline-run backfill train run evidence-e \
+        promote test-model serving-image test-container
 
 help: ## list targets
 	@grep -hE '^[a-zA-Z0-9_-]+:.*## ' Makefile | awk -F':.*## ' '{printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -48,7 +51,7 @@ test: require-DQ_TEST_DATABASE_URL ## all tests incl. Postgres integration tests
 	$(VENV)/pytest --cov
 
 test-unit: ## tests that need no database (no coverage gate)
-	$(VENV)/pytest -m "not integration and not model" --no-cov
+	$(VENV)/pytest -m "not integration and not model and not container" --no-cov
 
 pre-commit: ## run every pre-commit hook on all files
 	$(VENV)/pre-commit run --all-files
@@ -95,6 +98,20 @@ train: require-DATABASE_URL ## Part D: retrain on all published datasets, regist
 	$(PYTHON) -m training.train
 
 run: up dq pipeline-run train ## end to end: services -> DQ gate -> pipeline (CUTOFF) -> training (needs `make backfill` once)
+
+# ---------------------------------------------------------------- serving and deployment
+promote: require-DATABASE_URL ## Part F: promotion gate for CANDIDATE (default alias 'candidate')
+	$(PYTHON) -m training.promote --candidate $${CANDIDATE:-models:/churn-90d@candidate}
+
+test-model: ## Part F: model behavior tests for MODEL_URI (needs MLflow + DATABASE_URL)
+	MODEL_URI=$(MODEL_URI) $(VENV)/pytest -m model tests/model --no-cov
+
+serving-image: ## Part F: bundle MODEL_URI as the fallback and build churn-api:<git sha>
+	$(PYTHON) -m serving.fetch_model --uri $(MODEL_URI) --out build/model
+	docker build -f serving/Dockerfile --build-arg GIT_SHA=$(SHA) -t $(API_IMAGE) .
+
+test-container: ## Part F: start the API image in each registry situation
+	CHURN_API_IMAGE=$(API_IMAGE) $(VENV)/pytest -m container tests/container --no-cov -v
 
 # ---------------------------------------------------------------- evidence
 evidence-e: require-DQ_TEST_DATABASE_URL ## Part E: refresh evidence/tests and evidence/lint

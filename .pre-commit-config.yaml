@@ -39,7 +39,7 @@ repos:
         pass_filenames: false  # type-check the whole project: a change can break callers in other files
       - id: unit-tests
         name: unit tests (no database)
-        entry: .venv/bin/pytest -q -m "not integration and not model" -p no:cacheprovider --no-cov
+        entry: .venv/bin/pytest -q -m "not integration and not model and not container" -p no:cacheprovider --no-cov
         language: system
         pass_filenames: false
         stages: [pre-push]

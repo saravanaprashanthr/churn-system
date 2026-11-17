@@ -30,6 +30,7 @@ addopts = "-ra --strict-markers"
 markers = [
     "integration: needs a Postgres database; set DQ_TEST_DATABASE_URL",
     "model: behavior tests of a registered model on the holdout; needs MLflow + DATABASE_URL (MODEL_URI)",
+    "container: starts the built API image; needs Docker and CHURN_API_IMAGE",
 ]
 
 [tool.coverage.run]
