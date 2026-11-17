@@ -1,0 +1,47 @@
+# Promotion gate demo (scripts/promotion_gate_demo.sh). Rules: behavior tests (tests/model) pass,
+# holdout unseen, holdout PR-AUC >= 0.85 and >= production + 0.005. Holdout = test split, cutoffs
+# 2026-01-05..2026-03-30. v1 = round-1 calibrated logistic regression; v3 = ensemble; v4 = tree-only
+# model (good metrics, breaks the recency rule). Unedited output, 2026-11-17T14:56Z.
+
+## Before (production aliases reset)
+aliases: {'candidate': '3'}
+
+## $ python -m training.promote --candidate models:/churn-90d/1
+INFO promote gate: churn-90d v1 (production: none), holdout 2026-01-05..2026-03-30
+INFO promote behavior tests: 13 passed in 2.98s
+INFO promote decision: churn-90d v1 -> PROMOTED
+INFO promote   candidate holdout PR-AUC 0.8891; production none
+INFO promote report: artifacts/promotion/20261117T145700+0000_churn-90d_v1_promoted.json
+exit code: 0
+aliases: {'candidate': '3', 'production': '1'}
+
+## $ python -m training.promote --candidate models:/churn-90d/4
+INFO promote gate: churn-90d v4 (production: 1), holdout 2026-01-05..2026-03-30
+INFO promote behavior tests: 2 failed, 11 passed in 3.30s
+INFO promote   FAILED tests/model/test_model_behavior.py::test_more_recent_last_order_does_not_raise_churn
+INFO promote   FAILED tests/model/test_model_behavior.py::test_older_last_order_does_not_lower_churn
+INFO promote decision: churn-90d v4 -> REJECTED
+INFO promote   reason: behavior tests failed: 2 failed, 11 passed in 3.30s
+INFO promote   candidate holdout PR-AUC 0.9068; production v1 0.8891
+INFO promote report: artifacts/promotion/20261117T145708+0000_churn-90d_v4_rejected.json
+exit code: 1
+aliases: {'candidate': '3', 'production': '1'}
+
+## $ python -m training.promote --candidate models:/churn-90d/3
+INFO promote gate: churn-90d v3 (production: 1), holdout 2026-01-05..2026-03-30
+INFO promote behavior tests: 13 passed in 3.98s
+INFO promote decision: churn-90d v3 -> PROMOTED
+INFO promote   candidate holdout PR-AUC 0.8987; production v1 0.8891
+INFO promote report: artifacts/promotion/20261117T145715+0000_churn-90d_v3_promoted.json
+exit code: 0
+aliases: {'candidate': '3', 'previous-production': '1', 'production': '3'}
+
+## $ python -m training.promote --candidate models:/churn-90d/1
+INFO promote gate: churn-90d v1 (production: 3), holdout 2026-01-05..2026-03-30
+INFO promote behavior tests: 13 passed in 5.60s
+INFO promote decision: churn-90d v1 -> REJECTED
+INFO promote   reason: holdout PR-AUC 0.8891 < production v3 0.8987 + margin 0.005
+INFO promote   candidate holdout PR-AUC 0.8891; production v3 0.8987
+INFO promote report: artifacts/promotion/20261117T145729+0000_churn-90d_v1_rejected.json
+exit code: 1
+aliases: {'candidate': '3', 'previous-production': '1', 'production': '3'}
