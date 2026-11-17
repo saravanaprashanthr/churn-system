@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["data_quality*", "pipeline*", "training*", "serving*"]
+include = ["data_quality*", "pipeline*", "training*", "serving*", "monitoring*"]
 
 [tool.setuptools.package-data]
 data_quality = ["*.sql"]
@@ -34,7 +34,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["data_quality", "pipeline", "training", "serving"]
+source = ["data_quality", "pipeline", "training", "serving", "monitoring"]
 branch = true
 
 [tool.coverage.report]
@@ -70,7 +70,7 @@ ignore = [
 
 [tool.mypy]
 python_version = "3.11"
-files = ["data_quality", "pipeline", "training", "serving", "tests", "scripts"]
+files = ["data_quality", "pipeline", "training", "serving", "monitoring", "tests", "scripts"]
 warn_unused_ignores = true
 warn_redundant_casts = true
 no_implicit_optional = true
@@ -78,5 +78,5 @@ check_untyped_defs = true
 
 [[tool.mypy.overrides]]
 # Libraries without type information.
-module = ["kfp.*", "mlflow.*", "sklearn.*", "optuna.*", "skops.*", "pandera.*", "pyarrow.*", "docker.*", "yaml"]
+module = ["kfp.*", "mlflow.*", "sklearn.*", "optuna.*", "skops.*", "pandera.*", "pyarrow.*", "docker.*", "yaml", "scipy.*"]
 ignore_missing_imports = true

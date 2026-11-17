@@ -1,0 +1,90 @@
+# Prometheus alert rules for the churn API and its monitoring jobs.
+# Service metrics come from GET /metrics (serving/app.py). churn_drift_* come from monitoring/drift.py
+# (drift.prom textfile, or Pushgateway in a real setup). churn_realized_* come from monitoring/performance.py.
+# "What do I do when this fires": monitoring/RUNBOOK.md.
+groups:
+  - name: churn-api
+    rules:
+      - alert: ChurnApiNotReady
+        # No model loaded: /predict returns 503. 2 min covers one restart (the API is ready ~4 s after start).
+        expr: max by (pod) (churn_api_model_ready) == 0
+        for: 2m
+        labels: {severity: critical}
+        annotations:
+          summary: "churn API pod {{ $labels.pod }} has no model loaded"
+
+      - alert: ChurnApiHighErrorRate
+        # 5xx share above 2% over 5 min. The API has no expected 5xx; 2% tolerates a single crashing request
+        # in a quiet period without paging.
+        expr: |
+          sum(rate(churn_api_requests_total{path="/predict",status=~"5.."}[5m]))
+            / clamp_min(sum(rate(churn_api_requests_total{path="/predict"}[5m])), 1e-9) > 0.02
+        for: 5m
+        labels: {severity: critical}
+        annotations:
+          summary: "churn API 5xx rate above 2%"
+
+      - alert: ChurnApiInvalidInputSpike
+        # 422 share above 10%: callers are sending features the schema rejects, usually a broken upstream
+        # feature pipeline. Warning, because the API is doing its job by rejecting them.
+        expr: |
+          sum(rate(churn_api_requests_total{path="/predict",status="422"}[10m]))
+            / clamp_min(sum(rate(churn_api_requests_total{path="/predict"}[10m])), 1e-9) > 0.10
+        for: 10m
+        labels: {severity: warning}
+        annotations:
+          summary: "more than 10% of /predict requests are invalid (upstream feature pipeline?)"
+
+      - alert: ChurnApiHighLatency
+        # p95 above 300 ms for 10 min: the same budget the post-deploy smoke test enforces (measured p95 ~15 ms).
+        expr: |
+          histogram_quantile(0.95, sum by (le) (rate(churn_api_request_latency_seconds_bucket{path="/predict"}[5m]))) > 0.3
+        for: 10m
+        labels: {severity: warning}
+        annotations:
+          summary: "churn API p95 latency above 300 ms"
+
+      - alert: ChurnApiServingBundledModel
+        # The registry was unreachable at startup, so pods serve the copy baked into the image. Predictions
+        # still work, but a model promoted since the image was built is not being served.
+        expr: max(churn_api_model_info{source="bundled"}) == 1
+        for: 15m
+        labels: {severity: warning}
+        annotations:
+          summary: "churn API is serving the bundled fallback model (registry unreachable)"
+
+      - alert: ChurnApiPredictionLogFailing
+        # Drift and delayed-label monitoring depend on the prediction log.
+        expr: increase(churn_api_prediction_log_failures_total[15m]) > 0
+        for: 15m
+        labels: {severity: warning}
+        annotations:
+          summary: "prediction log writes are failing; drift and performance monitoring are blind"
+
+  - name: churn-model
+    rules:
+      - alert: ChurnDataDrift
+        # monitoring/drift.py: prediction PSI >= 0.25 or >= 3 features with PSI >= 0.25 (PSI 0.25 is the
+        # conventional "significant shift" level). Triggers the retraining job.
+        expr: churn_drift_alert == 1
+        labels: {severity: warning, action: retrain}
+        annotations:
+          summary: "input or prediction drift beyond PSI 0.25; retraining triggered"
+
+      - alert: ChurnAtRiskShareShift
+        # Share of customers flagged at risk moved more than 2x from its 7-day level: the decision the business
+        # acts on changed, even if no single feature crossed the drift threshold.
+        expr: |
+          (sum(rate(churn_api_at_risk_total[1d])) / clamp_min(sum(rate(churn_api_predictions_total[1d])), 1e-9))
+            > 2 * (sum(rate(churn_api_at_risk_total[7d])) / clamp_min(sum(rate(churn_api_predictions_total[7d])), 1e-9))
+        for: 1h
+        labels: {severity: warning}
+        annotations:
+          summary: "share of customers flagged at risk doubled versus the last 7 days"
+
+      - alert: ChurnRealizedPerformanceDrop
+        # monitoring/performance.py: realized PR-AUC on matured (90-day) labels below the promotion floor 0.85.
+        expr: churn_realized_pr_auc < 0.85 and churn_realized_rows >= 200
+        labels: {severity: critical, action: retrain}
+        annotations:
+          summary: "realized PR-AUC below 0.85 on matured predictions"
