@@ -19,7 +19,7 @@ from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 
-from fastapi import FastAPI, Request, Response
+from fastapi import BackgroundTasks, FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from prometheus_client import (
@@ -31,8 +31,9 @@ from prometheus_client import (
     generate_latest,
 )
 
-from serving.features import to_frame
+from serving.features import complete, to_frame
 from serving.model import LoadedModel, ModelLoadError, Settings, load_model
+from serving.prediction_log import PostgresSink, Sink
 from serving.schemas import Prediction, PredictRequest, PredictResponse
 
 logger = logging.getLogger("serving")
@@ -57,6 +58,11 @@ class Metrics:
         )  # fmt: skip
         self.at_risk = Counter("churn_api_at_risk_total", "Customers flagged at risk", registry=self.registry)
         self.ready = Gauge("churn_api_model_ready", "1 when a model is loaded", registry=self.registry)
+        self.log_failures = Counter(
+            "churn_api_prediction_log_failures_total",
+            "Prediction-log writes that failed",
+            registry=self.registry,
+        )
         self.model_info = Gauge(
             "churn_api_model_info", "Loaded model", ["name", "version", "source"], registry=self.registry
         )
@@ -68,12 +74,16 @@ class ModelState:
     error: str | None = "model not loaded yet"
 
 
-def create_app(settings: Settings | None = None, loader: Loader = load_model) -> FastAPI:
+def create_app(
+    settings: Settings | None = None, loader: Loader = load_model, sink: Sink | None = None
+) -> FastAPI:
     if not logging.getLogger().handlers:
         logging.basicConfig(
             level=os.environ.get("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(name)s %(message)s"
         )
     settings = settings or Settings.from_env()
+    if sink is None and os.environ.get("PREDICTION_LOG_DATABASE_URL"):
+        sink = PostgresSink(os.environ["PREDICTION_LOG_DATABASE_URL"])
     state = ModelState()
     metrics = Metrics()
     stop = threading.Event()
@@ -91,6 +101,15 @@ def create_app(settings: Settings | None = None, loader: Loader = load_model) ->
         metrics.ready.set(1)
         metrics.model_info.labels(info.name, info.version, info.source).set(1)
         return True
+
+    def log_predictions(rows: list[dict]) -> None:
+        if sink is None:
+            return
+        try:
+            sink(rows)
+        except Exception as exc:  # noqa: BLE001 - logging must never affect serving
+            metrics.log_failures.inc()
+            logger.warning("prediction log write failed (%d rows): %s", len(rows), exc)
 
     def keep_trying() -> None:
         while not stop.wait(settings.reload_interval_seconds):
@@ -152,7 +171,9 @@ def create_app(settings: Settings | None = None, loader: Loader = load_model) ->
         return JSONResponse(content={"ready": True, "model": state.model.info.model_dump()})
 
     @app.post("/predict", response_model=PredictResponse)
-    def predict(body: PredictRequest, request: Request) -> PredictResponse | JSONResponse:
+    def predict(
+        body: PredictRequest, request: Request, background: BackgroundTasks
+    ) -> PredictResponse | JSONResponse:
         request_id = request.state.request_id
         model = state.model
         if model is None:
@@ -171,6 +192,14 @@ def create_app(settings: Settings | None = None, loader: Loader = load_model) ->
         metrics.at_risk.inc(sum(p.at_risk for p in predictions))
         for score in scores:
             metrics.scores.observe(float(score))
+        info = model.info
+        rows = [
+            {"request_id": request_id, "as_of_date": body.as_of_date, "customer_id": item.customer_id,
+             "model_name": info.name, "model_version": info.version, "model_source": info.source,
+             "features": complete(item), "churn_probability": p.churn_probability, "at_risk": p.at_risk}
+            for item, p in zip(body.instances, predictions, strict=True)
+        ]  # fmt: skip
+        background.add_task(log_predictions, rows)
         return PredictResponse(request_id=request_id, model=model.info, predictions=predictions)
 
     @app.get("/metrics")

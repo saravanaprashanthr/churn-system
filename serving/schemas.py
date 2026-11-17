@@ -8,6 +8,7 @@ Inconsistent input is rejected with HTTP 422 instead of being silently "fixed".
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -79,6 +80,9 @@ class PredictRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     instances: list[CustomerFeatures] = Field(min_length=1, max_length=MAX_BATCH)
+    as_of_date: date | None = Field(
+        default=None, description="Cutoff the features describe; logged for delayed-label monitoring."
+    )
 
 
 class ModelInfo(BaseModel):

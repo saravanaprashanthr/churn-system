@@ -116,3 +116,37 @@ def test_smoke_cli_fails_cleanly_when_the_api_is_unreachable():
     from serving.smoke import main
 
     assert main(["--url", "http://127.0.0.1:9", "--requests", "1", "--timeout", "0.5"]) == 1
+
+
+def test_scored_customers_are_logged_with_features_and_as_of_date():
+    logged: list[dict] = []
+    app = create_app(Settings(), loader=lambda settings: loaded(), sink=logged.extend)
+    with TestClient(app) as test_client:
+        body = {"instances": [customer(customer_id=5)], "as_of_date": "2026-03-30"}
+        response = test_client.post("/predict", json=body)
+    assert response.status_code == 200
+    (row,) = logged
+    assert row["customer_id"] == 5 and str(row["as_of_date"]) == "2026-03-30"
+    assert row["model_version"] == "7" and row["model_source"] == "registry"
+    assert row["features"]["views_30d"] == customer()["views_30d"]
+    assert len(row["features"]) == 27  # the complete model input, defaults applied
+    assert row["churn_probability"] == response.json()["predictions"][0]["churn_probability"]
+
+
+def test_a_failing_prediction_log_never_breaks_predictions():
+    def broken(rows: list[dict]) -> None:
+        raise ConnectionError("database down")
+
+    app = create_app(Settings(), loader=lambda settings: loaded(), sink=broken)
+    with TestClient(app) as test_client:
+        assert test_client.post("/predict", json={"instances": [customer()]}).status_code == 200
+        assert "churn_api_prediction_log_failures_total 1.0" in test_client.get("/metrics").text
+
+
+def test_packaged_prediction_log_ddl_matches_sql_script():
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    assert (root / "serving" / "prediction_log.sql").read_text() == (
+        root / "sql" / "05_prediction_log.sql"
+    ).read_text()
