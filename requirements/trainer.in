@@ -1,0 +1,5 @@
+-r training.in
+pytest
+pytest-cov
+httpx
+pydantic

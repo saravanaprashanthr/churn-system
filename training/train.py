@@ -71,7 +71,9 @@ def git_sha() -> str:
         sha = run("rev-parse", "--short", "HEAD").strip()
         dirty = bool(run("status", "--porcelain", "--untracked-files=no").strip())
     except (OSError, subprocess.CalledProcessError):
-        return "unknown"
+        return os.environ.get(
+            "GIT_SHA", "unknown"
+        )  # inside an image there is no .git; the build sets GIT_SHA
     return f"{sha}-dirty" if dirty else sha
 
 

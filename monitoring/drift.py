@@ -22,7 +22,7 @@ import logging
 import os
 import sys
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -164,11 +164,11 @@ def render_markdown(report: DriftReport) -> str:
     return "\n".join(lines) + "\n"
 
 
-def load_current(conn, since_hours: float) -> tuple[pd.DataFrame, np.ndarray, str | None]:
+def load_current(conn, since: datetime) -> tuple[pd.DataFrame, np.ndarray, str | None]:
     rows = conn.execute(
         "SELECT features, churn_probability, model_version FROM ml_prediction_log "
-        "WHERE logged_at >= now() - make_interval(secs => %s) ORDER BY id",
-        (since_hours * 3600,),
+        "WHERE logged_at >= %s ORDER BY id",
+        (since,),
     ).fetchall()
     if not rows:
         return pd.DataFrame(), np.array([]), None
@@ -182,6 +182,7 @@ def main(argv: list[str] | None = None) -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument("--since-hours", type=float, default=24.0)
+    parser.add_argument("--since", type=datetime.fromisoformat, help="ISO timestamp; overrides --since-hours")
     parser.add_argument("--out-dir", type=Path, default=Path("artifacts/monitoring"))
     args = parser.parse_args(argv)
     database_url = os.environ.get("DATABASE_URL")
@@ -198,10 +199,11 @@ def main(argv: list[str] | None = None) -> int:
     mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "http://localhost:5001"))
     config = TrainConfig()
     with psycopg.connect(database_url) as conn:
-        current, current_scores, version = load_current(conn, args.since_hours)
+        since = args.since or datetime.now(UTC) - timedelta(hours=args.since_hours)
+        current, current_scores, version = load_current(conn, since)
         dataset = load_dataset(conn, config.snapshot_date, config.lookback_days, config.split.horizon_days)
     reference, _ = xy(split(dataset, config.split)["train"], dataset.feature_columns)
-    window = f"last {args.since_hours:g} h"
+    window = f"since {since.isoformat(timespec='seconds')}"
     if version is None:
         report = compare(reference, current, np.array([]), current_scores, window)
     else:
