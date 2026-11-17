@@ -126,7 +126,7 @@ def build_features(
         & ~orders["order_id"].isin(quarantined_orders)
         & ~orders["customer_id"].isin(excluded_customers)
     ]
-    history = orders[(orders["order_date"] >= lookback_start) & (orders["order_date"] < cutoff)]
+    history = orders[(orders["order_date"] >= lookback_start) & (orders["order_date"] <= cutoff)]
     future = orders[(orders["order_date"] >= cutoff) & (orders["order_date"] < label_end)]
     events = events_daily[
         (pd.to_datetime(events_daily["day"]) < cutoff) & ~events_daily["customer_id"].isin(excluded_customers)
