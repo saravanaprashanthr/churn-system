@@ -1,0 +1,95 @@
+# Rollback demo (deploy/rollback_demo.sh), 2026-11-17T15:15Z. Unedited output.
+# Strategy: RollingUpdate maxUnavailable=0 maxSurge=1; deploy.sh = helm upgrade --rollback-on-failure
+# --wait, then helm test (serving.smoke); smoke failure -> helm rollback.
+
+## 0. Starting state
+--- helm history
+REVISION	UPDATED                 	STATUS  	CHART          	APP VERSION  	DESCRIPTION     
+1       	Tue Nov 17 20:43:47 2026	deployed	churn-api-0.1.0	set-by-deploy	Install complete
+--- serving image / model: churn-api:3af9aab / 3
+    pod churn-api-59bdc79fb7-7chq8 1/1 Running
+    pod churn-api-59bdc79fb7-8qqwd 1/1 Running
+    pod churn-api-smoke-test 0/1 Completed
+
+## 1. Good rolling update to churn-api:7b64e5d
+deploying churn-api: image churn-api:7b64e5d, model churn-90d v3 -> namespace churn
+deployment "churn-api" successfully rolled out
+2026-11-17 15:16:43,124 INFO smoke SMOKE TEST PASSED: {'model': {'name': 'churn-90d', 'version': '3', 'uri': 'models:/churn-90d/3', 'source': 'registry', 'run_id': '6e3fe7d9a7134fed845c9ede4354bc7d', 'git_sha': '08ad93d', 'data_version': '3ab46a6bee7b', 'decision_threshold': 0.920831}, 'p95_ms': 16.2, 'median_ms': 8.9}
+deployed and smoke-tested: churn-api:7b64e5d with churn-90d v3
+exit code: 0
+--- traffic during this step (status code: requests): TRAFFIC {200: 554}
+--- helm history
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION               
+1       	Tue Nov 17 20:43:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Install complete          
+2       	Tue Nov 17 20:46:20 2026	deployed  	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v3
+--- serving image / model: churn-api:7b64e5d / 3
+    pod churn-api-64ff76bc8f-kshfq 1/1 Running
+    pod churn-api-64ff76bc8f-prnrj 1/1 Running
+    pod churn-api-smoke-test 0/1 Completed
+
+## 2. Bad release: image churn-api:deadbee crashes on start
+deploying churn-api: image churn-api:deadbee, model churn-90d v3 -> namespace churn
+level=WARN msg="upgrade failed" name=churn-api error="resource Deployment/churn/churn-api not ready. status: InProgress, message: Updated: 1/2\ncontext deadline exceeded"
+Error: UPGRADE FAILED: release churn-api failed, and has been rolled back due to rollback-on-failure being set: resource Deployment/churn/churn-api not ready. status: InProgress, message: Updated: 1/2
+exit code: 1
+--- traffic during this step (status code: requests): TRAFFIC {200: 1145}
+--- helm history
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION                                                                                                         
+1       	Tue Nov 17 20:43:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Install complete                                                                                                    
+2       	Tue Nov 17 20:46:20 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v3                                                                                          
+3       	Tue Nov 17 20:58:36 2026	failed    	churn-api-0.1.0	set-by-deploy	Upgrade "churn-api" failed: resource Deployment/churn/churn-api not ready. status: InProgress, message: Updated: ...
+4       	Tue Nov 17 21:00:06 2026	deployed  	churn-api-0.1.0	set-by-deploy	Rollback to 2                                                                                                       
+--- serving image / model: churn-api:7b64e5d / 3
+    pod churn-api-64ff76bc8f-kshfq 1/1 Running
+    pod churn-api-64ff76bc8f-prnrj 1/1 Running
+    pod churn-api-smoke-test 0/1 Completed
+
+## 3. Bad release: model version 999 (does not exist; pods fall back to the bundled v3)
+deploying churn-api: image churn-api:7b64e5d, model churn-90d v999 -> namespace churn
+2026-11-17 15:31:45,009 ERROR smoke SMOKE TEST FAILED: serving model version 999 (got 3)
+Error: resource Pod/churn/churn-api-smoke-test not ready. status: Failed, message: pod churn-api-smoke-test failed
+SMOKE TEST FAILED: rolling churn-api back to the previous revision
+Rollback was a success! Happy Helming!
+4       	Tue Nov 17 21:00:06 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 2                                                                                                       
+6       	Tue Nov 17 21:01:47 2026	deployed  	churn-api-0.1.0	set-by-deploy	Rollback to 4                                                                                                       
+exit code: 1
+--- traffic during this step (status code: requests): TRAFFIC {200: 889}
+--- helm history
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION                                                                                                         
+1       	Tue Nov 17 20:43:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Install complete                                                                                                    
+2       	Tue Nov 17 20:46:20 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v3                                                                                          
+3       	Tue Nov 17 20:58:36 2026	failed    	churn-api-0.1.0	set-by-deploy	Upgrade "churn-api" failed: resource Deployment/churn/churn-api not ready. status: InProgress, message: Updated: ...
+4       	Tue Nov 17 21:00:06 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 2                                                                                                       
+5       	Tue Nov 17 21:01:12 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v999                                                                                        
+6       	Tue Nov 17 21:01:47 2026	deployed  	churn-api-0.1.0	set-by-deploy	Rollback to 4                                                                                                       
+--- serving image / model: churn-api:7b64e5d / 3
+    pod churn-api-64ff76bc8f-2sq9d 1/1 Running
+    pod churn-api-64ff76bc8f-kb4rw 1/1 Running
+    pod churn-api-smoke-test 0/1 Error
+
+## 4. Manual rollback: helm rollback churn-api 1
+Rollback was a success! Happy Helming!
+exit code: 0
+deployment "churn-api" successfully rolled out
+--- helm history
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION                                                                                                         
+1       	Tue Nov 17 20:43:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Install complete                                                                                                    
+2       	Tue Nov 17 20:46:20 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v3                                                                                          
+3       	Tue Nov 17 20:58:36 2026	failed    	churn-api-0.1.0	set-by-deploy	Upgrade "churn-api" failed: resource Deployment/churn/churn-api not ready. status: InProgress, message: Updated: ...
+4       	Tue Nov 17 21:00:06 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 2                                                                                                       
+5       	Tue Nov 17 21:01:12 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v999                                                                                        
+6       	Tue Nov 17 21:01:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 4                                                                                                       
+7       	Tue Nov 17 21:03:06 2026	deployed  	churn-api-0.1.0	set-by-deploy	Rollback to 1                                                                                                       
+--- serving image / model: churn-api:3af9aab / 3
+    pod churn-api-59bdc79fb7-5srrw 1/1 Running
+    pod churn-api-59bdc79fb7-zq27s 1/1 Running
+    pod churn-api-64ff76bc8f-2sq9d 1/1 Terminating
+    pod churn-api-smoke-test 0/1 Error
+--- kubectl rollout history
+deployment.apps/churn-api 
+REVISION  CHANGE-CAUSE
+3         <none>
+5         <none>
+6         <none>
+7         <none>
+
