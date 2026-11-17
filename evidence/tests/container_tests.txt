@@ -1,0 +1,15 @@
+CHURN_API_IMAGE=churn-api:b5eca8b .venv/bin/pytest -m container tests/container --no-cov -v
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-9.2.0, pluggy-1.7.0 -- /Users/saravanaprashanth/churn-system/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/saravanaprashanth/churn-system
+configfile: pyproject.toml
+plugins: platformdirs-4.14.5, cov-7.1.0, typeguard-4.6.0, anyio-4.16.0
+collecting ... collected 4 items
+
+tests/container/test_image.py::test_registry_reachable_serves_the_registry_model PASSED [ 25%]
+tests/container/test_image.py::test_registry_unreachable_falls_back_to_the_bundled_model PASSED [ 50%]
+tests/container/test_image.py::test_no_registry_and_no_bundle_is_alive_but_not_ready PASSED [ 75%]
+tests/container/test_image.py::test_image_runs_as_non_root PASSED        [100%]
+
+============================== 4 passed in 7.72s ===============================

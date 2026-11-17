@@ -11,6 +11,7 @@ GET /metrics  Prometheus metrics
 from __future__ import annotations
 
 import logging
+import os
 import threading
 import time
 import uuid
@@ -69,7 +70,9 @@ class ModelState:
 
 def create_app(settings: Settings | None = None, loader: Loader = load_model) -> FastAPI:
     if not logging.getLogger().handlers:
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+        logging.basicConfig(
+            level=os.environ.get("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(name)s %(message)s"
+        )
     settings = settings or Settings.from_env()
     state = ModelState()
     metrics = Metrics()

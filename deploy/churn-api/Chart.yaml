@@ -1,0 +1,7 @@
+apiVersion: v2
+name: churn-api
+description: 90-day churn prediction API (FastAPI) serving a pinned MLflow model version
+type: application
+version: 0.1.0
+# appVersion is the git SHA of the image; set at deploy time with --set image.tag=<sha>.
+appVersion: "set-by-deploy"

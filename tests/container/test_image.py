@@ -103,5 +103,9 @@ def test_no_registry_and_no_bundle_is_alive_but_not_ready(docker_client):
 
 
 def test_image_runs_as_non_root(docker_client):
-    output = docker_client.containers.run(IMAGE, command=["id", "-u"], remove=True)
-    assert output.decode().strip() == "1000"
+    container = docker_client.containers.run(IMAGE, command=["id", "-u"], detach=True)
+    try:
+        container.wait(timeout=30)
+        assert container.logs().decode().strip() == "1000"
+    finally:
+        container.remove(force=True)

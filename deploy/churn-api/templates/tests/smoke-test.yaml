@@ -1,0 +1,41 @@
+# `helm test <release>` runs this pod: /health, /ready (expected model version), /predict schema,
+# 422 on bad input and the p95 latency budget. A non-zero exit fails the test, and deploy/deploy.sh
+# then rolls the release back.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "churn-api.fullname" . }}-smoke-test
+  labels:
+    {{- include "churn-api.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  restartPolicy: Never
+  securityContext:
+    {{- toYaml .Values.podSecurityContext | nindent 4 }}
+  containers:
+    - name: smoke
+      image: {{ include "churn-api.image" . }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      command:
+        - python
+        - -m
+        - serving.smoke
+        - --url
+        - http://{{ include "churn-api.fullname" . }}:{{ .Values.service.port }}
+        - --requests
+        - {{ .Values.smokeTest.requests | quote }}
+        - --p95-budget-ms
+        - {{ .Values.smokeTest.p95BudgetMs | quote }}
+        - --expect-version
+        - {{ .Values.model.version | quote }}
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 500m
+          memory: 256Mi
+      securityContext:
+        {{- toYaml .Values.containerSecurityContext | nindent 8 }}

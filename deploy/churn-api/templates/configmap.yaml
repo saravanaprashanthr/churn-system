@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "churn-api.fullname" . }}
+  labels:
+    {{- include "churn-api.labels" . | nindent 4 }}
+data:
+  MODEL_URI: {{ include "churn-api.modelUri" . | quote }}
+  MLFLOW_TRACKING_URI: {{ .Values.mlflow.trackingUri | quote }}
+  MLFLOW_HTTP_TIMEOUT_SECONDS: {{ .Values.mlflow.httpTimeoutSeconds | quote }}
+  MODEL_LOAD_ATTEMPTS: {{ .Values.config.modelLoadAttempts | quote }}
+  MODEL_LOAD_RETRY_SECONDS: {{ .Values.config.modelLoadRetrySeconds | quote }}
+  MODEL_RELOAD_INTERVAL_SECONDS: {{ .Values.config.modelReloadIntervalSeconds | quote }}
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+  # MLflow and libraries write temp files; the root filesystem is read-only, so point HOME at /tmp.
+  HOME: /tmp

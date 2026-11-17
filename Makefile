@@ -24,7 +24,7 @@ BACKFILL_END   ?= 2026-03-30
 
 .PHONY: help install lint format test test-unit pre-commit up down db-load sql-optimize dq \
         pipeline-image pipeline-compile pipeline-run backfill train run evidence-e \
-        promote test-model serving-image test-container
+        promote test-model serving-image test-container cluster deploy
 
 help: ## list targets
 	@grep -hE '^[a-zA-Z0-9_-]+:.*## ' Makefile | awk -F':.*## ' '{printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -112,6 +112,12 @@ serving-image: ## Part F: bundle MODEL_URI as the fallback and build churn-api:<
 
 test-container: ## Part F: start the API image in each registry situation
 	CHURN_API_IMAGE=$(API_IMAGE) $(VENV)/pytest -m container tests/container --no-cov -v
+
+cluster: ## Part F: create the kind cluster (churn-system) with metrics-server
+	deploy/cluster.sh
+
+deploy: serving-image ## Part F: build, deploy to kind with auto-rollback, smoke-test (helm test)
+	deploy/deploy.sh
 
 # ---------------------------------------------------------------- evidence
 evidence-e: require-DQ_TEST_DATABASE_URL ## Part E: refresh evidence/tests and evidence/lint

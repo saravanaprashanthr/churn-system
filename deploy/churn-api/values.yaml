@@ -1,0 +1,87 @@
+# Defaults for the churn API chart. Deploy with deploy/deploy.sh (or `make deploy`), which sets
+# image.tag to the git SHA and model.version to the version behind the registry alias 'production'.
+
+replicaCount: 2
+
+image:
+  repository: churn-api
+  tag: ""            # required: a git SHA. The chart refuses an empty tag or "latest".
+  pullPolicy: IfNotPresent
+
+# The model is pinned to a registry version, not an alias, so a rollback restores the exact model too.
+model:
+  name: churn-90d
+  version: ""        # required, e.g. "3"
+
+mlflow:
+  trackingUri: http://host.docker.internal:5001
+  httpTimeoutSeconds: 5
+
+# Non-secret settings -> ConfigMap. Anything secret (e.g. an MLflow token) -> secret.data, mounted as env.
+config:
+  modelLoadAttempts: "3"
+  modelLoadRetrySeconds: "2"
+  modelReloadIntervalSeconds: "30"
+  logLevel: INFO
+
+secret:
+  data: {}           # e.g. {MLFLOW_TRACKING_TOKEN: "..."}; the Secret is only rendered when non-empty
+
+service:
+  type: ClusterIP
+  port: 8080
+
+# Measured: ~193 MiB resident after loading the model and serving requests; ready ~4 s after start.
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi
+
+strategy:
+  maxUnavailable: 0  # never drop below the desired replicas during a rollout
+  maxSurge: 1
+
+probes:
+  startup:           # model loading: up to 3 registry attempts + bundled fallback
+    path: /health
+    periodSeconds: 2
+    failureThreshold: 45
+  liveness:
+    path: /health
+    periodSeconds: 10
+    failureThreshold: 3
+  readiness:
+    path: /ready
+    periodSeconds: 5
+    failureThreshold: 2
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# `helm test` runs serving.smoke against the Service; a failure fails the deploy (deploy/deploy.sh).
+smokeTest:
+  requests: 30
+  p95BudgetMs: 300
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: ["ALL"]
