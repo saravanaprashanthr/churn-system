@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["data_quality*", "pipeline*", "training*"]
+include = ["data_quality*", "pipeline*", "training*", "serving*"]
 
 [tool.setuptools.package-data]
 data_quality = ["*.sql"]
@@ -29,10 +29,11 @@ pythonpath = ["."]
 addopts = "-ra --strict-markers"
 markers = [
     "integration: needs a Postgres database; set DQ_TEST_DATABASE_URL",
+    "model: behavior tests of a registered model on the holdout; needs MLflow + DATABASE_URL (MODEL_URI)",
 ]
 
 [tool.coverage.run]
-source = ["data_quality", "pipeline", "training"]
+source = ["data_quality", "pipeline", "training", "serving"]
 branch = true
 
 [tool.coverage.report]
@@ -68,7 +69,7 @@ ignore = [
 
 [tool.mypy]
 python_version = "3.11"
-files = ["data_quality", "pipeline", "training", "tests", "scripts"]
+files = ["data_quality", "pipeline", "training", "serving", "tests", "scripts"]
 warn_unused_ignores = true
 warn_redundant_casts = true
 no_implicit_optional = true

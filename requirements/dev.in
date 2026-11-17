@@ -1,5 +1,6 @@
 -r pipeline.in
 -r training.in
+-r serving.in
 pytest
 pytest-cov
 ruff

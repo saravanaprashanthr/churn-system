@@ -48,7 +48,7 @@ test: require-DQ_TEST_DATABASE_URL ## all tests incl. Postgres integration tests
 	$(VENV)/pytest --cov
 
 test-unit: ## tests that need no database (no coverage gate)
-	$(VENV)/pytest -m "not integration" --no-cov
+	$(VENV)/pytest -m "not integration and not model" --no-cov
 
 pre-commit: ## run every pre-commit hook on all files
 	$(VENV)/pre-commit run --all-files

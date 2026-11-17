@@ -1,0 +1,10 @@
+-r base.in
+fastapi
+uvicorn
+pydantic
+mlflow-skinny
+scikit-learn
+pandas
+skops
+prometheus-client
+httpx

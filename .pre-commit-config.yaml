@@ -2,6 +2,8 @@
 # ruff and mypy run from the project venv, so they use exactly the versions pinned in requirements/dev.txt.
 # evidence/ holds real, unedited command output and is never rewritten by hooks.
 exclude: ^evidence/
+# Hooks run at commit time; only the unit-test hook (stages: [pre-push]) runs on push.
+default_stages: [pre-commit]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -37,7 +39,7 @@ repos:
         pass_filenames: false  # type-check the whole project: a change can break callers in other files
       - id: unit-tests
         name: unit tests (no database)
-        entry: .venv/bin/pytest -q -m "not integration" -p no:cacheprovider --no-cov
+        entry: .venv/bin/pytest -q -m "not integration and not model" -p no:cacheprovider --no-cov
         language: system
         pass_filenames: false
         stages: [pre-push]
