@@ -1,0 +1,28 @@
+NAME                            READY   STATUS    RESTARTS   AGE   IP            NODE                         NOMINATED NODE   READINESS GATES
+pod/churn-api-c6c67d67f-xt9g7   1/1     Running   0          18s   10.244.0.25   churn-system-control-plane   <none>           <none>
+pod/churn-api-c6c67d67f-xwk4t   1/1     Running   0          27s   10.244.0.24   churn-system-control-plane   <none>           <none>
+
+NAME                TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+service/churn-api   ClusterIP   10.96.190.8   <none>        8080/TCP   21m   app.kubernetes.io/instance=churn-api,app.kubernetes.io/name=churn-api
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/churn-api   2/2     2            2           21m   api          churn-api:bf8b158   app.kubernetes.io/instance=churn-api,app.kubernetes.io/name=churn-api
+
+NAME                                   DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES              SELECTOR
+replicaset.apps/churn-api-59bdc79fb7   0         0         0       21m     api          churn-api:3af9aab   app.kubernetes.io/instance=churn-api,app.kubernetes.io/name=churn-api,pod-template-hash=59bdc79fb7
+replicaset.apps/churn-api-5fd57684fd   0         0         0       6m42s   api          churn-api:deadbee   app.kubernetes.io/instance=churn-api,app.kubernetes.io/name=churn-api,pod-template-hash=5fd57684fd
+replicaset.apps/churn-api-648764585    0         0         0       4m6s    api          churn-api:7b64e5d   app.kubernetes.io/instance=churn-api,app.kubernetes.io/name=churn-api,pod-template-hash=648764585
+replicaset.apps/churn-api-64ff76bc8f   0         0         0       18m     api          churn-api:7b64e5d   app.kubernetes.io/instance=churn-api,app.kubernetes.io/name=churn-api,pod-template-hash=64ff76bc8f
+replicaset.apps/churn-api-c6c67d67f    2         2         2       27s     api          churn-api:bf8b158   app.kubernetes.io/instance=churn-api,app.kubernetes.io/name=churn-api,pod-template-hash=c6c67d67f
+
+NAME                                            REFERENCE              TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/churn-api   Deployment/churn-api   cpu: 13%/70%   2         4         2          21m
+NAME                                            REFERENCE              TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/churn-api   Deployment/churn-api   cpu: 13%/70%   2         4         2          21m
+
+NAME                                   MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+poddisruptionbudget.policy/churn-api   1               N/A               1                     21m
+
+NAME                         DATA   AGE
+configmap/churn-api          8      21m
+configmap/kube-root-ca.crt   1      21m

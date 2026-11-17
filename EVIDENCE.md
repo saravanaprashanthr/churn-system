@@ -13,7 +13,7 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 | C. Data prep pipeline     | Done (☆ real KFP cluster: not done) | `pipeline/`, `pipeline/pipeline.yaml`, `evidence/pipeline/` | KFP v2, 5 containerized steps on `churn-pipeline:1fb0592`; DockerRunner runs; idempotent backfill of 65 cutoffs → 31,296 rows; repeat run returns same content-hash version |
 | D. Model development      | Done | `training/`, MLflow `churn-90d` v3, `evidence/training/` | Embargoed time split; baseline + 5 tracked iterations; final ensemble test PR-AUC 0.899 vs baseline 0.891; cost-based threshold 0.921; features recomputed from raw data: 0 mismatches |
 | E. Code quality & tests   | Done (coverage gate in CI: Part G) | `Makefile`, `.pre-commit-config.yaml`, `pyproject.toml`, `evidence/tests/`, `evidence/lint/` | 203 tests, 93% coverage (gate 80%); ruff incl. no-print and bandit rules, ruff format, mypy (☆) all clean; 10 pre-commit hooks + unit tests on push |
-| F. Kubernetes deployment  | Not started | | |
+| F. Kubernetes deployment  | Done (☆ load test/canary: not done) | `serving/`, `deploy/`, `training/promote.py`, `tests/{serving,model,container,deploy}`, `evidence/k8s/` | FastAPI on kind via Helm; promotion gate rejects a higher-PR-AUC model that breaks the recency rule; auto-rollback of a crashing image and of a wrong model version; 0 failed requests during all rollouts |
 | G. CI/CD                  | Not started | | |
 | H. MLOps & monitoring     | Not started | | |
 
@@ -118,6 +118,29 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
   (e.g. `feat(dq): declarative rule catalog with static tests`). Security-rule exemptions are per line, each with a reason.
 - **Not done / limitations:** the coverage gate is enforced locally and by `make test`; enforcing it in CI is Part G.
 - **How to reproduce:** `make install && make lint && make test` (with `DQ_TEST_DATABASE_URL` set, see `.env.example`).
+
+## Part F: Test-driven deployment to Kubernetes
+- **Claims → evidence**
+  - Cluster, objects, deployment, rollout status/history → `evidence/k8s/cluster_info.txt`, `get_all.txt`,
+    `describe_deployment.txt`, `rollout_status.txt`, `rollout_history.txt`; `helm lint --strict` → `helm_lint.txt`
+  - Deploy + in-cluster smoke test (`helm test`): model v3 from the registry, p95 15 ms (budget 300 ms) →
+    `evidence/k8s/smoke_test_output.txt`; pod logs → `logs_sample.txt`
+  - Rollback demo with in-cluster traffic: good rolling update (554 × 200), crashing image auto-rolled back
+    (1,145 × 200), model v999 caught by the smoke test and rolled back (889 × 200), manual `helm rollback` →
+    `evidence/k8s/rollback_demo.txt`
+  - Promotion gate: v1 promoted (no production), **v4 rejected** with the best holdout PR-AUC (0.907) because two
+    directional tests fail, v3 promoted (0.899 ≥ 0.889 + 0.005), v1 rejected → `evidence/k8s/promotion_gate_demo.txt`
+  - Test pyramid by level and where each runs → `evidence/k8s/test_pyramid.md`; container tests →
+    `evidence/tests/container_tests.txt`
+- **Techniques used and why:** pinned model version in the ConfigMap (rollback restores image and model); registry →
+  bundled → not-ready loading with 5 s timeouts; image tagged with the git SHA, chart refuses `latest` and aliases;
+  `maxUnavailable: 0`, startup/liveness/readiness probes, measured requests/limits, HPA, PDB, non-root, read-only root
+  fs; `helm upgrade --rollback-on-failure` + `helm test` with rollback; directional tests with a stated 0.005 tolerance.
+- **Costs / trade-offs:** a 918 MB image (scikit-learn, pandas, MLflow client); directional checks use a tolerance
+  because the ensemble's tree member is not strictly monotonic; one-node kind cluster (no node-failure testing).
+- **Not done / limitations:** ☆ load test and canary/blue-green; the `latest` guard covers the chart, not a registry policy.
+- **How to reproduce:** `deploy/RUNBOOK.md`; `make cluster && make promote && make deploy`;
+  `deploy/rollback_demo.sh`; `scripts/promotion_gate_demo.sh`.
 
 ## Biggest trade-offs I made and what I would do with more time
 <to fill at the end>

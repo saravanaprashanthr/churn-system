@@ -1,0 +1,27 @@
+=== pod/churn-api-c6c67d67f-xt9g7
+2026-11-17 15:35:11,018 INFO serving request_id=d31bdb37ebf64d1b path=/predict status=200 latency_ms=7.4
+2026-11-17 15:35:11,026 INFO serving request_id=6096b60064064c48 path=/predict status=200 latency_ms=7.6
+2026-11-17 15:35:11,034 INFO serving request_id=6b0f4c9a92ca46da path=/predict status=200 latency_ms=7.3
+2026-11-17 15:35:11,042 INFO serving request_id=cd9c933b7d5647df path=/predict status=200 latency_ms=7.6
+2026-11-17 15:35:11,051 INFO serving request_id=6bc7f9854da94b07 path=/predict status=200 latency_ms=7.6
+2026-11-17 15:35:11,059 INFO serving request_id=b7c016de31594a44 path=/predict status=200 latency_ms=7.5
+2026-11-17 15:35:11,067 INFO serving request_id=3a1fcd62199b4e02 path=/predict status=200 latency_ms=7.3
+2026-11-17 15:35:11,075 INFO serving request_id=5cfba69421414a1b path=/predict status=200 latency_ms=7.5
+2026-11-17 15:35:11,083 INFO serving request_id=01cf6d6401224874 path=/predict status=200 latency_ms=7.5
+2026-11-17 15:35:11,091 INFO serving request_id=5bfab80785d046e4 path=/predict status=200 latency_ms=7.7
+2026-11-17 15:35:11,102 INFO serving request_id=7ad1bc0c4c8a444c path=/predict status=200 latency_ms=9.5
+2026-11-17 15:35:11,111 INFO serving request_id=072d20c34ee0470e path=/predict status=200 latency_ms=8.2
+2026-11-17 15:35:11,126 INFO serving request_id=88f6dd7257a342fa path=/predict status=200 latency_ms=13.8
+2026-11-17 15:35:11,137 INFO serving request_id=d3d12ef4fa7f46cf path=/predict status=200 latency_ms=9.3
+2026-11-17 15:35:14,459 INFO serving request_id=d56c7d3ee4334135 path=/ready status=200 latency_ms=5.0
+=== pod/churn-api-c6c67d67f-xwk4t
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+2026-11-17 15:34:55,759 INFO serving.model loaded churn-90d v3 from the registry
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+2026-11-17 15:34:55,855 INFO serving request_id=4c2569b5a14a432f path=/ready status=200 latency_ms=2.3
+2026-11-17 15:35:00,863 INFO serving request_id=e9576bb2ae6647a8 path=/ready status=200 latency_ms=4.5
+2026-11-17 15:35:05,901 INFO serving request_id=d010e368116c4d41 path=/ready status=200 latency_ms=8.6
+2026-11-17 15:35:10,858 INFO serving request_id=976da0ab1b4843a7 path=/ready status=200 latency_ms=3.1
+2026-11-17 15:35:15,879 INFO serving request_id=0e8a6cfbfcbe47fd path=/ready status=200 latency_ms=8.4

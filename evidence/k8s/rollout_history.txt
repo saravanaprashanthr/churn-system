@@ -1,0 +1,18 @@
+deployment.apps/churn-api 
+REVISION  CHANGE-CAUSE
+3         <none>
+5         <none>
+6         <none>
+7         <none>
+8         <none>
+
+
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION                                                                                                         
+1       	Tue Nov 17 20:43:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Install complete                                                                                                    
+2       	Tue Nov 17 20:46:20 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v3                                                                                          
+3       	Tue Nov 17 20:58:36 2026	failed    	churn-api-0.1.0	set-by-deploy	Upgrade "churn-api" failed: resource Deployment/churn/churn-api not ready. status: InProgress, message: Updated: ...
+4       	Tue Nov 17 21:00:06 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 2                                                                                                       
+5       	Tue Nov 17 21:01:12 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v999                                                                                        
+6       	Tue Nov 17 21:01:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 4                                                                                                       
+7       	Tue Nov 17 21:03:06 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 1                                                                                                       
+8       	Tue Nov 17 21:04:51 2026	deployed  	churn-api-0.1.0	set-by-deploy	churn-api:bf8b158 model v3                                                                                          

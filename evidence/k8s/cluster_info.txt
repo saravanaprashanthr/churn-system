@@ -1,0 +1,6 @@
+Client Version: v1.37.2
+Kustomize Version: v5.8.1
+Server Version: v1.37.0
+
+NAME                         STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION            CONTAINER-RUNTIME
+churn-system-control-plane   Ready    control-plane   23m   v1.37.0   172.19.0.2    <none>        Debian GNU/Linux 13 (trixie)   7.0.14-linuxkit (arm64)   containerd://2.3.4

@@ -1,0 +1,49 @@
+# make deploy (build churn-api:bf8b158, helm upgrade --rollback-on-failure, helm test). Unedited output, excluding the docker build lines.
+.venv/bin/python -m serving.fetch_model --uri models:/churn-90d@production --out build/model
+2026/11/17 21:03:48 INFO mlflow.agent.hint: Load the `mlflow-trace-instrumentation` skill at /Users/saravanaprashanth/churn-system/.venv/lib/python3.11/site-packages/mlflow/assistant/skills/mlflow-trace-instrumentation/SKILL.md before writing any tracing code; it ships with this MLflow install. Set MLFLOW_DISABLE_AGENT_HINT=1 to silence this.
+Downloading artifacts:   0%|          | 0/13 [00:00<?, ?it/s]Downloading artifacts:   8%|▊         | 1/13 [00:00<00:00, 7570.95it/s]Downloading artifacts:  15%|█▌        | 2/13 [00:00<00:00, 8256.50it/s]Downloading artifacts:  23%|██▎       | 3/13 [00:00<00:00, 288.98it/s] Downloading artifacts:  31%|███       | 4/13 [00:00<00:00, 236.38it/s]Downloading artifacts:  38%|███▊      | 5/13 [00:00<00:00, 191.21it/s]Downloading artifacts:  46%|████▌     | 6/13 [00:00<00:00, 228.82it/s]Downloading artifacts:  54%|█████▍    | 7/13 [00:00<00:00, 263.40it/s]Downloading artifacts:  62%|██████▏   | 8/13 [00:00<00:00, 297.60it/s]Downloading artifacts:  69%|██████▉   | 9/13 [00:00<00:00, 289.92it/s]Downloading artifacts:  77%|███████▋  | 10/13 [00:00<00:00, 320.37it/s]Downloading artifacts:  85%|████████▍ | 11/13 [00:00<00:00, 351.59it/s]Downloading artifacts:  92%|█████████▏| 12/13 [00:00<00:00, 367.14it/s]Downloading artifacts: 100%|██████████| 13/13 [00:00<00:00, 133.04it/s]Downloading artifacts: 100%|██████████| 13/13 [00:00<00:00, 132.77it/s]
+2026-11-17 21:03:48,433 INFO fetch_model bundled models:/churn-90d/3 into build/model
+docker build -f serving/Dockerfile --build-arg GIT_SHA=bf8b158 -t churn-api:bf8b158 .
+deploy/deploy.sh
+deploying churn-api: image churn-api:bf8b158, model churn-90d v3 -> namespace churn
+Image: "churn-api:bf8b158" with ID "sha256:975b0c493c9a5cc7456b172de6b01369bd0d2d63da1e6cb05d62ae37e5014d42" not yet present on node "churn-system-control-plane", loading...
+Release "churn-api" has been upgraded. Happy Helming!
+NAME: churn-api
+LAST DEPLOYED: Tue Nov 17 21:04:51 2026
+NAMESPACE: churn
+STATUS: deployed
+REVISION: 8
+DESCRIPTION: churn-api:bf8b158 model v3
+deployment "churn-api" successfully rolled out
+NAME: churn-api
+LAST DEPLOYED: Tue Nov 17 21:04:51 2026
+NAMESPACE: churn
+STATUS: deployed
+REVISION: 8
+DESCRIPTION: churn-api:bf8b158 model v3
+TEST SUITE:     churn-api-smoke-test
+Last Started:   Tue Nov 17 21:05:09 2026
+Last Completed: Tue Nov 17 21:05:12 2026
+Phase:          Succeeded
+POD LOGS: churn-api-smoke-test (smoke)
+2026-11-17 15:35:10,760 INFO smoke ok: /health returns 200
+2026-11-17 15:35:10,764 INFO smoke ok: /ready returns 200 (got 200: {"ready":true,"model":{"name":"churn-90d","version":"3","uri":"models:/churn-90d/3","source":"registry","run_id":"6e3fe7d9a7134fed845c9ede4354bc7d","git_sha":"08ad93d","data_version":"3ab46a6bee7b","d)
+2026-11-17 15:35:10,764 INFO smoke ok: serving model version 3 (got 3)
+2026-11-17 15:35:10,841 INFO smoke ok: /predict returns 200 (got 200)
+2026-11-17 15:35:10,841 INFO smoke ok: /predict response has the documented fields
+2026-11-17 15:35:10,841 INFO smoke ok: /predict reports the loaded model version
+2026-11-17 15:35:10,842 INFO smoke ok: one prediction per instance
+2026-11-17 15:35:10,842 INFO smoke ok: churn_probability within [0, 1]
+2026-11-17 15:35:10,842 INFO smoke ok: at_risk is a boolean
+2026-11-17 15:35:10,842 INFO smoke ok: churn_probability within [0, 1]
+2026-11-17 15:35:10,842 INFO smoke ok: at_risk is a boolean
+2026-11-17 15:35:10,843 INFO smoke ok: invalid input is rejected with 422 (got 422)
+2026-11-17 15:35:11,137 INFO smoke ok: p95 latency 15.1 ms <= budget 300 ms over 30 calls
+2026-11-17 15:35:11,137 INFO smoke SMOKE TEST PASSED: {'model': {'name': 'churn-90d', 'version': '3', 'uri': 'models:/churn-90d/3', 'source': 'registry', 'run_id': '6e3fe7d9a7134fed845c9ede4354bc7d', 'git_sha': '08ad93d', 'data_version': '3ab46a6bee7b', 'decision_threshold': 0.920831}, 'p95_ms': 15.1, 'median_ms': 8.9}
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION                 
+4       	Tue Nov 17 21:00:06 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 2               
+5       	Tue Nov 17 21:01:12 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:7b64e5d model v999
+6       	Tue Nov 17 21:01:47 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 4               
+7       	Tue Nov 17 21:03:06 2026	superseded	churn-api-0.1.0	set-by-deploy	Rollback to 1               
+8       	Tue Nov 17 21:04:51 2026	deployed  	churn-api-0.1.0	set-by-deploy	churn-api:bf8b158 model v3  
+deployed and smoke-tested: churn-api:bf8b158 with churn-90d v3
