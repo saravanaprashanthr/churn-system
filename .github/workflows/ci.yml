@@ -1,0 +1,177 @@
+# CI/CD for the churn system.
+#   every push and PR: lint + format + mypy -> tests (coverage >= 80%, Postgres service) ->
+#                      build image + container tests + Trivy -> ephemeral kind: deploy, helm test, rollback on failure
+#   push to main:      push churn-api:<sha> to GHCR -> deploy to namespace "staging" (ephemeral kind) + smoke test
+#   prod:              only via .github/workflows/promote-prod.yml, started by a person (the manual approval gate)
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+  UV_VERSION: "0.11.32"
+  HELM_VERSION: "v4.3.1"
+  KUBECONFORM_VERSION: "v0.8.0"
+  KIND_VERSION: "v0.33.0"
+  IMAGE: churn-api
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: requirements/dev.txt
+      - name: Install pinned dev dependencies
+        run: |
+          uv venv --python ${{ env.PYTHON_VERSION }} .venv
+          uv pip sync --python .venv/bin/python requirements/dev.txt
+      - run: .venv/bin/ruff check . --output-format github
+      - run: .venv/bin/ruff format --check .
+      - run: .venv/bin/mypy
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ds_candidate
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: ecommerce
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ds_candidate -d ecommerce" --health-interval 5s --health-timeout 5s
+          --health-retries 10
+    env:
+      DQ_TEST_DATABASE_URL: postgresql://ds_candidate:ci_only_password@localhost:5432/ecommerce
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: requirements/dev.txt
+      - name: Install pinned dev dependencies
+        run: |
+          uv venv --python ${{ env.PYTHON_VERSION }} .venv
+          uv pip sync --python .venv/bin/python requirements/dev.txt
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - name: Install kubeconform
+        run: |
+          curl -sSL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin kubeconform
+      - name: Unit, integration and manifest tests (fails under 80% coverage)
+        run: .venv/bin/pytest --cov --cov-report=term-missing -m "not model and not container"
+
+  build-and-deploy-test:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: meta
+        run: echo "tag=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: requirements/dev.txt
+      - name: Install pinned dev dependencies
+        run: |
+          uv venv --python ${{ env.PYTHON_VERSION }} .venv
+          uv pip sync --python .venv/bin/python requirements/dev.txt
+      - name: Bundle a stand-in model (no registry or data in CI)
+        run: .venv/bin/python scripts/build_ci_model.py --out build/model --git-sha ${{ steps.meta.outputs.tag }}
+      - name: Build churn-api:<sha>
+        run: docker build -f serving/Dockerfile --build-arg GIT_SHA=${{ steps.meta.outputs.tag }} -t $IMAGE:${{ steps.meta.outputs.tag }} .
+      - name: Container tests
+        run: CHURN_API_IMAGE=$IMAGE:${{ steps.meta.outputs.tag }} .venv/bin/pytest -m container tests/container --no-cov -v
+      - name: Vulnerability scan (report only)
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: ${{ env.IMAGE }}:${{ steps.meta.outputs.tag }}
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "0"
+          format: table
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - uses: helm/kind-action@v1
+        with:
+          version: ${{ env.KIND_VERSION }}
+          cluster_name: churn-system
+          config: deploy/kind-config.yaml
+      - name: Deploy to an ephemeral cluster, smoke-test, roll back on failure
+        env:
+          NAMESPACE: ci
+          IMAGE_TAG: ${{ steps.meta.outputs.tag }}
+          MODEL_VERSION: "0"
+          HELM_EXTRA_ARGS: >-
+            --set mlflow.trackingUri=http://127.0.0.1:9 --set config.modelLoadAttempts=1
+            --set autoscaling.enabled=false --set replicaCount=2
+        run: deploy/deploy.sh
+      - name: Diagnostics on failure
+        if: failure()
+        run: |
+          kubectl -n ci get all -o wide || true
+          kubectl -n ci describe deploy churn-api || true
+          kubectl -n ci logs -l app.kubernetes.io/name=churn-api --tail=50 || true
+      - name: Push churn-api:<sha> to GHCR (main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag $IMAGE:${{ steps.meta.outputs.tag }} ghcr.io/${{ github.repository_owner }}/$IMAGE:${{ steps.meta.outputs.tag }}
+          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE:${{ steps.meta.outputs.tag }}
+
+  deploy-staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [build-and-deploy-test]
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - uses: helm/kind-action@v1
+        with:
+          version: ${{ env.KIND_VERSION }}
+          cluster_name: churn-system
+          config: deploy/kind-config.yaml
+      - name: Pull the image built and tested above
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker pull ghcr.io/${{ github.repository_owner }}/$IMAGE:${{ needs.build-and-deploy-test.outputs.tag }}
+          docker tag ghcr.io/${{ github.repository_owner }}/$IMAGE:${{ needs.build-and-deploy-test.outputs.tag }} $IMAGE:${{ needs.build-and-deploy-test.outputs.tag }}
+      - name: Deploy to staging, smoke-test, roll back on failure
+        env:
+          NAMESPACE: staging
+          IMAGE_TAG: ${{ needs.build-and-deploy-test.outputs.tag }}
+          MODEL_VERSION: "0"
+          HELM_EXTRA_ARGS: >-
+            --set mlflow.trackingUri=http://127.0.0.1:9 --set config.modelLoadAttempts=1
+            --set autoscaling.enabled=false
+        run: deploy/deploy.sh
+      - name: Next step
+        run: echo "Staging OK. To release, run the 'promote-prod' workflow with image_tag=${{ needs.build-and-deploy-test.outputs.tag }}."

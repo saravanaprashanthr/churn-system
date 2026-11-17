@@ -70,6 +70,10 @@ def wait_ready(url: str, seconds: float = 60) -> httpx.Response:
 
 
 def test_registry_reachable_serves_the_registry_model(docker_client):
+    try:
+        httpx.get("http://localhost:5001/health", timeout=2).raise_for_status()
+    except httpx.HTTPError:
+        pytest.skip("no MLflow registry on this host (e.g. CI): only the fallback cases apply")
     with running(docker_client, {"MLFLOW_TRACKING_URI": "http://host.docker.internal:5001",
                                  "MODEL_URI": "models:/churn-90d@production"}) as url:  # fmt: skip
         ready = wait_ready(url)

@@ -32,7 +32,8 @@ helm upgrade --install "$RELEASE" deploy/churn-api \
   --namespace "$NAMESPACE" --create-namespace \
   --set image.tag="$IMAGE_TAG" --set model.version="$MODEL_VERSION" \
   --description "churn-api:$IMAGE_TAG model v$MODEL_VERSION" \
-  --rollback-on-failure --wait=watcher --timeout "$TIMEOUT" --history-max 10
+  --rollback-on-failure --wait=watcher --timeout "$TIMEOUT" --history-max 10 \
+  ${HELM_EXTRA_ARGS:-}  # e.g. CI: --set mlflow.trackingUri=... (intentionally word-split)
 
 kubectl -n "$NAMESPACE" rollout status "deployment/$RELEASE" --timeout "$TIMEOUT"
 

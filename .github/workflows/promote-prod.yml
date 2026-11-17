@@ -1,0 +1,73 @@
+# Manual approval gate for production. Nothing reaches "prod" unless a person starts this workflow and names
+# an image tag. The tag must have a successful staging deployment from the ci workflow on main.
+# (Required reviewers on GitHub Environments are not available for private repos on the free plan; on a paid
+# plan or a public repo, add reviewers to the "prod" environment for a second, in-run approval.)
+name: promote-prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "churn-api image tag (7-char git SHA) that passed staging"
+        required: true
+      model_version:
+        description: "model version to serve (registry version; 0 = CI stand-in bundle)"
+        required: true
+        default: "0"
+
+env:
+  HELM_VERSION: "v4.3.1"
+  KIND_VERSION: "v0.33.0"
+  IMAGE: churn-api
+
+jobs:
+  check-staging:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Require a green staging deployment of this exact tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.image_tag }}
+        run: |
+          [[ "$TAG" =~ ^[0-9a-f]{7}$ ]] || { echo "image_tag must be a 7-char git SHA"; exit 1; }
+          runs=$(gh run list -R "$GITHUB_REPOSITORY" --workflow ci.yml --branch main --status success \
+                 --json headSha --jq '.[].headSha' --limit 50)
+          echo "$runs" | grep -q "^$TAG" || { echo "no successful ci run (with staging) on main for $TAG"; exit 1; }
+          echo "staging passed for $TAG"
+
+  deploy-prod:
+    needs: [check-staging]
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.image_tag }}
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+      - uses: helm/kind-action@v1
+        with:
+          version: ${{ env.KIND_VERSION }}
+          cluster_name: churn-system
+          config: deploy/kind-config.yaml
+      - name: Pull the staged image
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker pull ghcr.io/${{ github.repository_owner }}/$IMAGE:${{ inputs.image_tag }}
+          docker tag ghcr.io/${{ github.repository_owner }}/$IMAGE:${{ inputs.image_tag }} $IMAGE:${{ inputs.image_tag }}
+      - name: Deploy to prod, smoke-test, roll back on failure
+        env:
+          NAMESPACE: prod
+          IMAGE_TAG: ${{ inputs.image_tag }}
+          MODEL_VERSION: ${{ inputs.model_version }}
+          HELM_EXTRA_ARGS: >-
+            --set mlflow.trackingUri=http://127.0.0.1:9 --set config.modelLoadAttempts=1
+            --set autoscaling.enabled=false
+        run: deploy/deploy.sh
