@@ -45,6 +45,7 @@ TRAINING_DIR = Path(__file__).resolve().parent
 CALIBRATED_RUN = "6_calibrated"
 # Calibrate only if held-out Brier improves by at least this much; smaller gains are noise.
 MIN_BRIER_GAIN = 0.001
+MAX_PR_AUC_LOSS = 0.001
 REPO_ROOT = TRAINING_DIR.parent
 
 
@@ -206,23 +207,27 @@ class Trainer:
         in_fit = self.parts["valid"]["cutoff_date"].isin(fit_weeks).to_numpy()
         X_fit, y_fit = self.X["valid"][in_fit], self.y["valid"][in_fit]
         X_eval, y_eval = self.X["valid"][~in_fit], self.y["valid"][~in_fit]
-        brier = {
-            "none": classification_metrics(y_eval, models.churn_probability(ranker.model, X_eval))["brier"]
-        }
+        raw = classification_metrics(y_eval, models.churn_probability(ranker.model, X_eval))
+        brier, pr_auc = {"none": raw["brier"]}, {"none": raw["pr_auc"]}
         for method in ("sigmoid", "isotonic"):
             calibrated = models.calibrate(ranker.model, X_fit, y_fit, method)
-            brier[method] = classification_metrics(y_eval, models.churn_probability(calibrated, X_eval))[
-                "brier"
-            ]
-        best = min(brier, key=lambda method: brier[method])
-        if brier["none"] - brier[best] < MIN_BRIER_GAIN:
-            best = "none"
+            scored = classification_metrics(y_eval, models.churn_probability(calibrated, X_eval))
+            brier[method], pr_auc[method] = scored["brier"], scored["pr_auc"]
+        # A method counts only if it improves Brier by MIN_BRIER_GAIN without costing ranking quality:
+        # isotonic
+        # steps create ties that lowered test PR-AUC in round 1 and in the first in-cluster retrain.
+        eligible = [
+            m for m in ("sigmoid", "isotonic")
+            if brier["none"] - brier[m] >= MIN_BRIER_GAIN and pr_auc[m] >= pr_auc["none"] - MAX_PR_AUC_LOSS
+        ]  # fmt: skip
+        best = min(eligible, key=lambda method: brier[method]) if eligible else "none"
         with self._start_run(
             "calibration_check",
             f"Calibration of {ranker.name}: fit on {len(fit_weeks)} "
             f"validation weeks, Brier on the {len(cutoffs) - len(fit_weeks)} later ones.",
         ):
             mlflow.log_metrics({f"heldout_brier_{k}": v for k, v in brier.items()})
+            mlflow.log_metrics({f"heldout_pr_auc_{k}": v for k, v in pr_auc.items()})
             mlflow.log_params({"ranker": ranker.name, "chosen": best})
         logger.info("calibration check on %s: held-out Brier %s -> %s", ranker.name,
                     {k: round(v, 4) for k, v in brier.items()}, best)  # fmt: skip

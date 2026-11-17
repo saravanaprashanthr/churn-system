@@ -20,7 +20,8 @@ forward() {
   kubectl -n "$NS" port-forward svc/churn-api "$PORT:8080" >/dev/null 2>&1 &
   for _ in $(seq 1 30); do curl -sf "localhost:$PORT/ready" >/dev/null && return; sleep 1; done
 }
-now() { date -u +%Y-%m-%dT%H:%M:%S+00:00; }
+# Phase markers from the database clock: logged_at is stamped by Postgres, whose VM clock can drift from the host.
+now() { docker exec ds_interview_postgres psql -U ds_candidate -d ecommerce -At -c "SELECT to_char(now() AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US+00:00')"; }
 
 {
   echo "# Drift demo (monitoring/drift_demo.sh), $(date -u +%Y-%m-%dT%H:%MZ). Unedited output."

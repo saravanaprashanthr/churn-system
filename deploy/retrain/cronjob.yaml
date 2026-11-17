@@ -55,10 +55,10 @@ spec:
                       key: DATABASE_URL
               resources:
                 requests:
-                  cpu: "1"
+                  cpu: "2"
                   memory: 1Gi
                 limits:
-                  cpu: "2"
+                  cpu: "4"                    # 2 CPUs took 54 min for 20 Optuna trials
                   memory: 2Gi
               securityContext:
                 allowPrivilegeEscalation: false
