@@ -1,0 +1,1289 @@
+lint	Set up job	﻿2026-11-17T16:07:21.2427803Z Current runner version: '2.338.2'
+lint	Set up job	2026-11-17T16:07:21.2466006Z ##[group]Runner Image Provisioner
+lint	Set up job	2026-11-17T16:07:21.2467608Z Hosted Compute Agent
+lint	Set up job	2026-11-17T16:07:21.2468672Z Version: 20261103.629
+lint	Set up job	2026-11-17T16:07:21.2469844Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+lint	Set up job	2026-11-17T16:07:21.2471351Z Build Date: 2026-11-03T17:26:59Z
+lint	Set up job	2026-11-17T16:07:21.2472884Z Worker ID: {59f1a37e-bb48-4479-8d55-6751f1dc3f32}
+lint	Set up job	2026-11-17T16:07:21.2474217Z Region: westus
+lint	Set up job	2026-11-17T16:07:21.2475184Z Cloud: Azure
+lint	Set up job	2026-11-17T16:07:21.2476081Z ##[endgroup]
+lint	Set up job	2026-11-17T16:07:21.2478609Z ##[group]Operating System
+lint	Set up job	2026-11-17T16:07:21.2479762Z Ubuntu
+lint	Set up job	2026-11-17T16:07:21.2480841Z 24.04.5
+lint	Set up job	2026-11-17T16:07:21.2481987Z LTS
+lint	Set up job	2026-11-17T16:07:21.2482885Z ##[endgroup]
+lint	Set up job	2026-11-17T16:07:21.2483946Z ##[group]Runner Image
+lint	Set up job	2026-11-17T16:07:21.2485120Z Image: ubuntu-24.04
+lint	Set up job	2026-11-17T16:07:21.2486180Z Version: 20261111.370.1
+lint	Set up job	2026-11-17T16:07:21.2488318Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261111.370/images/ubuntu/Ubuntu2404-Readme.md
+lint	Set up job	2026-11-17T16:07:21.2491495Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261111.370
+lint	Set up job	2026-11-17T16:07:21.2493573Z ##[endgroup]
+lint	Set up job	2026-11-17T16:07:21.2495788Z ##[group]GITHUB_TOKEN Permissions
+lint	Set up job	2026-11-17T16:07:21.2498708Z Contents: read
+lint	Set up job	2026-11-17T16:07:21.2499697Z Metadata: read
+lint	Set up job	2026-11-17T16:07:21.2500815Z Packages: read
+lint	Set up job	2026-11-17T16:07:21.2502082Z ##[endgroup]
+lint	Set up job	2026-11-17T16:07:21.2505327Z Secret source: Actions
+lint	Set up job	2026-11-17T16:07:21.2507069Z Cache mode: write
+lint	Set up job	2026-11-17T16:07:21.2508386Z Prepare workflow directory
+lint	Set up job	2026-11-17T16:07:21.3127878Z Prepare all required actions
+lint	Set up job	2026-11-17T16:07:21.3202651Z Getting action download info
+lint	Set up job	2026-11-17T16:07:21.7837332Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+lint	Set up job	2026-11-17T16:07:22.0000523Z Download action repository 'astral-sh/setup-uv@v6' (SHA:d0cc045d04ccac9d8b7881df0226f9e82c39688e)
+lint	Set up job	2026-11-17T16:07:22.5839074Z Complete job name: lint
+lint	Run actions/checkout@v4	﻿2026-11-17T16:07:22.6731874Z ##[group]Run actions/checkout@v4
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6733062Z with:
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6733634Z   repository: saravanaprashanthr/churn-system
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6737733Z   token: ***
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6738212Z   ssh-strict: true
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6738694Z   ssh-user: git
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6739185Z   persist-credentials: true
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6739718Z   clean: true
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6740214Z   sparse-checkout-cone-mode: true
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6740780Z   fetch-depth: 1
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6741256Z   fetch-tags: false
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6741940Z   show-progress: true
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6742463Z   lfs: false
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6742943Z   submodules: false
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6743441Z   set-safe-directory: true
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6744008Z   allow-unsafe-pr-checkout: false
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6744845Z env:
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6745366Z   PYTHON_VERSION: 3.11
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6745891Z   UV_VERSION: 0.11.32
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6746383Z   HELM_VERSION: v4.3.1
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6746929Z   KUBECONFORM_VERSION: v0.8.0
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6747518Z   KIND_VERSION: v0.33.0
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6748022Z   IMAGE: churn-api
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.6748497Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.9777227Z Syncing repository: saravanaprashanthr/churn-system
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.9780950Z ##[group]Getting Git version info
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.9782779Z Working directory is '/home/runner/work/churn-system/churn-system'
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.9784942Z [command]/usr/bin/git version
+lint	Run actions/checkout@v4	2026-11-17T16:07:22.9985196Z git version 2.56.1
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0006843Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0015527Z Temporarily overriding HOME='/home/runner/work/_temp/8d747b4b-eaa4-4f9a-b55a-41291a93c99e' before making global git config changes
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0018523Z Adding repository directory to the temporary git global config as a safe directory
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0021425Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/churn-system/churn-system
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0183102Z Deleting the contents of '/home/runner/work/churn-system/churn-system'
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0186002Z ##[group]Initializing the repository
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0187725Z [command]/usr/bin/git init /home/runner/work/churn-system/churn-system
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0276725Z hint: Using 'master' as the name for the initial branch. This default branch name
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0279454Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0301249Z hint: to use in all of your new repositories, which will suppress this warning,
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0325679Z hint: call:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0342642Z hint:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0387638Z hint: 	git config --global init.defaultBranch <name>
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0420363Z hint:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0461275Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0464728Z hint: 'development'. The just-created branch can be renamed via this command:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0557615Z hint:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0572852Z hint: 	git branch -m <name>
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0574332Z hint:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0577635Z hint: Disable this message with "git config set advice.defaultBranchName false"
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0579727Z Initialized empty Git repository in /home/runner/work/churn-system/churn-system/.git/
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0583739Z [command]/usr/bin/git remote add origin https://github.com/saravanaprashanthr/churn-system
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0587088Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0588715Z ##[group]Disabling automatic garbage collection
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0590071Z [command]/usr/bin/git config --local gc.auto 0
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0605343Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0606799Z ##[group]Setting up auth
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0608206Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.0612989Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.1227297Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.1278966Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.1564739Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.1603887Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.1893394Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.1973474Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.1993213Z ##[group]Fetching the repository
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.2014223Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +757825b3413cea0929061bc86542a4c3643fb986:refs/remotes/pull/1/merge
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8048501Z From https://github.com/saravanaprashanthr/churn-system
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8052260Z  * [new ref]         757825b3413cea0929061bc86542a4c3643fb986 -> pull/1/merge
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8093292Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8095375Z ##[group]Determining the checkout info
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8100096Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8123045Z [command]/usr/bin/git sparse-checkout disable
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8203296Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8283627Z ##[group]Checking out the ref
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8294264Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8497951Z Note: switching to 'refs/remotes/pull/1/merge'.
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8502735Z 
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8504254Z You are in 'detached HEAD' state. You can look around, make experimental
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8507273Z changes and commit them, and you can discard any commits you make in this
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8510739Z state without impacting any branches by switching back to a branch.
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8513080Z 
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8514406Z If you want to create a new branch to retain commits you create, you may
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8517323Z do so (now or later) by using -c with the switch command. Example:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8519118Z 
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8520106Z   git switch -c <new-branch-name>
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8521966Z 
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8523042Z Or undo this operation with:
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8524451Z 
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8525628Z   git switch -
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8526803Z 
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8528412Z Turn off this advice by setting config variable advice.detachedHead to false
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8530632Z 
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8533393Z HEAD is now at 757825b Merge c050a9e53be1c1877c963852092058b6122d3034 into e961ed4ed994f27eb195ac821edf63e1ce956aba
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8541374Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8595326Z [command]/usr/bin/git log -1 --format=%H
+lint	Run actions/checkout@v4	2026-11-17T16:07:23.8623118Z 757825b3413cea0929061bc86542a4c3643fb986
+lint	Run astral-sh/setup-uv@v6	﻿2026-11-17T16:07:23.9183613Z ##[group]Run astral-sh/setup-uv@v6
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9184830Z with:
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9185680Z   version: 0.11.32
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9186609Z   enable-cache: true
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9187686Z   cache-dependency-glob: requirements/dev.txt
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9189038Z   activate-environment: false
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9190479Z   working-directory: /home/runner/work/churn-system/churn-system
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9192244Z   server-url: https://github.com
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9203144Z   github-token: ***
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9204126Z   restore-cache: true
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9205094Z   save-cache: true
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9206022Z   prune-cache: true
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9207014Z   ignore-nothing-to-cache: false
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9208180Z   ignore-empty-workdir: false
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9209305Z   add-problem-matchers: true
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9210348Z env:
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9211185Z   PYTHON_VERSION: 3.11
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9212308Z   UV_VERSION: 0.11.32
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9213271Z   HELM_VERSION: v4.3.1
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9214347Z   KUBECONFORM_VERSION: v0.8.0
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9215467Z   KIND_VERSION: v0.33.0
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9216453Z   IMAGE: churn-api
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:23.9217402Z ##[endgroup]
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:24.1767062Z (node:2079) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:24.1788240Z (Use `node --trace-deprecation ...` to show where the warning was created)
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:24.2043065Z manifest-file not provided, reading from local file.
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:24.2066540Z manifest-file does not contain version 0.11.32, arch x86_64, platform unknown-linux-gnu. Falling back to GitHub releases.
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:24.2104635Z Downloading uv from "https://github.com/astral-sh/uv/releases/download/0.11.32/uv-x86_64-unknown-linux-gnu.tar.gz" ...
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:24.7032120Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/095e9b2d-4370-42c6-8e35-68a02ae44a73 -f /home/runner/work/_temp/ab76fd8e-1ef6-4c76-8554-79bedead4e0d
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.5302714Z Added /home/runner/.local/bin to the path
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.5315328Z Added /opt/hostedtoolcache/uv/0.11.32/x86_64 to the path
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.5368482Z Set UV_CACHE_DIR to /home/runner/work/_temp/setup-uv-cache
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.5384128Z Successfully installed uv version 0.11.32
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.5424210Z Searching files using cache dependency glob: /home/runner/work/churn-system/churn-system/requirements/dev.txt
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.5428392Z /home/runner/work/churn-system/churn-system/requirements/dev.txt
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.5429273Z Found 1 files to hash.
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:25.7577754Z Trying to restore uv cache from GitHub Actions cache with key: setup-uv-1-x86_64-unknown-linux-gnu-unknown-pruned-75b1653d3860d76a63c2da414fc689f43fb92abaf4b39d8e1a4023ea646bd63e
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:26.0078313Z Cache hit for: setup-uv-1-x86_64-unknown-linux-gnu-unknown-pruned-75b1653d3860d76a63c2da414fc689f43fb92abaf4b39d8e1a4023ea646bd63e
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:26.0253332Z (node:2079) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:27.3066805Z Received 8932168 of 13126472 (68.0%), 8.5 MBs/sec
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:27.4767880Z Received 13126472 of 13126472 (100.0%), 10.7 MBs/sec
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:27.4773331Z Cache Size: ~13 MB (13126472 B)
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:27.4801325Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7e1eb835-d0fd-410b-a945-8c3a8be8ed97/cache.tzst -P -C /home/runner/work/churn-system/churn-system --use-compress-program unzstd
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:27.5707930Z Cache restored successfully
+lint	Run astral-sh/setup-uv@v6	2026-11-17T16:07:27.5720101Z uv cache restored from GitHub Actions cache with key: setup-uv-1-x86_64-unknown-linux-gnu-unknown-pruned-75b1653d3860d76a63c2da414fc689f43fb92abaf4b39d8e1a4023ea646bd63e
+lint	Install pinned dev dependencies	﻿2026-11-17T16:07:27.5930406Z ##[group]Run uv venv --python 3.11 .venv
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5930824Z ^[[36;1muv venv --python 3.11 .venv^[[0m
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5931223Z ^[[36;1muv pip sync --python .venv/bin/python requirements/dev.txt^[[0m
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5957165Z shell: /usr/bin/bash -e {0}
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5957442Z env:
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5957649Z   PYTHON_VERSION: 3.11
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5957880Z   UV_VERSION: 0.11.32
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5958102Z   HELM_VERSION: v4.3.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5958338Z   KUBECONFORM_VERSION: v0.8.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5958582Z   KIND_VERSION: v0.33.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5958801Z   IMAGE: churn-api
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5959064Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.5959400Z ##[endgroup]
+lint	Install pinned dev dependencies	2026-11-17T16:07:27.7266128Z Downloading cpython-3.11.15-linux-x86_64-gnu (download) (29.5MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:28.7115544Z  Downloaded cpython-3.11.15-linux-x86_64-gnu (download)
+lint	Install pinned dev dependencies	2026-11-17T16:07:28.8417855Z Using CPython 3.11.15
+lint	Install pinned dev dependencies	2026-11-17T16:07:28.8418704Z Creating virtual environment at: .venv
+lint	Install pinned dev dependencies	2026-11-17T16:07:28.8426368Z Activate with: .venv/bin/activate
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.1612966Z Resolved 140 packages in 179ms
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.1964256Z Downloading scikit-learn (8.9MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.1982303Z Downloading pydantic-core (2.1MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.1989971Z Downloading aiohttp (1.8MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2082624Z Downloading mlflow (12.0MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2102578Z Downloading sqlalchemy (4.4MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2103690Z Downloading pygments (1.2MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2105300Z Downloading mlflow-skinny (4.2MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2105822Z Downloading numpy (16.1MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2106399Z Downloading scipy (33.7MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2122213Z Downloading mypy (14.7MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2122766Z Downloading psycopg-binary (5.0MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2150916Z Downloading virtualenv (5.4MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2154613Z Downloading cryptography (4.5MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2173107Z Downloading kiwisolver (1.4MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2182344Z Downloading matplotlib (9.4MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2186831Z Downloading ast-serialize (1.3MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2188000Z Downloading ruff (10.1MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2189289Z Downloading pyarrow (52.5MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2207619Z Downloading pillow (6.8MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2211162Z Downloading pandas (11.8MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2215249Z Downloading kubernetes (1.6MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2216211Z Downloading fonttools (5.2MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2217013Z Downloading kfp (1.2MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2218414Z Downloading databricks-sdk (1.1MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:29.2219487Z Downloading mlflow-tracing (2.0MiB)
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.0101928Z  Downloaded databricks-sdk
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.1250582Z  Downloaded ast-serialize
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.1378397Z  Downloaded kiwisolver
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.2963230Z  Downloaded kfp
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.3709378Z  Downloaded aiohttp
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.4029436Z  Downloaded pygments
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.4225871Z  Downloaded pydantic-core
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.8070678Z  Downloaded mlflow-tracing
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.8608974Z  Downloaded kubernetes
+lint	Install pinned dev dependencies	2026-11-17T16:07:30.9647782Z  Downloaded sqlalchemy
+lint	Install pinned dev dependencies	2026-11-17T16:07:31.0348377Z  Downloaded cryptography
+lint	Install pinned dev dependencies	2026-11-17T16:07:31.0927608Z  Downloaded psycopg-binary
+lint	Install pinned dev dependencies	2026-11-17T16:07:31.1674377Z  Downloaded virtualenv
+lint	Install pinned dev dependencies	2026-11-17T16:07:31.1746624Z  Downloaded fonttools
+lint	Install pinned dev dependencies	2026-11-17T16:07:31.3461037Z  Downloaded pillow
+lint	Install pinned dev dependencies	2026-11-17T16:07:31.9063910Z  Downloaded ruff
+lint	Install pinned dev dependencies	2026-11-17T16:07:31.9819769Z  Downloaded scikit-learn
+lint	Install pinned dev dependencies	2026-11-17T16:07:32.0032491Z  Downloaded mlflow-skinny
+lint	Install pinned dev dependencies	2026-11-17T16:07:32.0659028Z  Downloaded matplotlib
+lint	Install pinned dev dependencies	2026-11-17T16:07:32.7272202Z  Downloaded numpy
+lint	Install pinned dev dependencies	2026-11-17T16:07:32.7846747Z  Downloaded mlflow
+lint	Install pinned dev dependencies	2026-11-17T16:07:33.2674496Z  Downloaded scipy
+lint	Install pinned dev dependencies	2026-11-17T16:07:33.5984791Z  Downloaded pandas
+lint	Install pinned dev dependencies	2026-11-17T16:07:33.6877375Z  Downloaded pyarrow
+lint	Install pinned dev dependencies	2026-11-17T16:07:33.7169985Z  Downloaded mypy
+lint	Install pinned dev dependencies	2026-11-17T16:07:33.7308716Z Prepared 140 packages in 4.56s
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5511148Z Installed 140 packages in 1.82s
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5513013Z  + aiohappyeyeballs==2.7.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5513992Z  + aiohttp==3.14.5
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5514518Z  + aiosignal==1.4.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5515027Z  + alembic==1.20.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5519119Z  + annotated-doc==0.0.5
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5520006Z  + annotated-types==0.8.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5520645Z  + anyio==4.16.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5521219Z  + ast-serialize==0.13.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5522098Z  + attrs==26.1.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5522654Z  + blinker==1.9.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5523186Z  + cachetools==7.3.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5523721Z  + certifi==2026.10.23
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5524249Z  + cffi==2.1.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5524754Z  + cfgv==3.5.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5525286Z  + charset-normalizer==3.5.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5525861Z  + click==8.5.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5526413Z  + click-option-group==0.5.7
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5527001Z  + cloudpickle==3.1.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5527544Z  + colorlog==6.12.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5528064Z  + contourpy==1.3.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5528580Z  + coverage==7.17.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5529131Z  + cryptography==50.0.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5529686Z  + cycler==0.12.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5530217Z  + databricks-sdk==0.162.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5530783Z  + distlib==0.4.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5531295Z  + docker==7.2.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5532081Z  + docstring-parser==0.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5532670Z  + fastapi==0.162.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5533192Z  + filelock==4.2.10
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5533723Z  + flask==3.1.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5534238Z  + flask-cors==6.0.5
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5534797Z  + fonttools==4.68.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5535327Z  + frozenlist==1.8.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5535855Z  + gitdb==4.0.12
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5536366Z  + gitpython==3.2.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5536910Z  + google-api-core==2.43.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5537478Z  + google-auth==2.62.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5538052Z  + google-cloud-core==2.8.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5538645Z  + google-cloud-storage==3.17.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5539243Z  + google-crc32c==1.9.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5539901Z  + google-resumable-media==2.11.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5540590Z  + googleapis-common-protos==1.76.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5541276Z  + graphene==3.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5542015Z  + graphql-core==3.2.13
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5542592Z  + graphql-relay==3.2.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5543141Z  + gunicorn==26.2.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5543650Z  + h11==0.16.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5544149Z  + httpcore==1.0.9
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5544668Z  + httpx==0.28.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5545177Z  + huey==3.5.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5545678Z  + identify==2.6.20
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5546190Z  + idna==3.20
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5546727Z  + importlib-metadata==10.1.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5547328Z  + iniconfig==2.3.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5547854Z  + itsdangerous==2.2.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5548396Z  + jinja2==3.1.6
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5548902Z  + joblib==1.6.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5549408Z  + kfp==2.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5549936Z  + kfp-pipeline-spec==2.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5550549Z  + kfp-server-api==2.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5551113Z  + kiwisolver==1.5.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5552169Z  + kubernetes==30.1.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5552708Z  + librt==0.16.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5553217Z  + mako==1.4.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5553757Z  + markupsafe==3.0.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5554390Z  + matplotlib==3.11.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5554924Z  + mlflow==3.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5555449Z  + mlflow-skinny==3.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5556014Z  + mlflow-tracing==3.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5556600Z  + multidict==7.2.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5557124Z  + mypy==2.4.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5557615Z  + mypy-extensions==1.2.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5558270Z  + narwhals==2.28.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5558892Z  + nodeenv==1.12.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5559406Z  + numpy==2.4.6
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5559908Z  + oauthlib==4.0.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5560523Z  + opentelemetry-api==1.45.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5561137Z  + opentelemetry-proto==1.45.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5562020Z  + opentelemetry-sdk==1.45.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5562677Z  + opentelemetry-semantic-conventions==0.66b2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5563348Z  + optuna==5.0.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5564240Z  + packaging==26.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5564788Z  + pandas==3.1.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5565342Z  + pandas-stubs==3.1.0.261029
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5565943Z  + pandera==0.35.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5566532Z  + pathspec==1.1.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5567395Z  + pillow==13.0.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5568216Z  + platformdirs==4.14.5
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5569003Z  + pluggy==1.7.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5569713Z  + pre-commit==4.7.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5570272Z  + prettytable==3.18.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5570820Z  + prometheus-client==0.26.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5571399Z  + propcache==0.5.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5572206Z  + proto-plus==1.29.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5572800Z  + protobuf==6.33.6
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5573312Z  + psycopg==3.3.8
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5573835Z  + psycopg-binary==3.3.8
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5574407Z  + pyarrow==26.0.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5574919Z  + pyasn1==0.6.5
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5575439Z  + pyasn1-modules==0.4.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5575997Z  + pycparser==3.12
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5576558Z  + pydantic==2.14.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5577139Z  + pydantic-core==2.50.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5577745Z  + pygments==2.21.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5578289Z  + pyparsing==3.3.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5578845Z  + pytest==9.2.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5579386Z  + pytest-cov==7.1.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5579972Z  + python-dateutil==4.0.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5580580Z  + python-discovery==1.9.5
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5581198Z  + python-dotenv==1.2.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5582154Z  + python-multipart==0.0.33
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5582768Z  + pyyaml==6.0.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5583320Z  + requests==2.33.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5583882Z  + requests-oauthlib==2.0.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5584561Z  + requests-toolbelt==1.0.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5585225Z  + ruff==0.17.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5585843Z  + scikit-learn==1.9.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5586664Z  + scipy==1.17.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5587400Z  + six==1.17.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5588093Z  + skops==0.16.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5588856Z  + smmap==5.0.3
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5589533Z  + sqlalchemy==2.1.8
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5590311Z  + sqlparse==0.6.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5591055Z  + starlette==1.10.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5591910Z  + tabulate==0.10.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5592474Z  + threadpoolctl==3.8.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5593072Z  + tqdm==4.70.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5593591Z  + typeguard==4.6.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5594127Z  + typing-extensions==4.16.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5594713Z  + typing-inspect==0.9.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5595315Z  + typing-inspection==0.4.5
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5595899Z  + tzdata==2026.6
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5596422Z  + urllib3==2.8.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5596948Z  + uvicorn==0.54.0
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5597479Z  + virtualenv==21.15.6
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5598033Z  + wcwidth==0.9.4
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5598588Z  + websocket-client==1.9.2
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5599429Z  + werkzeug==3.1.9
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5600024Z  + yarl==1.25.1
+lint	Install pinned dev dependencies	2026-11-17T16:07:35.5600546Z  + zipp==4.1.2
+lint	Run .venv/bin/ruff check . --output-format github	﻿2026-11-17T16:07:35.5755473Z ##[group]Run .venv/bin/ruff check . --output-format github
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5756103Z ^[[36;1m.venv/bin/ruff check . --output-format github^[[0m
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5777818Z shell: /usr/bin/bash -e {0}
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5778077Z env:
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5778268Z   PYTHON_VERSION: 3.11
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5778519Z   UV_VERSION: 0.11.32
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5778748Z   HELM_VERSION: v4.3.1
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5778994Z   KUBECONFORM_VERSION: v0.8.0
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5779240Z   KIND_VERSION: v0.33.0
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5779456Z   IMAGE: churn-api
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5779710Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+lint	Run .venv/bin/ruff check . --output-format github	2026-11-17T16:07:35.5780021Z ##[endgroup]
+lint	Run .venv/bin/ruff format --check .	﻿2026-11-17T16:07:35.6121453Z ##[group]Run .venv/bin/ruff format --check .
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6122356Z ^[[36;1m.venv/bin/ruff format --check .^[[0m
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6143189Z shell: /usr/bin/bash -e {0}
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6143449Z env:
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6143648Z   PYTHON_VERSION: 3.11
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6143879Z   UV_VERSION: 0.11.32
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6144093Z   HELM_VERSION: v4.3.1
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6144332Z   KUBECONFORM_VERSION: v0.8.0
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6144597Z   KIND_VERSION: v0.33.0
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6144824Z   IMAGE: churn-api
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6145079Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6145396Z ##[endgroup]
+lint	Run .venv/bin/ruff format --check .	2026-11-17T16:07:35.6434380Z 80 files already formatted
+lint	Run .venv/bin/mypy	﻿2026-11-17T16:07:35.6484432Z ##[group]Run .venv/bin/mypy
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6484748Z ^[[36;1m.venv/bin/mypy^[[0m
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6505534Z shell: /usr/bin/bash -e {0}
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6505791Z env:
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6505990Z   PYTHON_VERSION: 3.11
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6506218Z   UV_VERSION: 0.11.32
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6506440Z   HELM_VERSION: v4.3.1
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6506665Z   KUBECONFORM_VERSION: v0.8.0
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6506908Z   KIND_VERSION: v0.33.0
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6507124Z   IMAGE: churn-api
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6507391Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+lint	Run .venv/bin/mypy	2026-11-17T16:07:35.6507702Z ##[endgroup]
+lint	Run .venv/bin/mypy	2026-11-17T16:07:55.2770376Z Success: no issues found in 63 source files
+lint	Post Run astral-sh/setup-uv@v6	﻿2026-11-17T16:07:55.3609426Z Post job cleanup.
+lint	Post Run astral-sh/setup-uv@v6	2026-11-17T16:07:55.4969783Z (node:2302) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+lint	Post Run astral-sh/setup-uv@v6	2026-11-17T16:07:55.4972185Z (Use `node --trace-deprecation ...` to show where the warning was created)
+lint	Post Run astral-sh/setup-uv@v6	2026-11-17T16:07:55.4973602Z Cache hit occurred on key setup-uv-1-x86_64-unknown-linux-gnu-unknown-pruned-75b1653d3860d76a63c2da414fc689f43fb92abaf4b39d8e1a4023ea646bd63e, not saving cache.
+lint	Post Run actions/checkout@v4	﻿2026-11-17T16:07:55.5134322Z Post job cleanup.
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6164003Z [command]/usr/bin/git version
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6242926Z git version 2.56.1
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6312164Z Temporarily overriding HOME='/home/runner/work/_temp/6aea24d6-ebf0-46b7-944e-5f6653b1f3e3' before making global git config changes
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6313559Z Adding repository directory to the temporary git global config as a safe directory
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6314755Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/churn-system/churn-system
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6367384Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6426063Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6833534Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6847151Z http.https://github.com/.extraheader
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6880016Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.6963004Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.7412734Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+lint	Post Run actions/checkout@v4	2026-11-17T16:07:55.7503094Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+lint	Complete job	﻿2026-11-17T16:07:55.8168348Z Cleaning up orphan processes
+lint	Complete job	2026-11-17T16:07:55.8630756Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, astral-sh/setup-uv@v6. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+test	Set up job	﻿2026-11-17T16:07:20.8443633Z Current runner version: '2.338.2'
+test	Set up job	2026-11-17T16:07:20.8486663Z ##[group]Runner Image Provisioner
+test	Set up job	2026-11-17T16:07:20.8488156Z Hosted Compute Agent
+test	Set up job	2026-11-17T16:07:20.8489319Z Version: 20261103.629
+test	Set up job	2026-11-17T16:07:20.8490513Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+test	Set up job	2026-11-17T16:07:20.8491945Z Build Date: 2026-11-03T17:26:59Z
+test	Set up job	2026-11-17T16:07:20.8493118Z Worker ID: {08486c6b-80cd-41a6-b505-84a94f73e3c2}
+test	Set up job	2026-11-17T16:07:20.8494825Z Region: eastus
+test	Set up job	2026-11-17T16:07:20.8495982Z Cloud: Azure
+test	Set up job	2026-11-17T16:07:20.8497040Z ##[endgroup]
+test	Set up job	2026-11-17T16:07:20.8499970Z ##[group]Operating System
+test	Set up job	2026-11-17T16:07:20.8501134Z Ubuntu
+test	Set up job	2026-11-17T16:07:20.8502032Z 24.04.5
+test	Set up job	2026-11-17T16:07:20.8503119Z LTS
+test	Set up job	2026-11-17T16:07:20.8504318Z ##[endgroup]
+test	Set up job	2026-11-17T16:07:20.8505654Z ##[group]Runner Image
+test	Set up job	2026-11-17T16:07:20.8506788Z Image: ubuntu-24.04
+test	Set up job	2026-11-17T16:07:20.8507936Z Version: 20261111.370.1
+test	Set up job	2026-11-17T16:07:20.8510177Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261111.370/images/ubuntu/Ubuntu2404-Readme.md
+test	Set up job	2026-11-17T16:07:20.8513588Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261111.370
+test	Set up job	2026-11-17T16:07:20.8515811Z ##[endgroup]
+test	Set up job	2026-11-17T16:07:20.8518140Z ##[group]GITHUB_TOKEN Permissions
+test	Set up job	2026-11-17T16:07:20.8521950Z Contents: read
+test	Set up job	2026-11-17T16:07:20.8523044Z Metadata: read
+test	Set up job	2026-11-17T16:07:20.8524614Z Packages: read
+test	Set up job	2026-11-17T16:07:20.8525782Z ##[endgroup]
+test	Set up job	2026-11-17T16:07:20.8528956Z Secret source: Actions
+test	Set up job	2026-11-17T16:07:20.8530906Z Cache mode: write
+test	Set up job	2026-11-17T16:07:20.8532827Z Prepare workflow directory
+test	Set up job	2026-11-17T16:07:20.9219053Z Prepare all required actions
+test	Set up job	2026-11-17T16:07:20.9296578Z Getting action download info
+test	Set up job	2026-11-17T16:07:21.2179147Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+test	Set up job	2026-11-17T16:07:21.3752916Z Download action repository 'astral-sh/setup-uv@v6' (SHA:d0cc045d04ccac9d8b7881df0226f9e82c39688e)
+test	Set up job	2026-11-17T16:07:21.7029602Z Download action repository 'azure/setup-helm@v4' (SHA:1a275c3b69536ee54be43f2070a358922e12c8d4)
+test	Set up job	2026-11-17T16:07:22.0131732Z Complete job name: test
+test	Initialize containers	﻿2026-11-17T16:07:22.0918036Z ##[group]Checking docker version
+test	Initialize containers	2026-11-17T16:07:22.0941021Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+test	Initialize containers	2026-11-17T16:07:22.2612150Z '1.48'
+test	Initialize containers	2026-11-17T16:07:22.2623489Z Docker daemon API version: '1.48'
+test	Initialize containers	2026-11-17T16:07:22.2625442Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+test	Initialize containers	2026-11-17T16:07:22.2945624Z '1.48'
+test	Initialize containers	2026-11-17T16:07:22.2963196Z Docker client API version: '1.48'
+test	Initialize containers	2026-11-17T16:07:22.2972530Z ##[endgroup]
+test	Initialize containers	2026-11-17T16:07:22.2976979Z ##[group]Clean up resources from previous jobs
+test	Initialize containers	2026-11-17T16:07:22.2986231Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=ce1e07"
+test	Initialize containers	2026-11-17T16:07:22.3225688Z ##[command]/usr/bin/docker network prune --force --filter "label=ce1e07"
+test	Initialize containers	2026-11-17T16:07:22.3414236Z ##[endgroup]
+test	Initialize containers	2026-11-17T16:07:22.3414922Z ##[group]Create local container network
+test	Initialize containers	2026-11-17T16:07:22.3425998Z ##[command]/usr/bin/docker network create --label ce1e07 github_network_593dc89afe7f4143b3e1bd9a230326fb
+test	Initialize containers	2026-11-17T16:07:22.4203482Z 6f7f6e8abe4f95ef93e5a27944e82f6ddba3bc7ed0ba832947d0afddd58c1fe7
+test	Initialize containers	2026-11-17T16:07:22.4222571Z ##[endgroup]
+test	Initialize containers	2026-11-17T16:07:22.4253143Z ##[group]Starting postgres service container
+test	Initialize containers	2026-11-17T16:07:22.4275813Z ##[command]/usr/bin/docker pull postgres:16
+test	Initialize containers	2026-11-17T16:07:22.6758863Z 16: Pulling from library/postgres
+test	Initialize containers	2026-11-17T16:07:22.7594417Z 37fb86c2a767: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7595855Z e9b9c168b556: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7596764Z 373818e56554: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7597630Z 0b80e0833f2d: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7598643Z 6f1f66ad722a: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7599540Z d8948f3622f7: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7600401Z 6a7048238f16: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7601299Z ea97cbaeb613: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7602144Z 3dcaae3150c1: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7603461Z 8fe89564ad07: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7605146Z 0c67d4a9f067: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7606511Z 5dd91dbc2342: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7607890Z d38145328f88: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7609281Z c21dabdd3f40: Pulling fs layer
+test	Initialize containers	2026-11-17T16:07:22.7610670Z ea97cbaeb613: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7612026Z 3dcaae3150c1: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7613441Z 8fe89564ad07: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7615722Z 0c67d4a9f067: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7616936Z 5dd91dbc2342: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7617992Z d38145328f88: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7619187Z c21dabdd3f40: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7620365Z 0b80e0833f2d: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7621543Z 6f1f66ad722a: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7622728Z 6a7048238f16: Waiting
+test	Initialize containers	2026-11-17T16:07:22.7624087Z d8948f3622f7: Waiting
+test	Initialize containers	2026-11-17T16:07:22.8128642Z e9b9c168b556: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:22.8660539Z e9b9c168b556: Download complete
+test	Initialize containers	2026-11-17T16:07:22.8678449Z 373818e56554: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:22.8680669Z 373818e56554: Download complete
+test	Initialize containers	2026-11-17T16:07:23.0399184Z 0b80e0833f2d: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.0409623Z 0b80e0833f2d: Download complete
+test	Initialize containers	2026-11-17T16:07:23.0413304Z 37fb86c2a767: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.0417101Z 37fb86c2a767: Download complete
+test	Initialize containers	2026-11-17T16:07:23.0442125Z 6f1f66ad722a: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.0444688Z 6f1f66ad722a: Download complete
+test	Initialize containers	2026-11-17T16:07:23.0447388Z d8948f3622f7: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.0449797Z d8948f3622f7: Download complete
+test	Initialize containers	2026-11-17T16:07:23.0453042Z 6a7048238f16: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.0455626Z 6a7048238f16: Download complete
+test	Initialize containers	2026-11-17T16:07:23.0458183Z ea97cbaeb613: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.0461006Z ea97cbaeb613: Download complete
+test	Initialize containers	2026-11-17T16:07:23.0791060Z 8fe89564ad07: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.0794767Z 8fe89564ad07: Download complete
+test	Initialize containers	2026-11-17T16:07:23.2035092Z 0c67d4a9f067: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.2037627Z 0c67d4a9f067: Download complete
+test	Initialize containers	2026-11-17T16:07:23.2039642Z 5dd91dbc2342: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.2041589Z 5dd91dbc2342: Download complete
+test	Initialize containers	2026-11-17T16:07:23.2044532Z d38145328f88: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.2047065Z d38145328f88: Download complete
+test	Initialize containers	2026-11-17T16:07:23.2049491Z c21dabdd3f40: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.2051257Z c21dabdd3f40: Download complete
+test	Initialize containers	2026-11-17T16:07:23.6393440Z 3dcaae3150c1: Verifying Checksum
+test	Initialize containers	2026-11-17T16:07:23.6396040Z 3dcaae3150c1: Download complete
+test	Initialize containers	2026-11-17T16:07:24.7048197Z 37fb86c2a767: Pull complete
+test	Initialize containers	2026-11-17T16:07:24.9661453Z e9b9c168b556: Pull complete
+test	Initialize containers	2026-11-17T16:07:26.3776173Z 373818e56554: Pull complete
+test	Initialize containers	2026-11-17T16:07:26.4260627Z 0b80e0833f2d: Pull complete
+test	Initialize containers	2026-11-17T16:07:26.8054800Z 6f1f66ad722a: Pull complete
+test	Initialize containers	2026-11-17T16:07:26.8741322Z d8948f3622f7: Pull complete
+test	Initialize containers	2026-11-17T16:07:26.8834902Z 6a7048238f16: Pull complete
+test	Initialize containers	2026-11-17T16:07:26.8977793Z ea97cbaeb613: Pull complete
+test	Initialize containers	2026-11-17T16:07:31.7659001Z 3dcaae3150c1: Pull complete
+test	Initialize containers	2026-11-17T16:07:31.7890101Z 8fe89564ad07: Pull complete
+test	Initialize containers	2026-11-17T16:07:31.8048945Z 0c67d4a9f067: Pull complete
+test	Initialize containers	2026-11-17T16:07:31.8188756Z 5dd91dbc2342: Pull complete
+test	Initialize containers	2026-11-17T16:07:31.8344393Z d38145328f88: Pull complete
+test	Initialize containers	2026-11-17T16:07:31.8467428Z c21dabdd3f40: Pull complete
+test	Initialize containers	2026-11-17T16:07:31.8506814Z Digest: sha256:dd2bf3ce2dc83a81674cf7f217fcfd8a5009a4b325dda5b843bfee82a06cff6f
+test	Initialize containers	2026-11-17T16:07:31.8532423Z Status: Downloaded newer image for postgres:16
+test	Initialize containers	2026-11-17T16:07:31.8537972Z docker.io/library/postgres:16
+test	Initialize containers	2026-11-17T16:07:31.8621889Z ##[command]/usr/bin/docker create --name 9425fd77c5824385a638613081e22c2c_postgres16_9a2e90 --label ce1e07 --network github_network_593dc89afe7f4143b3e1bd9a230326fb --network-alias postgres -p 5432:5432 --health-cmd "pg_isready -U ds_candidate -d ecommerce" --health-interval 5s --health-timeout 5s --health-retries 10 -e "POSTGRES_USER=ds_candidate" -e "POSTGRES_PASSWORD=ci_only_password" -e "POSTGRES_DB=ecommerce" -e GITHUB_ACTIONS=true -e CI=true postgres:16
+test	Initialize containers	2026-11-17T16:07:31.8944150Z 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Initialize containers	2026-11-17T16:07:31.8976582Z ##[command]/usr/bin/docker start 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Initialize containers	2026-11-17T16:07:32.1636071Z 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Initialize containers	2026-11-17T16:07:32.1694803Z ##[command]/usr/bin/docker ps --all --filter id=3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+test	Initialize containers	2026-11-17T16:07:32.1983674Z 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527 Up Less than a second (health: starting)
+test	Initialize containers	2026-11-17T16:07:32.2018700Z ##[command]/usr/bin/docker port 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Initialize containers	2026-11-17T16:07:32.2268486Z 5432/tcp -> 0.0.0.0:5432
+test	Initialize containers	2026-11-17T16:07:32.2288680Z 5432/tcp -> [::]:5432
+test	Initialize containers	2026-11-17T16:07:32.2344588Z ##[endgroup]
+test	Initialize containers	2026-11-17T16:07:32.2357275Z ##[group]Waiting for all services to be ready
+test	Initialize containers	2026-11-17T16:07:32.2377147Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Initialize containers	2026-11-17T16:07:32.2650509Z starting
+test	Initialize containers	2026-11-17T16:07:32.2691386Z postgres service is starting, waiting 2 seconds before checking again.
+test	Initialize containers	2026-11-17T16:07:34.2683043Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Initialize containers	2026-11-17T16:07:34.2855531Z starting
+test	Initialize containers	2026-11-17T16:07:34.2872736Z postgres service is starting, waiting 3 seconds before checking again.
+test	Initialize containers	2026-11-17T16:07:38.0525076Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Initialize containers	2026-11-17T16:07:38.0719601Z healthy
+test	Initialize containers	2026-11-17T16:07:38.0736398Z postgres service is healthy.
+test	Initialize containers	2026-11-17T16:07:38.0737189Z ##[endgroup]
+test	Run actions/checkout@v4	﻿2026-11-17T16:07:38.1147761Z ##[group]Run actions/checkout@v4
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1148444Z with:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1148726Z   repository: saravanaprashanthr/churn-system
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1151472Z   token: ***
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1151715Z   ssh-strict: true
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1151930Z   ssh-user: git
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1152156Z   persist-credentials: true
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1152411Z   clean: true
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1152634Z   sparse-checkout-cone-mode: true
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1152902Z   fetch-depth: 1
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1153110Z   fetch-tags: false
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1153331Z   show-progress: true
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1153552Z   lfs: false
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1153932Z   submodules: false
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1154170Z   set-safe-directory: true
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1154432Z   allow-unsafe-pr-checkout: false
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1155324Z env:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1155553Z   PYTHON_VERSION: 3.11
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1155796Z   UV_VERSION: 0.11.32
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1156029Z   HELM_VERSION: v4.3.1
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1156261Z   KUBECONFORM_VERSION: v0.8.0
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1156598Z   KIND_VERSION: v0.33.0
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1156823Z   IMAGE: churn-api
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1157428Z   DQ_TEST_DATABASE_URL: ***localhost:5432/ecommerce
+test	Run actions/checkout@v4	2026-11-17T16:07:38.1157745Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5017278Z Syncing repository: saravanaprashanthr/churn-system
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5020204Z ##[group]Getting Git version info
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5021238Z Working directory is '/home/runner/work/churn-system/churn-system'
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5022651Z [command]/usr/bin/git version
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5355469Z git version 2.56.1
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5485814Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5492625Z Temporarily overriding HOME='/home/runner/work/_temp/303fd12a-fa66-4561-8981-8d62748624a5' before making global git config changes
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5493932Z Adding repository directory to the temporary git global config as a safe directory
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5495257Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/churn-system/churn-system
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5497539Z Deleting the contents of '/home/runner/work/churn-system/churn-system'
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5498696Z ##[group]Initializing the repository
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5506619Z [command]/usr/bin/git init /home/runner/work/churn-system/churn-system
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5592817Z hint: Using 'master' as the name for the initial branch. This default branch name
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5594579Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5596161Z hint: to use in all of your new repositories, which will suppress this warning,
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5597012Z hint: call:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5619753Z hint:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5620277Z hint: 	git config --global init.defaultBranch <name>
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5620874Z hint:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5621416Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5622328Z hint: 'development'. The just-created branch can be renamed via this command:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5623049Z hint:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5623382Z hint: 	git branch -m <name>
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5624021Z hint:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5624572Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5625593Z Initialized empty Git repository in /home/runner/work/churn-system/churn-system/.git/
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5627411Z [command]/usr/bin/git remote add origin https://github.com/saravanaprashanthr/churn-system
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5734883Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5749935Z ##[group]Disabling automatic garbage collection
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5780733Z [command]/usr/bin/git config --local gc.auto 0
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5932107Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5935431Z ##[group]Setting up auth
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5936123Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Run actions/checkout@v4	2026-11-17T16:07:38.5938270Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Run actions/checkout@v4	2026-11-17T16:07:38.6507023Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Run actions/checkout@v4	2026-11-17T16:07:38.6534284Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Run actions/checkout@v4	2026-11-17T16:07:38.6822672Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Run actions/checkout@v4	2026-11-17T16:07:38.6868852Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Run actions/checkout@v4	2026-11-17T16:07:38.7152781Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test	Run actions/checkout@v4	2026-11-17T16:07:38.7241221Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:38.7242400Z ##[group]Fetching the repository
+test	Run actions/checkout@v4	2026-11-17T16:07:38.7256929Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +757825b3413cea0929061bc86542a4c3643fb986:refs/remotes/pull/1/merge
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0843077Z From https://github.com/saravanaprashanthr/churn-system
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0851648Z  * [new ref]         757825b3413cea0929061bc86542a4c3643fb986 -> pull/1/merge
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0857007Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0857993Z ##[group]Determining the checkout info
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0859322Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0860092Z [command]/usr/bin/git sparse-checkout disable
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0935107Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0981008Z ##[group]Checking out the ref
+test	Run actions/checkout@v4	2026-11-17T16:07:39.0995091Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1151657Z Note: switching to 'refs/remotes/pull/1/merge'.
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1152849Z 
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1160866Z You are in 'detached HEAD' state. You can look around, make experimental
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1162495Z changes and commit them, and you can discard any commits you make in this
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1164357Z state without impacting any branches by switching back to a branch.
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1165266Z 
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1165829Z If you want to create a new branch to retain commits you create, you may
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1169581Z do so (now or later) by using -c with the switch command. Example:
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1170335Z 
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1170737Z   git switch -c <new-branch-name>
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1173504Z 
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1174193Z Or undo this operation with:
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1186779Z 
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1187175Z   git switch -
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1187548Z 
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1188033Z Turn off this advice by setting config variable advice.detachedHead to false
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1188695Z 
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1189467Z HEAD is now at 757825b Merge c050a9e53be1c1877c963852092058b6122d3034 into e961ed4ed994f27eb195ac821edf63e1ce956aba
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1191699Z ##[endgroup]
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1231373Z [command]/usr/bin/git log -1 --format=%H
+test	Run actions/checkout@v4	2026-11-17T16:07:39.1271603Z 757825b3413cea0929061bc86542a4c3643fb986
+test	Run astral-sh/setup-uv@v6	﻿2026-11-17T16:07:39.1583595Z ##[group]Run astral-sh/setup-uv@v6
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1584220Z with:
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1584431Z   version: 0.11.32
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1584650Z   enable-cache: true
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1584920Z   cache-dependency-glob: requirements/dev.txt
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1585245Z   activate-environment: false
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1585597Z   working-directory: /home/runner/work/churn-system/churn-system
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1585999Z   server-url: https://github.com
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1588417Z   github-token: ***
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1588651Z   restore-cache: true
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1588878Z   save-cache: true
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1589095Z   prune-cache: true
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1589332Z   ignore-nothing-to-cache: false
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1589617Z   ignore-empty-workdir: false
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1589887Z   add-problem-matchers: true
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1590155Z env:
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1590354Z   PYTHON_VERSION: 3.11
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1590581Z   UV_VERSION: 0.11.32
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1590797Z   HELM_VERSION: v4.3.1
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1591062Z   KUBECONFORM_VERSION: v0.8.0
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1591308Z   KIND_VERSION: v0.33.0
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1591526Z   IMAGE: churn-api
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1592008Z   DQ_TEST_DATABASE_URL: ***localhost:5432/ecommerce
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.1592312Z ##[endgroup]
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.4151798Z (node:2503) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.4174894Z (Use `node --trace-deprecation ...` to show where the warning was created)
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.4448008Z manifest-file not provided, reading from local file.
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.4557117Z manifest-file does not contain version 0.11.32, arch x86_64, platform unknown-linux-gnu. Falling back to GitHub releases.
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.4566964Z Downloading uv from "https://github.com/astral-sh/uv/releases/download/0.11.32/uv-x86_64-unknown-linux-gnu.tar.gz" ...
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:39.8929163Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/8e637386-d8a0-4cb5-b0b1-3aae9f676fd9 -f /home/runner/work/_temp/38c148ae-98ac-4365-b2ed-ad870ecd8c36
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.4655518Z Added /home/runner/.local/bin to the path
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.4658915Z Added /opt/hostedtoolcache/uv/0.11.32/x86_64 to the path
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.4689026Z Set UV_CACHE_DIR to /home/runner/work/_temp/setup-uv-cache
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.4689730Z Successfully installed uv version 0.11.32
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.4690858Z Searching files using cache dependency glob: /home/runner/work/churn-system/churn-system/requirements/dev.txt
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.4727399Z /home/runner/work/churn-system/churn-system/requirements/dev.txt
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.4749220Z Found 1 files to hash.
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.6328022Z Trying to restore uv cache from GitHub Actions cache with key: setup-uv-1-x86_64-unknown-linux-gnu-unknown-pruned-75b1653d3860d76a63c2da414fc689f43fb92abaf4b39d8e1a4023ea646bd63e
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.7060913Z Cache hit for: setup-uv-1-x86_64-unknown-linux-gnu-unknown-pruned-75b1653d3860d76a63c2da414fc689f43fb92abaf4b39d8e1a4023ea646bd63e
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.7171618Z (node:2503) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.9976524Z Received 13126472 of 13126472 (100.0%), 48.9 MBs/sec
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:40.9977870Z Cache Size: ~13 MB (13126472 B)
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:41.0008427Z [command]/usr/bin/tar -xf /home/runner/work/_temp/5acfcf73-7c44-4169-9281-3130c3a3c4f4/cache.tzst -P -C /home/runner/work/churn-system/churn-system --use-compress-program unzstd
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:41.0931992Z Cache restored successfully
+test	Run astral-sh/setup-uv@v6	2026-11-17T16:07:41.0945781Z uv cache restored from GitHub Actions cache with key: setup-uv-1-x86_64-unknown-linux-gnu-unknown-pruned-75b1653d3860d76a63c2da414fc689f43fb92abaf4b39d8e1a4023ea646bd63e
+test	Install pinned dev dependencies	﻿2026-11-17T16:07:41.1191192Z ##[group]Run uv venv --python 3.11 .venv
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1191623Z ^[[36;1muv venv --python 3.11 .venv^[[0m
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1192022Z ^[[36;1muv pip sync --python .venv/bin/python requirements/dev.txt^[[0m
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1217644Z shell: /usr/bin/bash -e {0}
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1217941Z env:
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1218155Z   PYTHON_VERSION: 3.11
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1218401Z   UV_VERSION: 0.11.32
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1218638Z   HELM_VERSION: v4.3.1
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1218893Z   KUBECONFORM_VERSION: v0.8.0
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1219154Z   KIND_VERSION: v0.33.0
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1219392Z   IMAGE: churn-api
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1219933Z   DQ_TEST_DATABASE_URL: ***localhost:5432/ecommerce
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1220323Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+test	Install pinned dev dependencies	2026-11-17T16:07:41.1220648Z ##[endgroup]
+test	Install pinned dev dependencies	2026-11-17T16:07:41.2827423Z Downloading cpython-3.11.15-linux-x86_64-gnu (download) (29.5MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.2564865Z  Downloaded cpython-3.11.15-linux-x86_64-gnu (download)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.4233556Z Using CPython 3.11.15
+test	Install pinned dev dependencies	2026-11-17T16:07:42.4234828Z Creating virtual environment at: .venv
+test	Install pinned dev dependencies	2026-11-17T16:07:42.4235593Z Activate with: .venv/bin/activate
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7472722Z Resolved 140 packages in 182ms
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7839064Z Downloading kubernetes (1.6MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7864769Z Downloading aiohttp (1.8MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7884632Z Downloading kiwisolver (1.4MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7901338Z Downloading mlflow-skinny (4.2MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7911251Z Downloading mlflow-tracing (2.0MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7925127Z Downloading matplotlib (9.4MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7934797Z Downloading pandas (11.8MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7935563Z Downloading virtualenv (5.4MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7936353Z Downloading pydantic-core (2.1MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7937065Z Downloading pillow (6.8MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.7937715Z Downloading cryptography (4.5MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8011162Z Downloading ast-serialize (1.3MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8012670Z Downloading ruff (10.1MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8016451Z Downloading pygments (1.2MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8018568Z Downloading sqlalchemy (4.4MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8025548Z Downloading scikit-learn (8.9MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8027985Z Downloading psycopg-binary (5.0MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8030350Z Downloading numpy (16.1MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8033122Z Downloading mypy (14.7MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8039319Z Downloading mlflow (12.0MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8042223Z Downloading pyarrow (52.5MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8048267Z Downloading fonttools (5.2MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8050833Z Downloading scipy (33.7MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8242388Z Downloading kfp (1.2MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:42.8297322Z Downloading databricks-sdk (1.1MiB)
+test	Install pinned dev dependencies	2026-11-17T16:07:43.6335591Z  Downloaded databricks-sdk
+test	Install pinned dev dependencies	2026-11-17T16:07:43.7155272Z  Downloaded ast-serialize
+test	Install pinned dev dependencies	2026-11-17T16:07:43.8068716Z  Downloaded kiwisolver
+test	Install pinned dev dependencies	2026-11-17T16:07:43.9045011Z  Downloaded kfp
+test	Install pinned dev dependencies	2026-11-17T16:07:43.9842527Z  Downloaded aiohttp
+test	Install pinned dev dependencies	2026-11-17T16:07:44.0318114Z  Downloaded pygments
+test	Install pinned dev dependencies	2026-11-17T16:07:44.0648496Z  Downloaded pydantic-core
+test	Install pinned dev dependencies	2026-11-17T16:07:44.4052003Z  Downloaded mlflow-tracing
+test	Install pinned dev dependencies	2026-11-17T16:07:44.4967016Z  Downloaded kubernetes
+test	Install pinned dev dependencies	2026-11-17T16:07:44.6403194Z  Downloaded sqlalchemy
+test	Install pinned dev dependencies	2026-11-17T16:07:44.7314346Z  Downloaded cryptography
+test	Install pinned dev dependencies	2026-11-17T16:07:44.7546522Z  Downloaded psycopg-binary
+test	Install pinned dev dependencies	2026-11-17T16:07:44.8054554Z  Downloaded virtualenv
+test	Install pinned dev dependencies	2026-11-17T16:07:44.8134476Z  Downloaded fonttools
+test	Install pinned dev dependencies	2026-11-17T16:07:44.9985762Z  Downloaded pillow
+test	Install pinned dev dependencies	2026-11-17T16:07:45.3648400Z  Downloaded ruff
+test	Install pinned dev dependencies	2026-11-17T16:07:45.4092640Z  Downloaded scikit-learn
+test	Install pinned dev dependencies	2026-11-17T16:07:45.4699621Z  Downloaded mlflow-skinny
+test	Install pinned dev dependencies	2026-11-17T16:07:45.5686650Z  Downloaded matplotlib
+test	Install pinned dev dependencies	2026-11-17T16:07:46.2689887Z  Downloaded numpy
+test	Install pinned dev dependencies	2026-11-17T16:07:46.4190729Z  Downloaded mlflow
+test	Install pinned dev dependencies	2026-11-17T16:07:46.8478700Z  Downloaded scipy
+test	Install pinned dev dependencies	2026-11-17T16:07:46.9287351Z  Downloaded pandas
+test	Install pinned dev dependencies	2026-11-17T16:07:46.9945581Z  Downloaded pyarrow
+test	Install pinned dev dependencies	2026-11-17T16:07:47.0222409Z  Downloaded mypy
+test	Install pinned dev dependencies	2026-11-17T16:07:47.0228034Z Prepared 140 packages in 4.27s
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6327072Z Installed 140 packages in 609ms
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6328145Z  + aiohappyeyeballs==2.7.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6328814Z  + aiohttp==3.14.5
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6329394Z  + aiosignal==1.4.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6329998Z  + alembic==1.20.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6330579Z  + annotated-doc==0.0.5
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6331200Z  + annotated-types==0.8.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6331813Z  + anyio==4.16.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6332412Z  + ast-serialize==0.13.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6333016Z  + attrs==26.1.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6333571Z  + blinker==1.9.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6334436Z  + cachetools==7.3.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6335046Z  + certifi==2026.10.23
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6335626Z  + cffi==2.1.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6336174Z  + cfgv==3.5.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6336749Z  + charset-normalizer==3.5.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6337399Z  + click==8.5.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6337976Z  + click-option-group==0.5.7
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6338663Z  + cloudpickle==3.1.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6339255Z  + colorlog==6.12.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6339843Z  + contourpy==1.3.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6340407Z  + coverage==7.17.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6340976Z  + cryptography==50.0.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6341577Z  + cycler==0.12.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6342152Z  + databricks-sdk==0.162.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6342760Z  + distlib==0.4.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6343317Z  + docker==7.2.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6344204Z  + docstring-parser==0.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6344845Z  + fastapi==0.162.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6345424Z  + filelock==4.2.10
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6345989Z  + flask==3.1.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6346574Z  + flask-cors==6.0.5
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6347152Z  + fonttools==4.68.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6347718Z  + frozenlist==1.8.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6348279Z  + gitdb==4.0.12
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6348839Z  + gitpython==3.2.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6349416Z  + google-api-core==2.43.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6350028Z  + google-auth==2.62.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6350635Z  + google-cloud-core==2.8.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6351283Z  + google-cloud-storage==3.17.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6351933Z  + google-crc32c==1.9.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6352550Z  + google-resumable-media==2.11.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6353253Z  + googleapis-common-protos==1.76.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6354171Z  + graphene==3.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6354763Z  + graphql-core==3.2.13
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6355367Z  + graphql-relay==3.2.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6355963Z  + gunicorn==26.2.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6356515Z  + h11==0.16.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6357061Z  + httpcore==1.0.9
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6357619Z  + httpx==0.28.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6358173Z  + huey==3.5.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6358713Z  + identify==2.6.20
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6359266Z  + idna==3.20
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6359836Z  + importlib-metadata==10.1.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6360466Z  + iniconfig==2.3.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6361036Z  + itsdangerous==2.2.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6361614Z  + jinja2==3.1.6
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6362165Z  + joblib==1.6.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6362708Z  + kfp==2.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6363674Z  + kfp-pipeline-spec==2.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6364565Z  + kfp-server-api==2.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6365211Z  + kiwisolver==1.5.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6365793Z  + kubernetes==30.1.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6366365Z  + librt==0.16.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6366912Z  + mako==1.4.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6367819Z  + markupsafe==3.0.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6374150Z  + matplotlib==3.11.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6374813Z  + mlflow==3.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6375421Z  + mlflow-skinny==3.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6376034Z  + mlflow-tracing==3.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6376625Z  + multidict==7.2.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6377340Z  + mypy==2.4.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6380132Z  + mypy-extensions==1.2.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6380787Z  + narwhals==2.28.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6381359Z  + nodeenv==1.12.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6381912Z  + numpy==2.4.6
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6382469Z  + oauthlib==4.0.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6383075Z  + opentelemetry-api==1.45.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6383979Z  + opentelemetry-proto==1.45.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6384723Z  + opentelemetry-sdk==1.45.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6385432Z  + opentelemetry-semantic-conventions==0.66b2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6386538Z  + optuna==5.0.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6387098Z  + packaging==26.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6388684Z  + pandas==3.1.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6389291Z  + pandas-stubs==3.1.0.261029
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6391139Z  + pandera==0.35.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6394341Z  + pathspec==1.1.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6415171Z  + pillow==13.0.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6415777Z  + platformdirs==4.14.5
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6416475Z  + pluggy==1.7.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6417060Z  + pre-commit==4.7.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6417627Z  + prettytable==3.18.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6418217Z  + prometheus-client==0.26.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6418820Z  + propcache==0.5.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6419360Z  + proto-plus==1.29.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6419902Z  + protobuf==6.33.6
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6420405Z  + psycopg==3.3.8
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6420927Z  + psycopg-binary==3.3.8
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6421484Z  + pyarrow==26.0.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6422019Z  + pyasn1==0.6.5
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6422526Z  + pyasn1-modules==0.4.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6423159Z  + pycparser==3.12
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6423953Z  + pydantic==2.14.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6424775Z  + pydantic-core==2.50.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6425349Z  + pygments==2.21.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6425879Z  + pyparsing==3.3.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6426418Z  + pytest==9.2.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6426951Z  + pytest-cov==7.1.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6427513Z  + python-dateutil==4.0.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6428109Z  + python-discovery==1.9.5
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6428715Z  + python-dotenv==1.2.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6429295Z  + python-multipart==0.0.33
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6429875Z  + pyyaml==6.0.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6430398Z  + requests==2.33.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6430952Z  + requests-oauthlib==2.0.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6431554Z  + requests-toolbelt==1.0.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6432128Z  + ruff==0.17.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6432715Z  + scikit-learn==1.9.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6433268Z  + scipy==1.17.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6434986Z  + six==1.17.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6435574Z  + skops==0.16.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6436153Z  + smmap==5.0.3
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6436722Z  + sqlalchemy==2.1.8
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6437346Z  + sqlparse==0.6.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6437968Z  + starlette==1.10.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6438606Z  + tabulate==0.10.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6439177Z  + threadpoolctl==3.8.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6439750Z  + tqdm==4.70.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6440283Z  + typeguard==4.6.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6440860Z  + typing-extensions==4.16.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6441478Z  + typing-inspect==0.9.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6442074Z  + typing-inspection==0.4.5
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6442661Z  + tzdata==2026.6
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6443200Z  + urllib3==2.8.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6444025Z  + uvicorn==0.54.0
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6444617Z  + virtualenv==21.15.6
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6445184Z  + wcwidth==0.9.4
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6445740Z  + websocket-client==1.9.2
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6446319Z  + werkzeug==3.1.9
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6446843Z  + yarl==1.25.1
+test	Install pinned dev dependencies	2026-11-17T16:07:47.6447849Z  + zipp==4.1.2
+test	Run azure/setup-helm@v4	﻿2026-11-17T16:07:47.6546765Z ##[group]Run azure/setup-helm@v4
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6547087Z with:
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6547300Z   version: v4.3.1
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6549627Z   token: ***
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6549882Z   downloadBaseURL: https://get.helm.sh
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6550170Z env:
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6550368Z   PYTHON_VERSION: 3.11
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6550606Z   UV_VERSION: 0.11.32
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6550838Z   HELM_VERSION: v4.3.1
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6551078Z   KUBECONFORM_VERSION: v0.8.0
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6551334Z   KIND_VERSION: v0.33.0
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6551561Z   IMAGE: churn-api
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6552013Z   DQ_TEST_DATABASE_URL: ***localhost:5432/ecommerce
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6552385Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.6552698Z ##[endgroup]
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.7319255Z ##[group]Installing v4.3.1
+test	Run azure/setup-helm@v4	2026-11-17T16:07:47.7331671Z Downloading 'v4.3.1' from 'https://get.helm.sh'
+test	Run azure/setup-helm@v4	2026-11-17T16:07:48.0232658Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/261d5565-3b4a-47e9-804f-496732da2470 -f /home/runner/work/_temp/245eb982-6a1c-40c9-a74e-b19fe155dcfd
+test	Run azure/setup-helm@v4	2026-11-17T16:07:48.7160184Z ##[endgroup]
+test	Run azure/setup-helm@v4	2026-11-17T16:07:48.7163274Z Helm tool version 'v4.3.1' has been cached at /opt/hostedtoolcache/helm/4.3.1/x64/linux-amd64/helm
+test	Install kubeconform	﻿2026-11-17T16:07:49.0125872Z ##[group]Run curl -sSL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+test	Install kubeconform	2026-11-17T16:07:49.0127398Z ^[[36;1mcurl -sSL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \^[[0m
+test	Install kubeconform	2026-11-17T16:07:49.0128366Z ^[[36;1m  | sudo tar -xz -C /usr/local/bin kubeconform^[[0m
+test	Install kubeconform	2026-11-17T16:07:49.0152506Z shell: /usr/bin/bash -e {0}
+test	Install kubeconform	2026-11-17T16:07:49.0152793Z env:
+test	Install kubeconform	2026-11-17T16:07:49.0153001Z   PYTHON_VERSION: 3.11
+test	Install kubeconform	2026-11-17T16:07:49.0153249Z   UV_VERSION: 0.11.32
+test	Install kubeconform	2026-11-17T16:07:49.0153641Z   HELM_VERSION: v4.3.1
+test	Install kubeconform	2026-11-17T16:07:49.0154245Z   KUBECONFORM_VERSION: v0.8.0
+test	Install kubeconform	2026-11-17T16:07:49.0154677Z   KIND_VERSION: v0.33.0
+test	Install kubeconform	2026-11-17T16:07:49.0155050Z   IMAGE: churn-api
+test	Install kubeconform	2026-11-17T16:07:49.0155877Z   DQ_TEST_DATABASE_URL: ***localhost:5432/ecommerce
+test	Install kubeconform	2026-11-17T16:07:49.0156476Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+test	Install kubeconform	2026-11-17T16:07:49.0156994Z ##[endgroup]
+test	Unit, integration and manifest tests (fails under 80% coverage)	﻿2026-11-17T16:07:49.3594182Z ##[group]Run .venv/bin/pytest --cov --cov-report=term-missing -m "not model and not container"
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3595381Z ^[[36;1m.venv/bin/pytest --cov --cov-report=term-missing -m "not model and not container"^[[0m
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3633053Z shell: /usr/bin/bash -e {0}
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3633527Z env:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3634265Z   PYTHON_VERSION: 3.11
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3634674Z   UV_VERSION: 0.11.32
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3635080Z   HELM_VERSION: v4.3.1
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3635494Z   KUBECONFORM_VERSION: v0.8.0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3635927Z   KIND_VERSION: v0.33.0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3636313Z   IMAGE: churn-api
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3637296Z   DQ_TEST_DATABASE_URL: ***localhost:5432/ecommerce
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3637977Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:07:49.3638514Z ##[endgroup]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4772336Z ============================= test session starts ==============================
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4773450Z platform linux -- Python 3.11.15, pytest-9.2.0, pluggy-1.7.0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4774821Z rootdir: /home/runner/work/churn-system/churn-system
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4775616Z configfile: pyproject.toml
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4776247Z testpaths: tests
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4777048Z plugins: platformdirs-4.14.5, cov-7.1.0, typeguard-4.6.0, anyio-4.16.0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4778022Z collected 294 items / 17 deselected / 277 selected
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4778628Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:01.4957082Z tests/data_quality/test_evaluate.py ..........                           [  3%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:03.2195139Z tests/data_quality/test_gate_integration.py ...............              [  9%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:03.2452259Z tests/data_quality/test_report.py .........                              [ 12%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:03.3208640Z tests/data_quality/test_rules.py ....................................... [ 26%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:03.4470107Z ................................................................         [ 49%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:04.4505182Z tests/deploy/test_chart.py ...........                                   [ 53%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:05.7755582Z tests/pipeline/test_components_integration.py ....                       [ 54%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:05.9840574Z tests/pipeline/test_pipeline_definition.py .......                       [ 57%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:06.0001251Z tests/pipeline/test_run_local.py .......                                 [ 59%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:07.3104398Z tests/pipeline/test_transform.py ....F....F..                            [ 64%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:08.6948940Z tests/pipeline/test_validate_publish.py F...........                     [ 68%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:09.3536018Z tests/serving/test_app.py ..............                                 [ 73%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:09.4238854Z tests/serving/test_features_and_schemas.py ............................. [ 84%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:09.4556747Z ...                                                                      [ 85%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:26.6876703Z tests/serving/test_model_loading.py .........                            [ 88%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:26.8417974Z tests/training/test_data_integration.py ..                               [ 89%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:26.8898711Z tests/training/test_metrics.py ........                                  [ 92%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:26.9076502Z tests/training/test_promote.py ........                                  [ 94%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:08:31.5187556Z tests/training/test_split_and_models.py .............                    [ 99%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1901043Z tests/training/test_train_smoke.py .                                     [100%]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1902238Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1902942Z =================================== FAILURES ===================================
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1904400Z ________________ test_order_at_the_cutoff_is_label_not_feature _________________
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1905203Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1905700Z     def test_order_at_the_cutoff_is_label_not_feature():
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1906457Z         r = row(build(), 2)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1907128Z >       assert r["orders_365d"] == 1 and r["spend_365d"] == 50.0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1908284Z E       assert (2 == 1)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1908688Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1909086Z tests/pipeline/test_transform.py:117: AssertionError
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1910003Z ___ test_features_do_not_change_when_anything_on_or_after_the_cutoff_changes ___
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1910668Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1911186Z     def test_features_do_not_change_when_anything_on_or_after_the_cutoff_changes():
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1912241Z         """Leakage guard: rewrite every row on or after the cutoff; only the label may change."""
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1913111Z         base = build()
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1913659Z         future_orders = orders()
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1914660Z         after = future_orders["order_date"] >= pd.Timestamp(CUTOFF)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1915459Z         future_orders.loc[after, "order_total"] = 10_000.0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1916311Z         future_orders.loc[after, "status"] = "returned"
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1917174Z         extra = pd.DataFrame(
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1918196Z             [(900 + i, 1, pd.Timestamp(CUTOFF) + pd.Timedelta(hours=i), "completed", 1.0) for i in range(50)],
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1919628Z             columns=future_orders.columns,
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1920372Z         )
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1921131Z         future_events = pd.concat(
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1922229Z             [events(), pd.DataFrame([(2, CUTOFF, "view", 500, 50)], columns=events().columns)], ignore_index=True
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1923234Z         )
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1924544Z         changed = build(orders=pd.concat([future_orders, extra], ignore_index=True), events_daily=future_events)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1926199Z         feature_columns = [c for c in OUTPUT_COLUMNS if c != "churned"]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1927375Z >       pd.testing.assert_frame_equal(base[feature_columns], changed[feature_columns])
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1928203Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1928612Z tests/pipeline/test_transform.py:159: 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1929569Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1950507Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1951032Z left = array([1, 1, 0]), right = array([2, 0, 0]), err_msg = None
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1951658Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1952222Z     def _raise(left: np.ndarray, right: np.ndarray, err_msg: str | None) -> NoReturn:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1953092Z         if err_msg is None:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1953678Z             if left.shape != right.shape:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1954777Z                 raise_assert_detail(
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1955526Z                     obj, f"{obj} shapes are different", left.shape, right.shape
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1956293Z                 )
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1956794Z     
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1957256Z             diff = 0.0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1957929Z             # ravel so the count is over values, matching the `left.size` total
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1958859Z             for left_val, right_val in zip(left.ravel(), right.ravel(), strict=True):
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1959677Z                 # count up differences
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1960440Z                 if not array_equivalent(left_val, right_val, strict_nan=strict_nan):
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1961252Z                     diff += 1
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1961896Z     
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1962382Z             diff = diff * 100.0 / left.size
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1963089Z             msg = f"{obj} values are different ({np.round(diff, 5)} %)"
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1964175Z >           raise_assert_detail(obj, msg, left, right, index_values=index_values)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1965184Z E           AssertionError: DataFrame.iloc[:, 2] (column name="orders_7d") are different
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1966033Z E           
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1966730Z E           DataFrame.iloc[:, 2] (column name="orders_7d") values are different (66.66667 %)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1967545Z E           [index]: [0, 1, 2]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1968091Z E           [left]:  [1, 1, 0]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1968641Z E           [right]: [2, 0, 0]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1969041Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1969586Z .venv/lib/python3.11/site-packages/pandas/_testing/asserters.py:858: AssertionError
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1970951Z _____________________ test_valid_features_pass_with_report _____________________
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1971582Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1972040Z     def test_valid_features_pass_with_report():
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1972748Z >       report = validate(build(), VALIDATION)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1973392Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1974142Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1974570Z tests/pipeline/test_validate_publish.py:22: 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1975342Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1975935Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1976467Z features =    customer_id cutoff_date  orders_7d  ... country marketing_opt_in  churned
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1977374Z 0            1  2025-07-07          1  .....   unknown        0
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1978106Z 2            5  2025-07-07          0  ...      IN               no        1
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1978679Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1978988Z [3 rows x 30 columns]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1979857Z params = ValidationParams(cutoff_date=datetime.date(2025, 7, 7), lookback_days=365, labeled=True, min_rows=1)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1980701Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1981230Z     def validate(features: pd.DataFrame, params: ValidationParams) -> dict:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1982309Z         """Return a validation report; raise FeatureValidationError listing every problem found."""
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1983259Z         problems: list[str] = []
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1984100Z         try:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1984700Z             build_schema(params).validate(features, lazy=True)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1985780Z         except pa.errors.SchemaErrors as exc:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1986437Z             cases = exc.failure_cases
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1987136Z             table_level = cases["schema_context"] == "DataFrameSchema"
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1988049Z             for check, group in cases[table_level].groupby("check"):
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1988809Z                 if check == "column_in_schema":
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1989724Z                     problems.append(f"unexpected columns: {', '.join(map(str, group['failure_case'].unique()))}")
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1990638Z                 else:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1991354Z                     problems.append(f"table: {check} ({group['index'].nunique()} failing rows)")
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1992378Z             for (column, check), group in cases[~table_level].groupby(["column", "check"]):
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1993331Z                 examples = ", ".join(str(v) for v in group["failure_case"].head(3))
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1996372Z                 problems.append(f"{column}: {check} ({len(group)} failing, e.g. {examples})")
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1997355Z     
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.1999623Z         if len(features) < params.min_rows:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2000317Z             problems.append(f"only {len(features)} rows, expected at least {params.min_rows}")
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2000956Z     
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2001258Z         churn_rate = None
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2001651Z         if params.labeled and len(features):
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2002149Z             churn_rate = float(features["churned"].mean())
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2002642Z             low, high = CHURN_RATE_BOUNDS
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2003081Z             if not low <= churn_rate <= high:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2004011Z                 problems.append(f"churn rate {churn_rate:.3f} outside [{low}, {high}]: label is degenerate")
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2004708Z     
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2004987Z         report = {
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2005324Z             "passed": not problems,
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2005739Z             "rows": len(features),
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2006129Z             "churn_rate": churn_rate,
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2006549Z             "labeled": params.labeled,
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2006968Z             "problems": problems,
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2007341Z         }
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2007625Z         if problems:
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2008052Z >           raise FeatureValidationError("; ".join(problems))
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2009221Z E           pipeline.validate.FeatureValidationError: days_since_last_order: in_range(1, 365) (1 failing, e.g. 0)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2009887Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2010098Z pipeline/validate.py:109: FeatureValidationError
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2010649Z =============================== warnings summary ===============================
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2011257Z .venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2012739Z   /home/runner/work/churn-system/churn-system/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2014468Z     from starlette.testclient import TestClient as TestClient  # noqa
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2014905Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2015310Z tests/serving/test_model_loading.py::test_load_from_registry_by_alias_pins_the_version
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2017578Z   /home/runner/work/churn-system/churn-system/.venv/lib/python3.11/site-packages/mlflow/store/tracking/sqlalchemy_store.py:356: SADeprecationWarning: The ``noload`` loader strategy is deprecated and will be removed in a future release.  This option produces incorrect results by returning ``None`` for related items. (deprecated since: 2.1)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2019666Z     sqlalchemy.orm.configure_mappers()
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2019966Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2020384Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2021374Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2022677Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2023651Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2024856Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2025839Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2030493Z   /home/runner/work/churn-system/churn-system/.venv/lib/python3.11/site-packages/mlflow/types/utils.py:440: UserWarning: Hint: Inferred schema contains integer column(s). Integer columns in Python cannot represent missing values. If your input data contains missing values at inference time, it will be encoded as floats and will cause a schema enforcement error. The best way to avoid this problem is to infer the model schema based on a realistic data sample (training dataset) that includes missing values. Alternatively, you can declare integer columns as doubles (float64) whenever these columns may have missing values. See `Handling Integers With Missing Values <https://www.mlflow.org/docs/latest/models.html#handling-integers-with-missing-values>`_ for more details.
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2034998Z     warnings.warn(
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2035214Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2035638Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2036618Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2037599Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2038598Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.2039602Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7829373Z tests/training/test_train_smoke.py::test_training_run_tracks_iterations_and_registers_candidate
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7843375Z   /home/runner/work/churn-system/churn-system/.venv/lib/python3.11/site-packages/mlflow/models/utils.py:211: Pandas4Warning: Operation with range is deprecated. In a future version these will be treated as scalar-like. To retain the old behavior, explicitly wrap in a Series instead.
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7846756Z     if all(df.columns == range(len(df.columns))):
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7847442Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7848344Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7849324Z ================================ tests coverage ================================
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7850608Z _______________ coverage: platform linux, python 3.11.15-final-0 _______________
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7851444Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7852262Z Name                        Stmts   Miss Branch BrPart  Cover   Missing
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7853267Z -----------------------------------------------------------------------
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7855316Z data_quality/__init__.py        0      0      0      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7856356Z data_quality/__main__.py       39      1      4      1    95%   67
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7857532Z data_quality/gate.py          121      2     18      2    97%   108, 189
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7858524Z data_quality/report.py         46      0      8      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7859675Z data_quality/rules.py          35      0      0      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7862155Z pipeline/__init__.py            0      0      0      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7862778Z pipeline/components.py         89      0      0      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7863371Z pipeline/dq_step.py            28      0      2      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7864214Z pipeline/extract.py            63      3     10      3    92%   60, 62, 98
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7864958Z pipeline/pipeline.py           28      5      4      1    81%   68-73, 77
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7866127Z pipeline/publish.py            48      0      2      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7866773Z pipeline/run_local.py          50     13     16      2    71%   58-80, 84
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7867414Z pipeline/transform.py          96      0      6      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7868058Z pipeline/validate.py           52      1     20      2    96%   55, 95->101
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7868701Z serving/__init__.py             0      0      0      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7869302Z serving/app.py                124      2     20      3    97%   81, 86, 116->115
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7869977Z serving/features.py            32      0     18      4    92%   58->60, 60->62, 62->64, 64->67
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7870682Z serving/fetch_model.py         34      2      4      2    89%   36, 58
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7871355Z serving/model.py               82      0      8      1    99%   104->106
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7872031Z serving/prediction_log.py      21      8      2      0    57%   31-32, 35-40
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7872691Z serving/schemas.py             70      0      8      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7873408Z serving/smoke.py               62      4     10      3    90%   39, 49->55, 101-102, 106
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7874300Z training/__init__.py            0      0      0      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7874882Z training/config.py             41      0     12      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7875532Z training/data.py               49      2      8      2    93%   64, 89
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7876179Z training/metrics.py            54      1      8      1    97%   27
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7876811Z training/models.py             59      0      4      0   100%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7879914Z training/promote.py           147     83     32      1    42%   64-72, 76-79, 84-93, 100-108, 112-113, 139-143, 147-183, 187-213, 217
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7880921Z training/train.py             225     32     20      4    84%   73-74, 216->218, 304-313, 379, 437-467, 471
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7881657Z -----------------------------------------------------------------------
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7882252Z TOTAL                        1695    159    244     32    89%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7882854Z Required test coverage of 80.0% reached. Total coverage: 88.71%
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7883514Z =========================== short test summary info ============================
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7884670Z FAILED tests/pipeline/test_transform.py::test_order_at_the_cutoff_is_label_not_feature - assert (2 == 1)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7886506Z FAILED tests/pipeline/test_transform.py::test_features_do_not_change_when_anything_on_or_after_the_cutoff_changes - AssertionError: DataFrame.iloc[:, 2] (column name="orders_7d") are different
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7887646Z 
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7887978Z DataFrame.iloc[:, 2] (column name="orders_7d") values are different (66.66667 %)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7888582Z [index]: [0, 1, 2]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7888885Z [left]:  [1, 1, 0]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7889189Z [right]: [2, 0, 0]
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7890359Z FAILED tests/pipeline/test_validate_publish.py::test_valid_features_pass_with_report - pipeline.validate.FeatureValidationError: days_since_last_order: in_range(1, 365) (1 failing, e.g. 0)
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:06.7891774Z ===== 3 failed, 274 passed, 17 deselected, 14 warnings in 75.26s (0:01:15) =====
+test	Unit, integration and manifest tests (fails under 80% coverage)	2026-11-17T16:09:08.3714785Z ##[error]Process completed with exit code 1.
+test	Post Run actions/checkout@v4	﻿2026-11-17T16:09:08.3840854Z Post job cleanup.
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.4924743Z [command]/usr/bin/git version
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.4995126Z git version 2.56.1
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5065351Z Temporarily overriding HOME='/home/runner/work/_temp/b9535793-870b-4cc1-9313-534c386aabbf' before making global git config changes
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5091326Z Adding repository directory to the temporary git global config as a safe directory
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5114733Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/churn-system/churn-system
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5197438Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5288184Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5797263Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5853161Z http.https://github.com/.extraheader
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.5954924Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.6007494Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.6444989Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Post Run actions/checkout@v4	2026-11-17T16:09:08.6513504Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Stop containers	﻿2026-11-17T16:09:08.7034746Z Print service container logs: 9425fd77c5824385a638613081e22c2c_postgres16_9a2e90
+test	Stop containers	2026-11-17T16:09:08.7039761Z ##[command]/usr/bin/docker logs --details 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Stop containers	2026-11-17T16:09:08.7219818Z  The files belonging to this database system will be owned by user "postgres".
+test	Stop containers	2026-11-17T16:09:08.7227906Z  This user must also own the server process.
+test	Stop containers	2026-11-17T16:09:08.7230891Z  initdb: warning: enabling "trust" authentication for local connections
+test	Stop containers	2026-11-17T16:09:08.7232232Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+test	Stop containers	2026-11-17T16:09:08.7234218Z  2026-11-17 16:07:33.282 UTC [1] LOG:  starting PostgreSQL 16.16 (Debian 16.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+test	Stop containers	2026-11-17T16:09:08.7235560Z  2026-11-17 16:07:33.283 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+test	Stop containers	2026-11-17T16:09:08.7236446Z  2026-11-17 16:07:33.283 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+test	Stop containers	2026-11-17T16:09:08.7237442Z  2026-11-17 16:07:33.285 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+test	Stop containers	2026-11-17T16:09:08.7238453Z  2026-11-17 16:07:33.290 UTC [63] LOG:  database system was shut down at 2026-11-17 16:07:33 UTC
+test	Stop containers	2026-11-17T16:09:08.7239376Z  2026-11-17 16:07:33.297 UTC [1] LOG:  database system is ready to accept connections
+test	Stop containers	2026-11-17T16:09:08.7240052Z  
+test	Stop containers	2026-11-17T16:09:08.7240386Z  The database cluster will be initialized with locale "en_US.utf8".
+test	Stop containers	2026-11-17T16:09:08.7240887Z  The default database encoding has accordingly been set to "UTF8".
+test	Stop containers	2026-11-17T16:09:08.7241343Z  The default text search configuration will be set to "english".
+test	Stop containers	2026-11-17T16:09:08.7241699Z  
+test	Stop containers	2026-11-17T16:09:08.7241917Z  Data page checksums are disabled.
+test	Stop containers	2026-11-17T16:09:08.7242184Z  
+test	Stop containers	2026-11-17T16:09:08.7242504Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+test	Stop containers	2026-11-17T16:09:08.7242926Z  creating subdirectories ... ok
+test	Stop containers	2026-11-17T16:09:08.7243272Z  selecting dynamic shared memory implementation ... posix
+test	Stop containers	2026-11-17T16:09:08.7243633Z  selecting default max_connections ... 100
+test	Stop containers	2026-11-17T16:09:08.7244457Z  selecting default shared_buffers ... 128MB
+test	Stop containers	2026-11-17T16:09:08.7245008Z  selecting default time zone ... Etc/UTC
+test	Stop containers	2026-11-17T16:09:08.7245554Z  creating configuration files ... ok
+test	Stop containers	2026-11-17T16:09:08.7245857Z  running bootstrap script ... ok
+test	Stop containers	2026-11-17T16:09:08.7246175Z  performing post-bootstrap initialization ... ok
+test	Stop containers	2026-11-17T16:09:08.7246497Z  syncing data to disk ... ok
+test	Stop containers	2026-11-17T16:09:08.7246736Z  
+test	Stop containers	2026-11-17T16:09:08.7246914Z  
+test	Stop containers	2026-11-17T16:09:08.7247161Z  Success. You can now start the database server using:
+test	Stop containers	2026-11-17T16:09:08.7247472Z  
+test	Stop containers	2026-11-17T16:09:08.7247718Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+test	Stop containers	2026-11-17T16:09:08.7248030Z  
+test	Stop containers	2026-11-17T16:09:08.7248688Z  waiting for server to start....2026-11-17 16:07:32.954 UTC [47] LOG:  starting PostgreSQL 16.16 (Debian 16.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+test	Stop containers	2026-11-17T16:09:08.7266122Z  2026-11-17 16:07:32.955 UTC [47] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+test	Stop containers	2026-11-17T16:09:08.7266933Z  2026-11-17 16:07:32.959 UTC [50] LOG:  database system was shut down at 2026-11-17 16:07:32 UTC
+test	Stop containers	2026-11-17T16:09:08.7267497Z  2026-11-17 16:07:32.963 UTC [47] LOG:  database system is ready to accept connections
+test	Stop containers	2026-11-17T16:09:08.7267922Z   done
+test	Stop containers	2026-11-17T16:09:08.7268128Z  server started
+test	Stop containers	2026-11-17T16:09:08.7268344Z  CREATE DATABASE
+test	Stop containers	2026-11-17T16:09:08.7268549Z  
+test	Stop containers	2026-11-17T16:09:08.7268732Z  
+test	Stop containers	2026-11-17T16:09:08.7269071Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+test	Stop containers	2026-11-17T16:09:08.7269480Z  
+test	Stop containers	2026-11-17T16:09:08.7269752Z  2026-11-17 16:07:33.153 UTC [47] LOG:  received fast shutdown request
+test	Stop containers	2026-11-17T16:09:08.7270323Z  waiting for server to shut down....2026-11-17 16:07:33.154 UTC [47] LOG:  aborting any active transactions
+test	Stop containers	2026-11-17T16:09:08.7271357Z  2026-11-17 16:07:33.158 UTC [47] LOG:  background worker "logical replication launcher" (PID 53) exited with exit code 1
+test	Stop containers	2026-11-17T16:09:08.7271914Z  2026-11-17 16:07:33.158 UTC [48] LOG:  shutting down
+test	Stop containers	2026-11-17T16:09:08.7272335Z  2026-11-17 16:07:33.159 UTC [48] LOG:  checkpoint starting: shutdown immediate
+test	Stop containers	2026-11-17T16:09:08.7273434Z  2026-11-17 16:07:33.177 UTC [48] LOG:  checkpoint complete: wrote 935 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.015 s, sync=0.002 s, total=0.019 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4346 kB, estimate=4346 kB; lsn=0/1943060, redo lsn=0/1943060
+test	Stop containers	2026-11-17T16:09:08.7275678Z  2026-11-17 16:07:33.187 UTC [47] LOG:  database system is shut down
+test	Stop containers	2026-11-17T16:09:08.7276073Z   done
+test	Stop containers	2026-11-17T16:09:08.7276279Z  server stopped
+test	Stop containers	2026-11-17T16:09:08.7276500Z  
+test	Stop containers	2026-11-17T16:09:08.7276767Z  PostgreSQL init process complete; ready for start up.
+test	Stop containers	2026-11-17T16:09:08.7277101Z  
+test	Stop containers	2026-11-17T16:09:08.7285014Z Stop and remove container: 9425fd77c5824385a638613081e22c2c_postgres16_9a2e90
+test	Stop containers	2026-11-17T16:09:08.7290486Z ##[command]/usr/bin/docker rm --force 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Stop containers	2026-11-17T16:09:08.8762110Z 3bebafe6b229a51a17f66dad2dc6e7b57f6e95eb5b94f10657a2649b0e84e527
+test	Stop containers	2026-11-17T16:09:08.8799657Z Remove container network: github_network_593dc89afe7f4143b3e1bd9a230326fb
+test	Stop containers	2026-11-17T16:09:08.8807778Z ##[command]/usr/bin/docker network rm github_network_593dc89afe7f4143b3e1bd9a230326fb
+test	Stop containers	2026-11-17T16:09:08.9755081Z github_network_593dc89afe7f4143b3e1bd9a230326fb
+test	Complete job	﻿2026-11-17T16:09:08.9851185Z Cleaning up orphan processes
+test	Complete job	2026-11-17T16:09:09.0306283Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, astral-sh/setup-uv@v6, azure/setup-helm@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
