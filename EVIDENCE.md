@@ -15,7 +15,7 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 | E. Code quality & tests   | Done (coverage gate in CI: Part G) | `Makefile`, `.pre-commit-config.yaml`, `pyproject.toml`, `evidence/tests/`, `evidence/lint/` | 203 tests, 93% coverage (gate 80%); ruff incl. no-print and bandit rules, ruff format, mypy (☆) all clean; 10 pre-commit hooks + unit tests on push |
 | F. Kubernetes deployment  | Done (☆ load test/canary: not done) | `serving/`, `deploy/`, `training/promote.py`, `tests/{serving,model,container,deploy}`, `evidence/k8s/` | FastAPI on kind via Helm; promotion gate rejects a higher-PR-AUC model that breaks the recency rule; auto-rollback of a crashing image and of a wrong model version; 0 failed requests during all rollouts |
 | G. CI/CD                  | Done (staging/prod in ephemeral kind) | `.github/workflows/`, `evidence/ci/` | Green run: lint → tests (Postgres, 80%) → image + container tests + Trivy → kind deploy + smoke → GHCR → staging; PR #1 with a leaky change blocked (3 tests failed); prod only via manually started `promote-prod` |
-| H. MLOps & monitoring     | Not started | | |
+| H. MLOps & monitoring     | Done (☆ Prometheus server/dashboard: not run) | `monitoring/`, `deploy/retrain/`, `evidence/monitoring/` | Prediction log → PSI/KS drift alert (18 features) → in-cluster retrain → gate (rejected v5/v6 for broken directional rules; fixed) → v7 promoted (PR-AUC 0.915 vs 0.889) → rolled out and smoke-tested |
 
 ## Part A: Time-series SQL
 - **Claims → evidence**
@@ -161,6 +161,37 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
   private repo, so the prod gate is a manually started workflow (`promote-prod.yml`) that only accepts a tag with
   a green staging run. The first run failed on a non-existent Trivy action version (fixed).
 - **How to reproduce:** push to a branch or open a PR; prod: Actions → promote-prod → image tag.
+
+## Part H: MLOps, monitoring and retraining
+- **Claims → evidence**
+  - Drift from logged live requests vs training data, PSI + KS per feature and prediction PSI; normal traffic WARN,
+    shifted traffic ALERT (18 features ≥ 0.25) → `evidence/monitoring/drift_report.txt`
+  - Service metrics in Prometheus format (requests, latency histogram, scores, at-risk, model info, log failures) →
+    `evidence/monitoring/metrics_scrape.txt`; alert rules with justified thresholds → `monitoring/alerts.yaml`
+  - Delayed labels: predictions labelled once their 90-day window closes; v1 realized PR-AUC 0.910 on 600 →
+    `drift_report.txt` (last section)
+  - Retraining CronJob (weekly, train → gate) and an in-cluster run → `evidence/monitoring/retraining_job.txt`
+  - Drift demo: `drift_demo_log.txt` (alert → in-cluster retrain → gate **rejected** v6: recency tests failed →
+    production unchanged), `retrain_attempt1_rejected.txt` (first run: v5 rejected), then the fixes and
+    `drift_demo_part2_retrain_after_fix.txt` (monotonic trees; v7 rejected on an impossible test input) and
+    `drift_demo_part3_promoted.txt` (input validation fixed; **v7 promoted** 0.915 vs 0.889 → **rolled out** and
+    smoke-tested, revision 14)
+  - "What do I do when this alert fires" → `evidence/monitoring/runbook.md`
+- **Techniques used and why:** prediction log written after the response (no added latency, failure-tolerant);
+  reference = the production model's training rows; insufficient data is reported, never "stable"; drift and
+  delayed-label jobs emit Prometheus textfiles; retraining is only a candidate generator, the gate is the only way to
+  production; drift phases timed by the database clock (the Docker VM clock was 24 s behind).
+- **What the loop found:** two drift-triggered retrains were rejected. The gate was right both times, and each
+  rejection led to a real fix: calibration only when it does not cost PR-AUC; monotonic constraints so the trees
+  obey the recency rule regardless of tuning; schema validation for customers whose recent-order counts
+  contradict their recency.
+- **Costs / trade-offs:** an in-cluster retrain takes ~55 min (4 CPUs, 20 trials) and loading the 1.4 GB trainer image
+  into kind ~1 h on this laptop, so the post-fix retrain ran the CronJob's commands locally; rollout after promotion
+  is `deploy.sh`, not automatic.
+- **Not done / limitations:** no Prometheus/Grafana running (rules and exporters are tested instead); the
+  CronJob still uses the trainer image from before the monotonic fix (rebuild with `deploy/retrain/install.sh`);
+  live labels cannot mature in this dataset, so delayed-label monitoring is shown on replayed past cutoffs.
+- **How to reproduce:** `deploy/retrain/install.sh`, `monitoring/drift_demo.sh`; `monitoring/RUNBOOK.md`.
 
 ## Biggest trade-offs I made and what I would do with more time
 <to fill at the end>

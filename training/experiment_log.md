@@ -54,6 +54,23 @@ The ensemble beats the baseline on every test metric: +0.008 PR-AUC, +0.007 ROC-
 real but small. The two members are close in quality but make different mistakes: the tree model ranks better
 overall (ROC-AUC), the linear one is better at the top (PR-AUC).
 
+## Round 3: monotonic constraints (commits fd46f85, 738d63e; registered v7, now production)
+
+Drift-triggered retrains (Part H) produced ensembles that the promotion gate rejected: v5 (isotonic calibration
+lowered PR-AUC) and v6 (same recipe as v3, different Optuna run, broke the recency rule). So whether the model
+obeyed "a more recent order cannot raise churn risk" depended on tuning luck. Fixes:
+calibration only if it does not cost held-out PR-AUC; `monotonic_cst` on the gradient boosting trees (risk up with
+days since last order, down with order counts); and the API now rejects customers whose recent-order counts
+contradict their recency (the directional test had been generating such impossible inputs).
+
+| Model | Test PR-AUC | Behavior tests | Gate |
+|---|---:|---|---|
+| v3 (round 2 ensemble) | 0.8987 | 13/13 | promoted earlier |
+| v6 (retrain, unconstrained) | 0.8978 | 11/13 (recency) | rejected |
+| **v7 (retrain, monotonic)** | **0.9152** | **13/13** | **promoted over v1 (0.8891)** |
+
+The constraints helped the trees generalize, not just behave: tuned GB valid PR-AUC 0.9105 vs 0.9051 unconstrained.
+
 ## What helped, what didn't
 
 | Idea | Result |

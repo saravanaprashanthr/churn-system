@@ -1,0 +1,183 @@
+# Retraining job: CronJob definition (deploy/retrain/cronjob.yaml as applied) and the drift-triggered in-cluster run.
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  annotations:
+  labels:
+    app.kubernetes.io/name: churn-retrain
+  name: churn-retrain
+  namespace: churn
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    metadata: {}
+    spec:
+      activeDeadlineSeconds: 3600
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: churn-retrain
+        spec:
+          containers:
+          - args:
+            - |
+              set -e
+              python -m training.train --optuna-trials "${OPTUNA_TRIALS}" --out-dir /tmp/training
+              set +e
+              python -m training.promote --candidate models:/churn-90d@candidate --out-dir /tmp/promotion
+              code=$?
+              echo "promotion gate exit code: $code (0 promoted, 1 rejected, 2 error)"
+              [ "$code" -le 1 ]
+            command:
+            - /bin/sh
+            - -c
+            env:
+            - name: OPTUNA_TRIALS
+              value: "20"
+            - name: MLFLOW_TRACKING_URI
+              value: http://host.docker.internal:5001
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: DATABASE_URL
+                  name: churn-retrain
+            image: churn-trainer:c6362bf
+            imagePullPolicy: IfNotPresent
+            name: retrain
+            resources:
+              limits:
+                cpu: "4"
+                memory: 2Gi
+              requests:
+                cpu: "2"
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Never
+          schedulerName: default-scheduler
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            seccompProfile:
+              type: RuntimeDefault
+          terminationGracePeriodSeconds: 30
+      ttlSecondsAfterFinished: 604800
+  schedule: 0 3 * * 1
+  successfulJobsHistoryLimit: 3
+  suspend: false
+status:
+  lastSuccessfulTime: "2026-11-18T00:31:26Z"
+
+=== kubectl get jobs
+NAME                       STATUS     COMPLETIONS   DURATION   AGE
+retrain-drift-1794945150   Complete   1/1           54m        7h40m
+retrain-drift-1794959717   Complete   1/1           53m        3h55m
+
+=== kubectl logs job/retrain-drift-1794959717 (second drift-triggered run; v6 rejected by the gate)
+2026-11-17 23:55:25,342 INFO training.data loaded 31296 rows from 65 dataset versions
+2026-11-17 23:55:25,421 INFO training.data train: 8905 rows, 19 cutoffs, churn rate 0.667
+2026-11-17 23:55:25,421 INFO training.data valid: 4323 rows, 9 cutoffs, churn rate 0.672
+2026-11-17 23:55:25,422 INFO training.data test: 6435 rows, 13 cutoffs, churn rate 0.668
+2026/11/17 23:55:25 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git SHA is not available. Error: Failed to initialize: Bad git executable
+The git executable must be specified in one of the following ways:
+    - be included in your $PATH
+    - be set via $GIT_PYTHON_GIT_EXECUTABLE
+    - explicitly set via git.refresh(<full-path-to-git-executable>)
+All git commands will error until this is rectified.
+This initial message can be silenced or aggravated in the future by setting the
+$GIT_PYTHON_REFRESH environment variable. Use one of the following values:
+    - quiet|q|silence|s|silent|none|n|0: for no message or exception
+    - warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)
+    - error|e|exception|raise|r|2: for a raised exception
+Example:
+    export GIT_PYTHON_REFRESH=quiet
+2026/11/17 23:55:25 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git branch is not available. Error: Failed to initialize: Bad git executa
+The git executable must be specified in one of the following ways:
+    - be included in your $PATH
+    - be set via $GIT_PYTHON_GIT_EXECUTABLE
+    - explicitly set via git.refresh(<full-path-to-git-executable>)
+All git commands will error until this is rectified.
+This initial message can be silenced or aggravated in the future by setting the
+$GIT_PYTHON_REFRESH environment variable. Use one of the following values:
+    - quiet|q|silence|s|silent|none|n|0: for no message or exception
+    - warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)
+    - error|e|exception|raise|r|2: for a raised exception
+Example:
+    export GIT_PYTHON_REFRESH=quiet
+2026/11/17 23:55:25 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git repository URL is not available. Error: Failed to initialize: Bad git
+The git executable must be specified in one of the following ways:
+    - be included in your $PATH
+    - be set via $GIT_PYTHON_GIT_EXECUTABLE
+    - explicitly set via git.refresh(<full-path-to-git-executable>)
+All git commands will error until this is rectified.
+This initial message can be silenced or aggravated in the future by setting the
+$GIT_PYTHON_REFRESH environment variable. Use one of the following values:
+    - quiet|q|silence|s|silent|none|n|0: for no message or exception
+    - warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)
+    - error|e|exception|raise|r|2: for a raised exception
+Example:
+    export GIT_PYTHON_REFRESH=quiet
+🏃 View run heuristic_recency at: http://host.docker.internal:5001/#/experiments/1/runs/3fd41778af924a0bb321948d07b1607d
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-17 23:55:25,745 INFO training heuristic_recency          valid pr_auc=0.8575 roc_auc=0.7845
+🏃 View run 0_baseline_logreg at: http://host.docker.internal:5001/#/experiments/1/runs/1f6fbce4ab734be2bfa208311510c8fb
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-17 23:55:31,902 INFO training 0_baseline_logreg          valid pr_auc=0.9079 roc_auc=0.8615 brier=0.1220
+🏃 View run 1_gradient_boosting at: http://host.docker.internal:5001/#/experiments/1/runs/e00041d06b3646929a2f2e48070e6ac9
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-17 23:55:35,689 INFO training 1_gradient_boosting        valid pr_auc=0.8926 roc_auc=0.8448 brier=0.1423
+🏃 View run 2_gb_derived_features at: http://host.docker.internal:5001/#/experiments/1/runs/e381ab2dd229412d92cfebad37251c39
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-17 23:55:40,254 INFO training 2_gb_derived_features      valid pr_auc=0.8966 roc_auc=0.8488 brier=0.1367
+2026-11-17 23:55:40,254 INFO training derived features kept
+🏃 View run 3_gb_tuned at: http://host.docker.internal:5001/#/experiments/1/runs/30867762930d460f863fd24050436c07
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-18 00:12:33,449 INFO training 3_gb_tuned                 valid pr_auc=0.9051 roc_auc=0.8709 brier=0.1197
+🏃 View run 3_gb_tuned at: http://host.docker.internal:5001/#/experiments/1/runs/30867762930d460f863fd24050436c07
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+🏃 View run 4_logreg_log_derived at: http://host.docker.internal:5001/#/experiments/1/runs/93c778fb9fdc45a6b797e3d02ccd5362
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-18 00:12:37,178 INFO training 4_logreg_log_derived       valid pr_auc=0.9075 roc_auc=0.8634 brier=0.1234
+🏃 View run 5_ensemble at: http://host.docker.internal:5001/#/experiments/1/runs/59134f86cfca42f9920e8fae9d1084c4
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-18 00:12:42,065 INFO training 5_ensemble                 valid pr_auc=0.9118 roc_auc=0.8690 brier=0.1196
+🏃 View run calibration_check at: http://host.docker.internal:5001/#/experiments/1/runs/d989bd94acb343fa9d0af6647777b105
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+2026-11-18 00:12:42,448 INFO training calibration check on 5_ensemble: held-out Brier {'none': 0.1198, 'sigmoid': 0.1213, 'isotonic': 0.1185} -> none
+2026-11-18 00:12:42,448 INFO training final model: 5_ensemble, uncalibrated (calibration did not improve held-out Brier)
+🏃 View run 5_ensemble at: http://host.docker.internal:5001/#/experiments/1/runs/59134f86cfca42f9920e8fae9d1084c4
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+🏃 View run 0_baseline_logreg at: http://host.docker.internal:5001/#/experiments/1/runs/1f6fbce4ab734be2bfa208311510c8fb
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+🏃 View run 5_ensemble at: http://host.docker.internal:5001/#/experiments/1/runs/59134f86cfca42f9920e8fae9d1084c4
+🧪 View experiment at: http://host.docker.internal:5001/#/experiments/1
+Registered model 'churn-90d' already exists. Creating a new version of this model...
+2026/11/18 00:31:09 INFO mlflow.store.model_registry.abstract_store: Waiting up to 300 seconds for model version to finish creation. Model name: churn-90d, version 6
+Created version '6' of model 'churn-90d'.
+2026-11-18 00:31:09,265 INFO training registered churn-90d version 6 with alias 'candidate'
+2026-11-18 00:31:09,269 INFO training test pr_auc=0.8978 (baseline 0.8908); threshold=0.9239; registered version 6
+2026-11-18 00:31:12,135 INFO promote gate: churn-90d v6 (production: 1), holdout 2026-01-05..2026-03-30
+2026-11-18 00:31:13,616 INFO training.data loaded 31296 rows from 65 dataset versions
+2026-11-18 00:31:13,713 INFO training.data train: 8905 rows, 19 cutoffs, churn rate 0.667
+2026-11-18 00:31:13,714 INFO training.data valid: 4323 rows, 9 cutoffs, churn rate 0.672
+2026-11-18 00:31:13,714 INFO training.data test: 6435 rows, 13 cutoffs, churn rate 0.668
+2026-11-18 00:31:21,009 INFO promote behavior tests: 2 failed, 11 passed in 6.00s
+2026-11-18 00:31:21,012 INFO promote   FAILED tests/model/test_model_behavior.py::test_more_recent_last_order_does_not_raise_churn
+2026-11-18 00:31:21,012 INFO promote   FAILED tests/model/test_model_behavior.py::test_older_last_order_does_not_lower_churn
+Downloading artifacts:   0%|          | 0/17 [00:00<?, ?it/s]Downloading artifacts:   6%|▌         | 1/17 [00:00<00:00, 6087.52it/s]Downloading artifacts:  12%|█▏        | 2/17 [00:00<00:00, 
+Downloading artifacts: 100%|██████████| 17/17 [00:00<00:00, 171.35it/s]Downloading artifacts: 100%|██████████| 17/17 [00:00<00:00, 170.86it/s]
+Downloading artifacts:   0%|          | 0/13 [00:00<?, ?it/s]Downloading artifacts:   8%|▊         | 1/13 [00:00<00:00, 4044.65it/s]Downloading artifacts:  15%|█▌        | 2/13 [00:00<00:00, 
+2026-11-18 00:31:23,815 INFO promote decision: churn-90d v6 -> REJECTED
+2026-11-18 00:31:23,815 INFO promote   reason: behavior tests failed: 2 failed, 11 passed in 6.00s
+2026-11-18 00:31:23,815 INFO promote   candidate holdout PR-AUC 0.8978; production v1 0.8891
+2026-11-18 00:31:23,815 INFO promote report: /tmp/promotion/20261118T003112+0000_churn-90d_v6_rejected.json
+promotion gate exit code: 1 (0 promoted, 1 rejected, 2 error)

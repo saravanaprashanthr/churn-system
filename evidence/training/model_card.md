@@ -1,5 +1,10 @@
 # Model card: `churn-90d` v3 (alias `candidate`)
 
+> **Update (round 3):** production is now **v7**, the same ensemble with monotonic constraints on recency and order
+> counts in the gradient-boosting member: test PR-AUC **0.915**, 13/13 behavior tests, promoted by the gate over v1.
+> The analysis below (segments, threshold, limitations) was done on v3; v7 behaves the same way and the
+> decision threshold is 0.929. See `training/experiment_log.md`, round 3.
+
 | | |
 |---|---|
 | Model | soft-vote ensemble: logistic regression + HistGradientBoosting (sklearn 1.9.1), preprocessing inside the pipeline |

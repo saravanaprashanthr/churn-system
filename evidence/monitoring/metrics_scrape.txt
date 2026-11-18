@@ -1,0 +1,81 @@
+# curl /metrics from a churn-api pod (serving churn-90d v7), 2026-11-18T03:34Z. Unedited.
+# HELP churn_api_requests_total HTTP requests
+# TYPE churn_api_requests_total counter
+churn_api_requests_total{path="/health",status="200"} 5.0
+churn_api_requests_total{path="/ready",status="200"} 9.0
+# HELP churn_api_requests_created HTTP requests
+# TYPE churn_api_requests_created gauge
+churn_api_requests_created{path="/health",status="200"} 1.794971444057135e+09
+churn_api_requests_created{path="/ready",status="200"} 1.794971444063493e+09
+# HELP churn_api_request_latency_seconds Request latency
+# TYPE churn_api_request_latency_seconds histogram
+churn_api_request_latency_seconds_bucket{le="0.005",path="/health"} 3.0
+churn_api_request_latency_seconds_bucket{le="0.01",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="0.025",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="0.05",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="0.1",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="0.25",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="0.5",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="1.0",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="2.5",path="/health"} 5.0
+churn_api_request_latency_seconds_bucket{le="+Inf",path="/health"} 5.0
+churn_api_request_latency_seconds_count{path="/health"} 5.0
+churn_api_request_latency_seconds_sum{path="/health"} 0.03031741700033308
+churn_api_request_latency_seconds_bucket{le="0.005",path="/ready"} 6.0
+churn_api_request_latency_seconds_bucket{le="0.01",path="/ready"} 7.0
+churn_api_request_latency_seconds_bucket{le="0.025",path="/ready"} 9.0
+churn_api_request_latency_seconds_bucket{le="0.05",path="/ready"} 9.0
+churn_api_request_latency_seconds_bucket{le="0.1",path="/ready"} 9.0
+churn_api_request_latency_seconds_bucket{le="0.25",path="/ready"} 9.0
+churn_api_request_latency_seconds_bucket{le="0.5",path="/ready"} 9.0
+churn_api_request_latency_seconds_bucket{le="1.0",path="/ready"} 9.0
+churn_api_request_latency_seconds_bucket{le="2.5",path="/ready"} 9.0
+churn_api_request_latency_seconds_bucket{le="+Inf",path="/ready"} 9.0
+churn_api_request_latency_seconds_count{path="/ready"} 9.0
+churn_api_request_latency_seconds_sum{path="/ready"} 0.058470292000947666
+# HELP churn_api_request_latency_seconds_created Request latency
+# TYPE churn_api_request_latency_seconds_created gauge
+churn_api_request_latency_seconds_created{path="/health"} 1.7949714440572407e+09
+churn_api_request_latency_seconds_created{path="/ready"} 1.7949714440635476e+09
+# HELP churn_api_predictions_total Customers scored
+# TYPE churn_api_predictions_total counter
+churn_api_predictions_total 0.0
+# HELP churn_api_predictions_created Customers scored
+# TYPE churn_api_predictions_created gauge
+churn_api_predictions_created 1.7949714402174907e+09
+# HELP churn_api_prediction_score Predicted churn probability
+# TYPE churn_api_prediction_score histogram
+churn_api_prediction_score_bucket{le="0.1"} 0.0
+churn_api_prediction_score_bucket{le="0.2"} 0.0
+churn_api_prediction_score_bucket{le="0.3"} 0.0
+churn_api_prediction_score_bucket{le="0.4"} 0.0
+churn_api_prediction_score_bucket{le="0.5"} 0.0
+churn_api_prediction_score_bucket{le="0.6"} 0.0
+churn_api_prediction_score_bucket{le="0.7"} 0.0
+churn_api_prediction_score_bucket{le="0.8"} 0.0
+churn_api_prediction_score_bucket{le="0.9"} 0.0
+churn_api_prediction_score_bucket{le="1.0"} 0.0
+churn_api_prediction_score_bucket{le="+Inf"} 0.0
+churn_api_prediction_score_count 0.0
+churn_api_prediction_score_sum 0.0
+# HELP churn_api_prediction_score_created Predicted churn probability
+# TYPE churn_api_prediction_score_created gauge
+churn_api_prediction_score_created 1.7949714402175012e+09
+# HELP churn_api_at_risk_total Customers flagged at risk
+# TYPE churn_api_at_risk_total counter
+churn_api_at_risk_total 0.0
+# HELP churn_api_at_risk_created Customers flagged at risk
+# TYPE churn_api_at_risk_created gauge
+churn_api_at_risk_created 1.7949714402175376e+09
+# HELP churn_api_model_ready 1 when a model is loaded
+# TYPE churn_api_model_ready gauge
+churn_api_model_ready 1.0
+# HELP churn_api_prediction_log_failures_total Prediction-log writes that failed
+# TYPE churn_api_prediction_log_failures_total counter
+churn_api_prediction_log_failures_total 0.0
+# HELP churn_api_prediction_log_failures_created Prediction-log writes that failed
+# TYPE churn_api_prediction_log_failures_created gauge
+churn_api_prediction_log_failures_created 1.7949714402175572e+09
+# HELP churn_api_model_info Loaded model
+# TYPE churn_api_model_info gauge
+churn_api_model_info{name="churn-90d",source="registry",version="7"} 1.0

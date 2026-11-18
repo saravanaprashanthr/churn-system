@@ -1,0 +1,21 @@
+# Drift demo, part 3 (after commit 738d63e: API rejects inconsistent customers; the
+# behavior test builds a consistent one). Gate the retrained v7 again, then roll out. Unedited, 2026-11-18T03:10Z.
+
+## 03:10:46 Gate: python -m training.promote --candidate models:/churn-90d/7
+INFO promote gate: churn-90d v7 (production: 1), holdout 2026-01-05..2026-03-30
+INFO promote behavior tests: 13 passed in 4.04s
+INFO promote decision: churn-90d v7 -> PROMOTED
+INFO promote   candidate holdout PR-AUC 0.9152; production v1 0.8891
+INFO promote report: artifacts/promotion/20261118T031047+0000_churn-90d_v7_promoted.json
+gate exit code: 0
+aliases: {'candidate': '7', 'previous-production': '1', 'production': '7'}
+
+## 03:27:13 Rollout: deploy.sh deploys the version behind alias production
+deploying churn-api: image churn-api:c6362bf, model churn-90d v7 -> namespace churn
+2026-11-18 03:28:16,046 INFO smoke ok: serving model version 7 (got 7)
+2026-11-18 03:28:16,784 INFO smoke SMOKE TEST PASSED: {'model': {'name': 'churn-90d', 'version': '7', 'uri': 'models:/churn-90d/7', 'source': 'registr
+deployed and smoke-tested: churn-api:c6362bf with churn-90d v7
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION               
+12      	Wed Nov 18 06:17:25 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v1
+13      	Wed Nov 18 07:43:01 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v1
+14      	Wed Nov 18 08:57:19 2026	deployed  	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v7

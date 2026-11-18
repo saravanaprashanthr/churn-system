@@ -1,0 +1,45 @@
+# Drift demo, part 2 (after commit fd46f85: monotonic constraints). Unedited output, 2026-11-18T01:51Z.
+# Same alert as drift_demo_log.txt (production v1, shifted traffic, ChurnDataDrift). The retrain runs the CronJob
+# commands (training.train -> training.promote) locally on 8 CPUs instead of in kind (in-cluster: ~2 h here,
+# mostly kind image loading), then deploy.sh rolls out whatever the gate made production.
+
+## 01:51:00 Retrain: python -m training.train --optuna-trials 20 (as the CronJob)
+INFO training heuristic_recency          valid pr_auc=0.8575 roc_auc=0.7845
+INFO training 0_baseline_logreg          valid pr_auc=0.9079 roc_auc=0.8615 brier=0.1220
+INFO training 1_gradient_boosting        valid pr_auc=0.8878 roc_auc=0.8413 brier=0.1390
+INFO training 2_gb_derived_features      valid pr_auc=0.8893 roc_auc=0.8421 brier=0.1396
+INFO training 3_gb_tuned                 valid pr_auc=0.9105 roc_auc=0.8664 brier=0.1241
+INFO training 4_logreg_log_derived       valid pr_auc=0.9075 roc_auc=0.8634 brier=0.1234
+INFO training 5_ensemble                 valid pr_auc=0.9131 roc_auc=0.8700 brier=0.1208
+INFO training calibration check on 5_ensemble: held-out Brier {'none': 0.1208, 'sigmoid': 0.1221, 'isotonic': 0.1195} -> none
+INFO training final model: 5_ensemble, uncalibrated (calibration did not improve held-out Brier)
+INFO training registered churn-90d version 7 with alias 'candidate'
+INFO training test pr_auc=0.9152 (baseline 0.8908); threshold=0.9292; registered version 7
+
+## 02:11:56 Gate: python -m training.promote --candidate models:/churn-90d@candidate
+INFO promote gate: churn-90d v7 (production: 1), holdout 2026-01-05..2026-03-30
+INFO promote behavior tests: 1 failed, 12 passed in 3.23s
+INFO promote   FAILED tests/model/test_model_behavior.py::test_an_extra_recent_order_does_not_raise_churn
+INFO promote decision: churn-90d v7 -> REJECTED
+INFO promote   reason: behavior tests failed: 1 failed, 12 passed in 3.23s
+INFO promote   candidate holdout PR-AUC 0.9152; production v1 0.8891
+INFO promote report: artifacts/promotion/20261118T021223+0000_churn-90d_v7_rejected.json
+gate exit code: 1
+aliases: {'candidate': '7', 'previous-production': '1', 'production': '1'}
+
+## 02:12:55 Rollout: deploy.sh deploys the version behind alias production (image unchanged)
+deploying churn-api: image churn-api:c6362bf, model churn-90d v1 -> namespace churn
+REVISION: 13
+DESCRIPTION: churn-api:c6362bf model v1
+REVISION: 13
+DESCRIPTION: churn-api:c6362bf model v1
+2026-11-18 02:12:39,768 INFO smoke ok: serving model version 1 (got 1)
+2026-11-18 02:12:39,927 INFO smoke ok: /predict reports the loaded model version
+2026-11-18 02:12:40,742 INFO smoke SMOKE TEST PASSED: {'model': {'name': 'churn-90d', 'version': '1', 'uri': 'models:/churn-90d/1', 'source': 'registr
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION               
+9       	Wed Nov 18 01:13:04 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:3a64d78 model v1
+10      	Wed Nov 18 02:17:55 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:3a64d78 model v1
+11      	Wed Nov 18 05:06:07 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v1
+12      	Wed Nov 18 06:17:25 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v1
+13      	Wed Nov 18 07:43:01 2026	deployed  	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v1
+deployed and smoke-tested: churn-api:c6362bf with churn-90d v1

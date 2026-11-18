@@ -1,0 +1,121 @@
+# Drift reports from monitoring/drift_demo.sh (artifacts/monitoring/{normal,shifted}/). Unedited.
+
+=== Normal traffic (600 real holdout customers)
+# Drift report (2026-11-17T23:54:46+00:00)
+
+- **Status: WARN**
+- window: since 2026-11-17T23:37:25+00:00 · logged rows: 600 · reference rows: 8905 · model version: 1
+- prediction PSI 0.0073 (stable); mean score 0.6584 -> 0.6457
+
+| Feature | PSI | KS | Status |
+|---|---:|---:|---|
+| `tenure_days` | 0.2944 | 0.1949 | alert |
+| `events_prev_30d` | 0.0459 | 0.0336 | stable |
+| `events_30d` | 0.0348 | 0.0416 | stable |
+| `spend_365d` | 0.0317 | 0.0457 | stable |
+| `views_30d` | 0.0304 | 0.0305 | stable |
+| `sessions_30d` | 0.0293 | 0.0401 | stable |
+| `country` | 0.0269 | nan | stable |
+| `event_trend_30d` | 0.0239 | 0.0397 | stable |
+| `orders_365d` | 0.0232 | 0.0538 | stable |
+| `days_since_last_order` | 0.022 | 0.0517 | stable |
+| `spend_90d` | 0.0197 | 0.0392 | stable |
+| `avg_order_value_365d` | 0.016 | 0.0365 | stable |
+| `cart_to_view_ratio_30d` | 0.0142 | 0.0451 | stable |
+| `days_since_last_event` | 0.0137 | 0.0368 | stable |
+| `active_days_90d` | 0.0094 | 0.0321 | stable |
+| `orders_90d` | 0.008 | 0.0312 | stable |
+| `orders_prev_30d` | 0.0068 | 0.0251 | stable |
+| `carts_30d` | 0.0054 | 0.034 | stable |
+| `order_trend_30d` | 0.0045 | 0.0139 | stable |
+| `orders_30d` | 0.0043 | 0.0231 | stable |
+| `marketing_opt_in` | 0.0038 | nan | stable |
+| `checkouts_30d` | 0.0011 | 0.0125 | stable |
+| `returned_90d` | 0.0005 | 0.0317 | stable |
+| `spend_30d` | 0.0004 | 0.0195 | stable |
+| `cancelled_90d` | 0.0002 | 0.0136 | stable |
+| `orders_7d` | 0.0 | 0.0112 | stable |
+| `spend_7d` | 0.0 | 0.0134 | stable |
+
+=== Shifted traffic (the same customers 'went quiet')
+# Drift report (2026-11-17T23:55:15+00:00)
+
+- **Status: ALERT**: 18 features with PSI >= 0.25: active_days_90d, cart_to_view_ratio_30d, carts_30d, checkouts_30d, days_since_last_event, days_since_last_order, event_trend_30d, events_30d, events_prev_30d, order_trend_30d, orders_30d, orders_90d, orders_prev_30d, sessions_30d, spend_30d, spend_90d, tenure_days, views_30d
+- window: since 2026-11-17T23:37:31+00:00 · logged rows: 600 · reference rows: 8905 · model version: 1
+- prediction PSI 0.1637 (warn); mean score 0.6584 -> 0.6849
+
+| Feature | PSI | KS | Status |
+|---|---:|---:|---|
+| `days_since_last_event` | 8.563 | 0.9828 | alert |
+| `events_30d` | 8.5152 | 0.9047 | alert |
+| `events_prev_30d` | 8.5053 | 0.9042 | alert |
+| `sessions_30d` | 8.4885 | 0.9047 | alert |
+| `views_30d` | 7.6667 | 0.8505 | alert |
+| `event_trend_30d` | 7.4919 | 0.4197 | alert |
+| `days_since_last_order` | 4.7764 | 0.6042 | alert |
+| `carts_30d` | 4.5494 | 0.546 | alert |
+| `cart_to_view_ratio_30d` | 3.8419 | 0.5177 | alert |
+| `orders_90d` | 3.7125 | 0.4611 | alert |
+| `active_days_90d` | 3.7123 | 0.4611 | alert |
+| `checkouts_30d` | 3.3283 | 0.4042 | alert |
+| `spend_90d` | 2.9728 | 0.4611 | alert |
+| `order_trend_30d` | 2.4969 | 0.1673 | alert |
+| `orders_prev_30d` | 1.8648 | 0.2509 | alert |
+| `orders_30d` | 1.8646 | 0.2508 | alert |
+| `spend_30d` | 1.4248 | 0.2508 | alert |
+| `tenure_days` | 0.2944 | 0.1949 | alert |
+| `spend_365d` | 0.0317 | 0.0457 | stable |
+| `country` | 0.0269 | nan | stable |
+| `orders_365d` | 0.0232 | 0.0538 | stable |
+| `avg_order_value_365d` | 0.016 | 0.0365 | stable |
+| `marketing_opt_in` | 0.0038 | nan | stable |
+| `returned_90d` | 0.0005 | 0.0317 | stable |
+| `cancelled_90d` | 0.0002 | 0.0136 | stable |
+| `orders_7d` | 0.0 | 0.0971 | stable |
+| `spend_7d` | 0.0 | 0.0971 | stable |
+
+=== Prometheus textfile (shifted)
+# TYPE churn_drift_feature_psi gauge
+churn_drift_feature_psi{feature="orders_7d"} 0.0
+churn_drift_feature_psi{feature="orders_30d"} 1.8646
+churn_drift_feature_psi{feature="orders_90d"} 3.7125
+churn_drift_feature_psi{feature="orders_365d"} 0.0232
+churn_drift_feature_psi{feature="spend_7d"} 0.0
+churn_drift_feature_psi{feature="spend_30d"} 1.4248
+churn_drift_feature_psi{feature="spend_90d"} 2.9728
+churn_drift_feature_psi{feature="spend_365d"} 0.0317
+churn_drift_feature_psi{feature="orders_prev_30d"} 1.8648
+churn_drift_feature_psi{feature="order_trend_30d"} 2.4969
+churn_drift_feature_psi{feature="days_since_last_order"} 4.7764
+churn_drift_feature_psi{feature="avg_order_value_365d"} 0.016
+churn_drift_feature_psi{feature="active_days_90d"} 3.7123
+churn_drift_feature_psi{feature="cancelled_90d"} 0.0002
+churn_drift_feature_psi{feature="returned_90d"} 0.0005
+churn_drift_feature_psi{feature="views_30d"} 7.6667
+churn_drift_feature_psi{feature="carts_30d"} 4.5494
+churn_drift_feature_psi{feature="checkouts_30d"} 3.3283
+churn_drift_feature_psi{feature="events_30d"} 8.5152
+churn_drift_feature_psi{feature="events_prev_30d"} 8.5053
+churn_drift_feature_psi{feature="event_trend_30d"} 7.4919
+churn_drift_feature_psi{feature="sessions_30d"} 8.4885
+churn_drift_feature_psi{feature="days_since_last_event"} 8.563
+churn_drift_feature_psi{feature="cart_to_view_ratio_30d"} 3.8419
+churn_drift_feature_psi{feature="tenure_days"} 0.2944
+churn_drift_feature_psi{feature="country"} 0.0269
+churn_drift_feature_psi{feature="marketing_opt_in"} 0.0038
+# TYPE churn_drift_prediction_psi gauge
+churn_drift_prediction_psi 0.1637
+# TYPE churn_drift_alert gauge
+churn_drift_alert 1
+# TYPE churn_drift_logged_rows gauge
+churn_drift_logged_rows 600
+
+=== Delayed-label performance
+# Realized performance (labels known up to 2026-07-01)
+
+- **Status: OK**
+- matured predictions: 600 · pending (label window still open): 0
+
+| Model | Rows | Churn rate | PR-AUC | ROC-AUC | Brier | Flagged | Precision of flagged |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| v1 | 600 | 0.6433 | 0.9096 | 0.8851 | 0.1214 | 61 | 0.9508 |
