@@ -1,0 +1,69 @@
+# Drift demo (monitoring/drift_demo.sh), 2026-11-17T23:20Z. Unedited output.
+
+## 23:20:01 0. Setup: production = v1 (an older model), deployed with prediction logging
+aliases: {'candidate': '5', 'previous-production': '1', 'production': '1'}
+deploying churn-api: image churn-api:c6362bf, model churn-90d v1 -> namespace churn
+2026-11-17 23:37:20,934 INFO smoke SMOKE TEST PASSED: {'model': {'name': 'churn-90d', 'version': '1', 'uri': 'models:/churn-90d/1', 'source'
+deployed and smoke-tested: churn-api:c6362bf with churn-90d v1
+serving: churn-90d v1 (registry)
+
+## 23:54:15 1. Normal traffic: 600 real holdout customers
+INFO monitoring.replay replayed 600 holdout customers (shift=none): {'sent': 600, 'flagged_at_risk': 23}
+
+## 23:54:42 2. Drift check on normal traffic
+INFO monitoring.drift drift status: WARN 
+exit code: 0
+
+## 23:54:46 3. Shifted traffic: the same customers 'went quiet' (no orders or browsing in 90 days, last order 150 days later)
+INFO monitoring.replay replayed 600 holdout customers (shift=went-quiet): {'sent': 600, 'flagged_at_risk': 61}
+
+## 23:54:47 4. Drift check on shifted traffic
+INFO monitoring.drift drift status: ALERT 18 features with PSI >= 0.25: active_days_90d, cart_to_view_ratio_30d, carts_30d, checkouts_30d, days_since_last_event, days_since_last_order, event_trend_30d, events_30d, events_prev_30d, order_trend_30d, orders_30d, orders_90d, orders_prev_30d, sessions_30d, spend_30d, spend_90d, tenure_days, views_30d
+WARNING monitoring.drift ALERT ChurnDataDrift: 18 features with PSI >= 0.25: active_days_90d, cart_to_view_ratio_30d, carts_30d, checkouts_30d, days_since_last_event, days_since_last_order, event_trend_30d, events_30d, events_prev_30d, order_trend_30d, orders_30d, orders_90d, orders_prev_30d, sessions_30d, spend_30d, spend_90d, tenure_days, views_30d
+exit code: 1
+churn_drift_feature_psi{feature="orders_90d"} 3.7125
+churn_drift_feature_psi{feature="days_since_last_order"} 4.7764
+# TYPE churn_drift_prediction_psi gauge
+churn_drift_prediction_psi 0.1637
+# TYPE churn_drift_alert gauge
+churn_drift_alert 1
+
+## 23:55:16 5. Delayed labels: realized performance of the normal-traffic predictions (their 90-day windows have closed)
+INFO monitoring.performance performance: ok; matured 600, pending 0
+INFO monitoring.performance   model v1: {'rows': 600, 'churn_rate': 0.6433, 'pr_auc': 0.9096, 'roc_auc': 0.8851, 'brier': 0.1214, 'flagged': 61, 'precision_of_flagged': 0.9508}
+
+## 23:55:17 6. Alert ChurnDataDrift -> trigger the retraining job (from CronJob churn-retrain)
+job.batch/retrain-drift-1794959717 created
+NAME                       STATUS     COMPLETIONS   DURATION   AGE
+retrain-drift-1794959717   Complete   1/1           53m        53m
+INFO training heuristic_recency          valid pr_auc=0.8575 roc_auc=0.7845
+INFO training 0_baseline_logreg          valid pr_auc=0.9079 roc_auc=0.8615 brier=0.1220
+INFO training 1_gradient_boosting        valid pr_auc=0.8926 roc_auc=0.8448 brier=0.1423
+INFO training 2_gb_derived_features      valid pr_auc=0.8966 roc_auc=0.8488 brier=0.1367
+INFO training 3_gb_tuned                 valid pr_auc=0.9051 roc_auc=0.8709 brier=0.1197
+INFO training 4_logreg_log_derived       valid pr_auc=0.9075 roc_auc=0.8634 brier=0.1234
+INFO training 5_ensemble                 valid pr_auc=0.9118 roc_auc=0.8690 brier=0.1196
+INFO training calibration check on 5_ensemble: held-out Brier {'none': 0.1198, 'sigmoid': 0.1213, 'isotonic': 0.1185} -> none
+INFO training final model: 5_ensemble, uncalibrated (calibration did not improve held-out Brier)
+INFO training registered churn-90d version 6 with alias 'candidate'
+INFO training test pr_auc=0.8978 (baseline 0.8908); threshold=0.9239; registered version 6
+INFO promote gate: churn-90d v6 (production: 1), holdout 2026-01-05..2026-03-30
+INFO promote behavior tests: 2 failed, 11 passed in 6.00s
+INFO promote   FAILED tests/model/test_model_behavior.py::test_more_recent_last_order_does_not_raise_churn
+INFO promote   FAILED tests/model/test_model_behavior.py::test_older_last_order_does_not_lower_churn
+INFO promote decision: churn-90d v6 -> REJECTED
+INFO promote   reason: behavior tests failed: 2 failed, 11 passed in 6.00s
+INFO promote   candidate holdout PR-AUC 0.8978; production v1 0.8891
+INFO promote report: /tmp/promotion/20261118T003112+0000_churn-90d_v6_rejected.json
+: 1 (0 promoted, 1 rejected, 2 error)
+
+## 00:46:51 7. Rollout: deploy whatever the gate made 'production'
+deploying churn-api: image churn-api:c6362bf, model churn-90d v1 -> namespace churn
+2026-11-18 00:47:27,932 INFO smoke SMOKE TEST PASSED: {'model': {'name': 'churn-90d', 'version': '1', 'uri': 'models:/churn-90d/1', 'source'
+deployed and smoke-tested: churn-api:c6362bf with churn-90d v1
+monitoring/drift_demo.sh: line 18: 75668 Terminated: 15          kubectl -n "$NS" port-forward svc/churn-api "$PORT:8080" > /dev/null 2>&1
+serving: churn-90d v1 (registry)
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION  	DESCRIPTION               
+10      	Wed Nov 18 02:17:55 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:3a64d78 model v1
+11      	Wed Nov 18 05:06:07 2026	superseded	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v1
+12      	Wed Nov 18 06:17:25 2026	deployed  	churn-api-0.1.0	set-by-deploy	churn-api:c6362bf model v1

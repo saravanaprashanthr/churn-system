@@ -44,6 +44,8 @@ skip_covered = false
 
 [tool.ruff]
 line-length = 110
+# Supplied verbatim by the Candidate Submission Guide; not our code.
+extend-exclude = ["build_submission_bundle.py"]
 target-version = "py311"
 
 [tool.ruff.lint]
@@ -69,6 +71,7 @@ ignore = [
 "pipeline/run_local.py" = ["T201"]  # CLI result on stdout: cutoff -> dataset_version table
 
 [tool.mypy]
+exclude = ["build_submission_bundle\\.py"]
 python_version = "3.11"
 files = ["data_quality", "pipeline", "training", "serving", "monitoring", "tests", "scripts"]
 warn_unused_ignores = true

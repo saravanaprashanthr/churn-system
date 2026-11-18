@@ -14,7 +14,7 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 | D. Model development      | Done | `training/`, MLflow `churn-90d` v3, `evidence/training/` | Embargoed time split; baseline + 5 tracked iterations; final ensemble test PR-AUC 0.899 vs baseline 0.891; cost-based threshold 0.921; features recomputed from raw data: 0 mismatches |
 | E. Code quality & tests   | Done (coverage gate in CI: Part G) | `Makefile`, `.pre-commit-config.yaml`, `pyproject.toml`, `evidence/tests/`, `evidence/lint/` | 203 tests, 93% coverage (gate 80%); ruff incl. no-print and bandit rules, ruff format, mypy (☆) all clean; 10 pre-commit hooks + unit tests on push |
 | F. Kubernetes deployment  | Done (☆ load test/canary: not done) | `serving/`, `deploy/`, `training/promote.py`, `tests/{serving,model,container,deploy}`, `evidence/k8s/` | FastAPI on kind via Helm; promotion gate rejects a higher-PR-AUC model that breaks the recency rule; auto-rollback of a crashing image and of a wrong model version; 0 failed requests during all rollouts |
-| G. CI/CD                  | Not started | | |
+| G. CI/CD                  | Done (staging/prod in ephemeral kind) | `.github/workflows/`, `evidence/ci/` | Green run: lint → tests (Postgres, 80%) → image + container tests + Trivy → kind deploy + smoke → GHCR → staging; PR #1 with a leaky change blocked (3 tests failed); prod only via manually started `promote-prod` |
 | H. MLOps & monitoring     | Not started | | |
 
 ## Part A: Time-series SQL
@@ -141,6 +141,26 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 - **Not done / limitations:** ☆ load test and canary/blue-green; the `latest` guard covers the chart, not a registry policy.
 - **How to reproduce:** `deploy/RUNBOOK.md`; `make cluster && make promote && make deploy`;
   `deploy/rollback_demo.sh`; `scripts/promotion_gate_demo.sh`.
+
+## Part G: CI/CD
+- **Claims → evidence**
+  - Green run on `main` (run 44118513207): lint/format/mypy, tests with Postgres service and coverage gate, image
+    build, container tests, Trivy report, ephemeral kind deploy with `helm test` smoke, GHCR push, staging deploy →
+    `evidence/ci/ci_green_run.txt`
+  - Deliberately broken change blocked (PR #1, run 44122097767): `<` → `<=` on the cutoff leaks label-window
+    orders into features; 3 tests fail, build and deploy never run, PR closed unmerged →
+    `evidence/ci/ci_red_run_blocked_change.txt`
+  - Runs, stages and limitations → `evidence/ci/ci_runs.md`
+- **Techniques used and why:** one pinned dev lock for every job (uv); Postgres as a service container so the
+  integration tests run in CI; a synthetic stand-in model so CI can deploy without the registry (which also
+  exercises the registry-down fallback); the same `deploy/deploy.sh` locally and in CI (rollback-on-failure +
+  helm test + rollback).
+- **Costs / trade-offs:** ~8 min per run, mostly dependency installs and the image build; Trivy is report-only so
+  base-image findings do not block releases.
+- **Not done / limitations:** no long-lived staging/prod cluster; GitHub Environment reviewers need a paid plan on a
+  private repo, so the prod gate is a manually started workflow (`promote-prod.yml`) that only accepts a tag with
+  a green staging run. The first run failed on a non-existent Trivy action version (fixed).
+- **How to reproduce:** push to a branch or open a PR; prod: Actions → promote-prod → image tag.
 
 ## Biggest trade-offs I made and what I would do with more time
 <to fill at the end>
