@@ -1,9 +1,22 @@
 # EVIDENCE
 
-Candidate ID: <to fill>
-Approx. hours spent: <to fill>
+Candidate ID: Saravana Prashanth
 Environment: macOS 14.5 (Apple Silicon), 8 GB RAM, Docker Desktop 29.9.2 (VM: 8 vCPU / 5.8 GB), PostgreSQL 16, kind v0.33.0
-Tools used, including AI assistants, and for what: Claude Code (AI coding assistant) helped with data exploration, writing the Part A SQL and benchmark scripts, and running the benchmarks. <add your own description>
+Tools used, including AI assistants, and for what: I led the work end to end and used Claude Code (AI coding
+assistant) as my implementation tool. It wrote most of the code, SQL, tests and documentation to my direction,
+and I reviewed the output at each step. The judgment calls were mine:
+- **Data understanding:** checked the date coverage of every table and fixed the analysis window, and verified
+  that customers ordering in 2026 exist in `customers` even though sign-ups stop at the end of 2025.
+- **Data exclusion:** spotted customers with implausible order volumes, investigated what they bought, and
+  decided to exclude the 23 accounts above 730 orders *before* the pipeline rather than letting them distort
+  features and metrics (`data_quality/decision_log.md`).
+- **Way of working:** built the system in the assignment's order (A → H), reviewing and committing each part
+  before starting the next.
+- **Model choice:** compared the candidates and chose the soft-vote ensemble as the production model
+  (`training/experiment_log.md`).
+- **Review:** had a peer review the draft before submitting.
+
+I can explain and modify any part of the system in the live walkthrough.
 
 ## Summary
 | Part | Status (Done / Partial / Skipped) | Key paths | One-line result |
@@ -194,4 +207,26 @@ Tools used, including AI assistants, and for what: Claude Code (AI coding assist
 - **How to reproduce:** `deploy/retrain/install.sh`, `monitoring/drift_demo.sh`; `monitoring/RUNBOOK.md`.
 
 ## Biggest trade-offs I made and what I would do with more time
-<to fill at the end>
+**Trade-offs** (details in `WRITEUP.md`):
+- **Excluded 23 bot-like accounts (>730 orders, 97% of all orders) before the pipeline**, instead of modelling
+  them. They would have dominated every feature and metric; the model now describes the ~920 real buyers.
+- **DQ as 40 SQL rules inside Postgres** instead of Great Expectations: 10M events never leave the DB, and the
+  quarantine is a table downstream SQL can anti-join.
+- **Ensemble of logistic regression + monotonic gradient boosting** instead of the single best model: small
+  but consistent gain (+0.008 test PR-AUC over the baseline). Monotonic constraints make "a more recent order
+  cannot raise risk" a property of the model rather than of tuning luck.
+- **Calibration only when it helps on later held-out weeks**, instead of always: unconditional isotonic
+  calibration made test Brier worse.
+- **Pinned model version in the Helm ConfigMap plus a bundled fallback**, instead of resolving an alias at
+  start-up: a rollback restores image and model together, and a registry outage does not stop serving.
+- **Ephemeral kind clusters for CI/staging/prod, and a manual prod workflow**, instead of long-lived clusters and
+  environment reviewers: both are what an 8 GB laptop and a free private repo allow.
+
+**With more time:**
+- Rolling-origin validation over several folds: one 9-week validation window makes ±0.005 PR-AUC differences
+  uncertain.
+- Better features for one-time buyers (55% of test rows, ROC-AUC ≈ 0.59), e.g. first-order basket and category.
+- Real cost and response data from the retention team, so the threshold (and later an uplift model) rests on
+  measured numbers rather than assumptions.
+- A real KFP install, Prometheus/Grafana and a canary rollout; rebuild the retrain CronJob image after the
+  monotonic fix.
