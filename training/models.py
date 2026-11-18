@@ -110,11 +110,31 @@ def logistic_regression(derived: bool = False, log: bool = False) -> Pipeline:
     return Pipeline([*_steps(derived, log), ("prep", _preprocessor(scale=True)), ("model", model)])
 
 
+# Domain rules built into the trees: churn risk may only rise with time since the last order and only fall
+# with more recent orders. Without them, whether a retrained ensemble obeys the directional behavior tests
+# depended on the Optuna run (v3 passed, the in-cluster retrains v5/v6 did not).
+MONOTONIC = {
+    "days_since_last_order": 1,
+    "orders_7d": -1,
+    "orders_30d": -1,
+    "orders_90d": -1,
+    "orders_365d": -1,
+    "active_days_90d": -1,
+}
+MONOTONIC_DERIVED = {"recency_vs_gap": 1}
+
+
 def gradient_boosting(params: dict[str, Any] | None = None, derived: bool = False) -> Pipeline:
+    constraints = {**MONOTONIC, **(MONOTONIC_DERIVED if derived else {})}
     model = HistGradientBoostingClassifier(
-        **{**DEFAULT_HGB_PARAMS, **(params or {})}, early_stopping=False, random_state=SEED
+        **{**DEFAULT_HGB_PARAMS, **(params or {})},
+        monotonic_cst=constraints,
+        early_stopping=False,
+        random_state=SEED,
     )
-    return Pipeline([*_steps(derived), ("prep", _preprocessor(scale=False)), ("model", model)])
+    # pandas output keeps the column names, which the named monotonic constraints need.
+    prep = _preprocessor(scale=False).set_output(transform="pandas")
+    return Pipeline([*_steps(derived), ("prep", prep), ("model", model)])
 
 
 def soft_vote(*members: tuple[str, Pipeline]) -> VotingClassifier:

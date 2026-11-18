@@ -129,3 +129,16 @@ def test_every_saved_model_type_is_in_the_skops_trust_list(data):
     for model in candidates:
         untrusted = set(sio.get_untrusted_types(data=sio.dumps(model)))
         assert untrusted <= set(models.SKOPS_TRUSTED_TYPES), untrusted
+
+
+@pytest.mark.parametrize("derived", [False, True])
+def test_gradient_boosting_is_monotonic_in_recency_and_orders(data, derived):
+    X_train, y_train = data["train"]
+    X_valid, _ = data["valid"]
+    model = models.gradient_boosting(derived=derived).fit(X_train, y_train)
+    base = models.churn_probability(model, X_valid)
+    recent = X_valid.assign(days_since_last_order=(X_valid["days_since_last_order"] - 30).clip(lower=1))
+    assert (models.churn_probability(model, recent) <= base + 1e-12).all()
+    if not derived:  # recency_vs_gap rises with order count, so orders are only guaranteed without it
+        more = X_valid.assign(orders_365d=X_valid["orders_365d"] + 1)
+        assert (models.churn_probability(model, more) <= base + 1e-12).all()
