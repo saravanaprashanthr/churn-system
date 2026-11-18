@@ -40,6 +40,13 @@ def customer(**overrides) -> dict:
     return {**SAMPLE_CUSTOMER, **overrides}
 
 
+def lapsed(days_since_last_order: int = 300, **overrides) -> dict:
+    """A consistent customer whose last order is older than 90 days (no recent orders or spend)."""
+    quiet = {"orders_7d": 0, "orders_30d": 0, "orders_90d": 0, "orders_prev_30d": 0, "active_days_90d": 0,
+             "spend_7d": 0.0, "spend_30d": 0.0, "spend_90d": 0.0}  # fmt: skip
+    return customer(**quiet, days_since_last_order=days_since_last_order, **overrides)
+
+
 @pytest.fixture
 def client() -> Iterator[TestClient]:
     app = create_app(Settings(), loader=lambda settings: loaded())

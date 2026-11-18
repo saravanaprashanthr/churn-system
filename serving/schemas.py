@@ -68,6 +68,12 @@ class CustomerFeatures(BaseModel):
                 raise ValueError(f"{name}_7d <= {name}_30d <= {name}_90d <= {name}_365d must hold")
         if self.active_days_90d > self.orders_90d:
             raise ValueError("active_days_90d cannot exceed orders_90d")
+        for days, count in ((7, self.orders_7d), (30, self.orders_30d), (90, self.orders_90d)):
+            if count > 0 and self.days_since_last_order > days:
+                raise ValueError(
+                    f"orders_{days}d > 0 means the last order was at most {days} days ago "
+                    f"(days_since_last_order={self.days_since_last_order})"
+                )
         if (
             self.order_trend_30d is not None
             and self.order_trend_30d != self.orders_30d - self.orders_prev_30d

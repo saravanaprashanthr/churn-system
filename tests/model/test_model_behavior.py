@@ -106,7 +106,11 @@ def test_older_last_order_does_not_lower_churn(model, sample):
 
 
 def test_an_extra_recent_order_does_not_raise_churn(model, sample):
+    # A consistent customer: an order in the last 30 days also means the last order was at most 30 days ago.
+    # (The first version left days_since_last_order unchanged, e.g. 200 days: an input the pipeline never
+    # produces and the API now rejects.)
     more = sample.assign(
+        days_since_last_order=sample["days_since_last_order"].clip(upper=15),
         orders_30d=sample["orders_30d"] + 1,
         orders_90d=sample["orders_90d"] + 1,
         orders_365d=sample["orders_365d"] + 1,
@@ -145,7 +149,8 @@ EDGE_CASES: dict[str, dict[str, Any]] = {
                   "tenure_days")
     },  # fmt: skip
     "extreme volumes and spend": {
-        **SAMPLE_CUSTOMER, "orders_7d": 1000, "orders_30d": 5000, "orders_90d": 20000, "orders_365d": 100_000,
+        **SAMPLE_CUSTOMER, "days_since_last_order": 1,
+        "orders_7d": 1000, "orders_30d": 5000, "orders_90d": 20000, "orders_365d": 100_000,
         "orders_prev_30d": 5000, "active_days_90d": 90, "spend_7d": 1e6, "spend_30d": 1e7, "spend_90d": 1e8,
         "spend_365d": 1e9, "tenure_days": 36_500, "views_30d": 100_000, "events_30d": 100_000,
     },

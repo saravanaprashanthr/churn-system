@@ -66,6 +66,7 @@ def test_required_fields_are_required(missing):
         ({"spend_90d": 1000.0}, "spend_7d <= spend_30d"),
         ({"active_days_90d": 3}, "active_days_90d"),
         ({"order_trend_30d": 9}, "order_trend_30d"),
+        ({"days_since_last_order": 200}, "orders_30d > 0 means"),  # ordered in the last 30 days, yet 200 ago
         ({"country": "usa"}, "country"),
         ({"marketing_opt_in": "maybe"}, "marketing_opt_in"),
         ({"days_since_last_event": 0}, "days_since_last_event"),

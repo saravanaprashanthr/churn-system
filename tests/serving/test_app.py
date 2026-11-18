@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from serving.app import create_app
 from serving.model import LoadedModel, ModelLoadError, Settings
 from serving.smoke import run as smoke_run
-from tests.serving.conftest import INFO, customer, loaded
+from tests.serving.conftest import INFO, customer, lapsed, loaded
 
 
 def test_health_and_ready(client):
@@ -22,7 +22,7 @@ def test_health_and_ready(client):
 def test_predict_returns_scores_flags_and_model_metadata(client):
     response = client.post(
         "/predict",
-        json={"instances": [customer(customer_id=1, days_since_last_order=300), customer(customer_id=2)]},
+        json={"instances": [lapsed(customer_id=1), customer(customer_id=2)]},
     )
     assert response.status_code == 200
     body = response.json()
@@ -96,7 +96,7 @@ def test_background_reload_recovers_when_the_registry_comes_back():
 
 
 def test_metrics_count_requests_scores_and_model(client):
-    client.post("/predict", json={"instances": [customer(days_since_last_order=300), customer()]})
+    client.post("/predict", json={"instances": [lapsed(), customer()]})
     client.post("/predict", json={"instances": [customer(orders_365d=-1)]})
     text = client.get("/metrics").text
     assert 'churn_api_requests_total{path="/predict",status="200"} 1.0' in text
